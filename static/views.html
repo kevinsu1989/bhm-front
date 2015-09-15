@@ -1,0 +1,103 @@
+
+<div>
+    <textarea id="tmpl-main">
+        <div class="ui grid">
+            <div class="three wide column">
+                <main-left-menu></main-left-menu>
+            </div>
+            <div class="thirteen wide column">
+                <main-top-menu></main-top-menu>
+                <main-charts-container></main-charts-container>
+            </div>
+        </div>
+    </textarea>
+
+    <textarea id="tmpl-main-left-menu">
+        <div class="ui vertical menu">
+          <a class="teal item" ng-class="page.page_name==page_name?'active':''" ng-repeat="page in pages" ng-click="pageChange(page)">{{page.page_name}}</a>
+        </div>
+    </textarea>
+
+    <textarea id="tmpl-main-top-menu">
+        <div class="ui form">
+            <div class="four fields">
+                <div class="field">
+                    <select ng-change="reload()" ng-model="timeSelect" class="ui dropdown" name="card[expire-time]">
+                        <option ng-selected="true" value="today">今天</option>
+                        <option value="30">30分钟内</option>
+                        <option value="60">1小时内</option>
+                        <option value="180">3小时内</option>
+                        <option value="720">12小时内</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <input type="text" ng-model="time_start" placeholder="开始时间" datetype="datetime" datetype="date" datetime-picker format="yyyy/mm/dd hh:ii"/>
+                </div>
+                <div class="field">
+                    <input type="text" ng-model="time_end" placeholder="结束时间" datetype="datetime" datetype="date" datetime-picker format="yyyy/mm/dd hh:ii">
+                </div>
+                <div class="field">
+                    <button class="ui primary button" ng-click="reloadByTime()">统计</button>
+                    <div class="ui toggle checkbox">
+                      <input ng-model="isAuto" ng-change="autoLoad()" type="checkbox" name="public">
+                      <label>自动刷新</label>
+                    </div>
+                </div>
+            </div>
+            <main-top-info></main-top-info>
+        </div>
+
+    </textarea>
+
+    <textarea id="tmpl-main-charts-container">
+
+        <div>
+            <div class="chart main-chart" main-chart></div>
+            <div class="chart child-chart" child-chart data-cntitle="完全加载" data-title="load_time"></div>
+            <div class="chart child-chart" child-chart data-cntitle="首屏时间" data-title="first_view"></div>
+            <div class="chart child-chart" child-chart data-cntitle="开始渲染" data-title="first_paint"></div>
+            <div class="chart child-chart" child-chart data-cntitle="页面解析" data-title="dom_ready"></div>
+            <div class="chart child-chart" child-chart data-cntitle="PV" data-title="pv"></div>
+        </div>
+
+    </textarea>
+
+    <textarea id="tmpl-page-item">
+        
+        
+    </textarea>
+
+    <textarea id="tmpl-main-top-info">
+        <div class="ui horizontal list">
+            <div class="item">
+                {{page_name}}的平均性能指标：
+            </div>
+            <div class="item">
+                开始渲染：{{records.first_paint|msFilter}}ms
+            </div>
+            <div class="item">
+                页面解析：{{records.dom_ready|msFilter}}ms
+            </div>
+            <div class="item">
+                首屏时间：{{records.first_view|msFilter}}ms
+            </div>
+            <div class="item">
+                完全加载：{{records.load_time|msFilter}}ms
+            </div>
+        </div>
+        
+    </textarea>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
