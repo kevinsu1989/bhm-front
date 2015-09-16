@@ -71,6 +71,7 @@ calculateRecords = (records)->
     first_view: 0
     dom_ready: 0
     load_time: 0
+    flash_load: 0
     pv: 0
   }
   return result if !records || records.length is 0
@@ -79,16 +80,22 @@ calculateRecords = (records)->
     result.first_view += parseInt(record.first_view)
     result.dom_ready += parseInt(record.dom_ready)
     result.load_time += parseInt(record.load_time)
+    result.flash_load += record.flash_load
 
   result = {
     first_paint: result.first_paint / records.length
     first_view: result.first_view / records.length
     dom_ready: result.dom_ready / records.length
     load_time: result.load_time / records.length
+    flash_load: result.flash_load
     pv: records.length
   }
-
   result
+
+#player加载成功率
+# getPlayerLoad = (time_start, time_end, page_name)->
+
+
 
 # 最终返回结果拼接
 getReturns = (records, pv_count)->
@@ -97,6 +104,7 @@ getReturns = (records, pv_count)->
     first_view: 0
     dom_ready: 0
     load_time: 0
+    flash_load: 0
     pv: pv_count
     records: records
   }
@@ -106,7 +114,8 @@ getReturns = (records, pv_count)->
       result.first_view += record.result.first_view * record.result.pv / pv_count
       result.dom_ready += record.result.dom_ready * record.result.pv / pv_count
       result.load_time += record.result.load_time * record.result.pv / pv_count
-
+      result.flash_load += record.result.flash_load
+  result.flash_load = result.flash_load / pv_count
   result
 
 

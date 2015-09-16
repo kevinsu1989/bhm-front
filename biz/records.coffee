@@ -42,13 +42,12 @@ calculateByPage = (timeStart, timeEnd, pageName, cb)->
     cb err, result
 
 
+
+
 exports.calculateRecords = ()->
   _entity.records.findPages (err, pages)->
     timeStart = _moment().subtract(1,'day').startOf('day').valueOf()
     timeEnd = _moment().startOf('day').valueOf() - 1
-    console.log new Date()
-    console.log timeStart
-    console.log timeEnd
     records = []
     for page in pages
       calculateByPage timeStart, timeEnd, page.page_name, (err, result)->

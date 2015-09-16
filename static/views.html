@@ -70,7 +70,7 @@
     <textarea id="tmpl-main-top-info">
         <div class="ui horizontal list">
             <div class="item">
-                {{page_name}}的平均性能指标：
+                【{{page_name}}】的平均性能指标：
             </div>
             <div class="item">
                 开始渲染：{{records.first_paint|msFilter}}ms
@@ -83,6 +83,9 @@
             </div>
             <div class="item">
                 完全加载：{{records.load_time|msFilter}}ms
+            </div>
+            <div class="item" ng-if="records.flash_load > 0">
+                FLASH加载成功率：{{records.flash_load|perFilter}}
             </div>
         </div>
         

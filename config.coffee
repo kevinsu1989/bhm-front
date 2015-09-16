@@ -4,9 +4,9 @@ module.exports =
   database:
     client: 'mysql',
     connection:
-      host     : '123.59.21.19',
+      host     : '192.168.8.108',
       user     : 'root',
-      password : 'root',
+      password : '123456',
       database : 'monitor'
 
   api_runner: 'app.coffee'
