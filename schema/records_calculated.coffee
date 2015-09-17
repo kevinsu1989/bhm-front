@@ -4,7 +4,11 @@ exports.schema =
 
   fields:
     
-    pv: ''
+    pv: 'integer'
+    
+    pv_cal: 'integer'
+
+    flash_load: 'integer'
 
     page_name: ''
 

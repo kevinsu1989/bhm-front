@@ -4,16 +4,16 @@ module.exports =
   database:
     client: 'mysql',
     connection:
-      host     : '192.168.8.108',
+      host     : '123.59.21.19',
       user     : 'root',
-      password : '123456',
+      password : 'root',
       database : 'monitor'
 
   api_runner: 'app.coffee'
 
-  apiport:8201
+  apiport:8200
 
-  port:8101
+  port:8100
 
 
   redis:

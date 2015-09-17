@@ -17,7 +17,7 @@ class Records extends _BaseEntity
   findRecords: (data, cb)->
     sql = "select * from records where 
     timestamp > #{data.time_start} and timestamp < #{data.time_end} and 
-    page_name = '#{data.page_name}' and first_paint > 0"
+    page_name = '#{data.page_name}'"
 
     @execute sql, cb
 

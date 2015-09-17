@@ -72,7 +72,8 @@ calculateRecords = (records)->
     dom_ready: 0
     load_time: 0
     flash_load: 0
-    pv: 0
+    pv_cal: 0 #参与计算的数据
+    pv: 0 #总数据
   }
   return result if !records || records.length is 0
   for record in records
@@ -81,24 +82,24 @@ calculateRecords = (records)->
     result.dom_ready += parseInt(record.dom_ready)
     result.load_time += parseInt(record.load_time)
     result.flash_load += record.flash_load
+    result.pv_cal += 1 if parseInt(record.first_paint) isnt 0
 
-  result = {
-    first_paint: result.first_paint / records.length
-    first_view: result.first_view / records.length
-    dom_ready: result.dom_ready / records.length
-    load_time: result.load_time / records.length
-    flash_load: result.flash_load
-    pv: records.length
-  }
+  
+  if result.pv_cal > 0
+    result = {
+      first_paint: result.first_paint / result.pv_cal
+      first_view: result.first_view / result.pv_cal
+      dom_ready: result.dom_ready / result.pv_cal
+      load_time: result.load_time / result.pv_cal
+      flash_load: result.flash_load
+      pv_cal: result.pv_cal
+      pv: records.length
+    }
   result
-
-#player加载成功率
-# getPlayerLoad = (time_start, time_end, page_name)->
-
 
 
 # 最终返回结果拼接
-getReturns = (records, pv_count)->
+getReturns = (records, pv_count, pv_cal)->
   result = {
     first_paint: 0
     first_view: 0
@@ -108,13 +109,15 @@ getReturns = (records, pv_count)->
     pv: pv_count
     records: records
   }
+  # 计算所有数据的平局值
   if records
     for record in records
-      result.first_paint += record.result.first_paint * record.result.pv / pv_count
-      result.first_view += record.result.first_view * record.result.pv / pv_count
-      result.dom_ready += record.result.dom_ready * record.result.pv / pv_count
-      result.load_time += record.result.load_time * record.result.pv / pv_count
+      result.first_paint += record.result.first_paint * record.result.pv_cal / pv_cal
+      result.first_view += record.result.first_view * record.result.pv_cal / pv_cal
+      result.dom_ready += record.result.dom_ready * record.result.pv_cal / pv_cal
+      result.load_time += record.result.load_time * record.result.pv_cal / pv_cal
       result.flash_load += record.result.flash_load
+
   result.flash_load = result.flash_load / pv_count
   result
 
@@ -142,6 +145,7 @@ exports.getRecordsSplit = (req, res, cb)->
 
   queue = [] 
   pv_count = 0
+  pv_cal = 0
   queue.push((done)->
     _entity.records.findRecords data, (err, result)->
       pv_count = result?.length || 0
@@ -152,12 +156,13 @@ exports.getRecordsSplit = (req, res, cb)->
     recordsArr = devideRecordsByTime records, data
     for records in recordsArr
       records.result = calculateRecords records.records
+      pv_cal += records.result.pv_cal
       delete records.records 
     done null, recordsArr
   )
 
   _async.waterfall queue,(err, result)->
-    cb err, getReturns(result, pv_count)
+    cb err, getReturns(result, pv_count, pv_cal)
 
 
 
