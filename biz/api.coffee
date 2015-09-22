@@ -71,7 +71,7 @@ calculateRecords = (records)->
     first_view: 0
     dom_ready: 0
     load_time: 0
-    flash_load: 0
+    flash_flag: 0
     pv_cal: 0 #参与计算的数据
     pv: 0 #总数据
   }
@@ -81,7 +81,7 @@ calculateRecords = (records)->
     result.first_view += parseInt(record.first_view)
     result.dom_ready += parseInt(record.dom_ready)
     result.load_time += parseInt(record.load_time)
-    result.flash_load += record.flash_load
+    result.flash_flag += record.flash_flag
     result.pv_cal += 1 if parseInt(record.first_paint) isnt 0
 
   
@@ -91,23 +91,25 @@ calculateRecords = (records)->
       first_view: result.first_view / result.pv_cal
       dom_ready: result.dom_ready / result.pv_cal
       load_time: result.load_time / result.pv_cal
-      flash_load: result.flash_load
+      flash_flag: result.flash_flag
       pv_cal: result.pv_cal
       pv: records.length
     }
   result
 
+  
 
 # 最终返回结果拼接
-getReturns = (records, pv_count, pv_cal)->
+getReturns = (records, browser, pv_count, pv_cal)->
   result = {
     first_paint: 0
     first_view: 0
     dom_ready: 0
     load_time: 0
-    flash_load: 0
+    flash_flag: 0
     pv: pv_count
     records: records
+    browser: browser
   }
   # 计算所有数据的平局值
   if records
@@ -116,9 +118,9 @@ getReturns = (records, pv_count, pv_cal)->
       result.first_view += record.result.first_view * record.result.pv_cal / pv_cal
       result.dom_ready += record.result.dom_ready * record.result.pv_cal / pv_cal
       result.load_time += record.result.load_time * record.result.pv_cal / pv_cal
-      result.flash_load += record.result.flash_load
+      result.flash_flag += record.result.flash_flag
 
-  result.flash_load = result.flash_load / pv_count
+  result.flash_flag = result.flash_flag / pv_count
   result
 
 
@@ -158,11 +160,16 @@ exports.getRecordsSplit = (req, res, cb)->
       records.result = calculateRecords records.records
       pv_cal += records.result.pv_cal
       delete records.records 
-    done null, recordsArr
+    done null, recordsArr, data
   )
 
-  _async.waterfall queue,(err, result)->
-    cb err, getReturns(result, pv_count, pv_cal)
+  queue.push((records, data, done)->
+    _entity.records.browserPercent data, (err, result)->
+      done null, records, result
+  )
+
+  _async.waterfall queue,(err, records, browser)->
+    cb err, getReturns(records, browser, pv_count, pv_cal)
 
 
 

@@ -7,12 +7,12 @@ _common = require '../common'
 _moment = require 'moment'
 
 
-calculateByPage = (timeStart, timeEnd, pageName, cb)->
+calculateByPage = (time, pageName, cb)->
   req = {
     query: {
-      time_start: timeStart,
-      time_end: timeEnd,
-      timeStep: 10 * 60 *1000
+      time_start: time.timeStart,
+      time_end: time.timeEnd,
+      timeStep: time.timeStep
     },
     params:{
       page_name: pageName
@@ -24,43 +24,68 @@ calculateByPage = (timeStart, timeEnd, pageName, cb)->
   queue.push(
     (done)->
       _api.getRecordsSplit req, null, (err, result)->
-        done err, result.records
+        console.log result
+        done err, result, time
   )
 
   queue.push(
-    (records, done)->
-      for record in records
-        record[key] = value for key,value of record.result
+    (result, time, done)->
+      pv_cal = 0
+      for record in result.records
+        record[key] = value for key, value of record.result
         record.page_name = pageName
+        record.type = 'hour'
+        pv_cal += record.pv_cal
         delete record.result
-      console.log records
-      _entity.records_calculated.saveCalculatedRecords records, done
+      
+      result.records.push({
+        time_start: time.timeStart,
+        time_end: time.timeEnd,
+        first_paint: result.first_paint,
+        first_view: result.first_view,
+        dom_ready: result.dom_ready,
+        load_time: result.load_time,
+        flash_load: result.flash_load,
+        pv: result.pv,
+        pv_cal: pv_cal,
+        page_name: pageName,
+        type: 'day'
+      })
+
+      _entity.records_calculated.saveCalculatedRecords result.records, done
   )
 
 
   _async.waterfall queue, (err, result)->
+
+    console.log arguments
     cb err, result
 
 
 
 
 exports.calculateRecords = ()->
+  console.log "开始统计#{_moment().subtract(1,'day').format('YYYYMMDD')}的数据"
   _entity.records.findPages (err, pages)->
-    timeStart = _moment().subtract(1,'day').startOf('day').valueOf()
-    timeEnd = _moment().startOf('day').valueOf() - 1
-    console.log timeStart
-    console.log timeEnd
     records = []
+    time = {
+      timeStart: _moment().subtract(1,'day').startOf('day').valueOf()
+      timeEnd: _moment().startOf('day').valueOf() - 1
+      timeStep: 60 * 60 * 1000
+    }
     for page in pages
-      calculateByPage timeStart, timeEnd, page.page_name, (err, result)->
+      calculateByPage time, page.page_name, (err, result)->
       
   
 
-exports.backUpRecords = (timestamp)->
+exports.backUpRecords = ()->
+  console.log "开始备份#{_moment().startOf('week').format('YYYYMMDD')}到#{_moment().subtract(1,'day').format('YYYYMMDD')}的数据"
+  timeStart = _moment().startOf('week').valueOf()
+  timeEnd = _moment().startOf('day').valueOf() - 1
   queue = []
   queue.push(
     (done)->
-      _entity.records.findRecordsToBackUp timestamp, (err, result)->
+      _entity.records.findRecordsToBackUp timeStart, timeEnd, (err, result)->
         done err, result
   )
   
@@ -69,6 +94,11 @@ exports.backUpRecords = (timestamp)->
       _entity.records_history.saveHistoryRecords result, (err, result)->
         done err, result
   )
+  # queue.push(
+  #   (result, done)->
+  #     _entity.records.deleteBackUpRecords timestamp, (err, result)->
+  #       done err, result
+  # )
 
   _async.waterfall queue, (err, result)->
 

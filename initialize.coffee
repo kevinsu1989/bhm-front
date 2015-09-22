@@ -33,13 +33,22 @@ initBijou = (app)->
     console.log 'Monitor Front is running now!'
 
 initSchedule = ()->
-  console.log 1111
-  rule = new _schedule.RecurrenceRule()
-  rule.dayOfWeek = [0, new _schedule.Range(1, 6)]
-  rule.hour = 20
-  rule.minute = 40
-  j = _schedule.scheduleJob rule, ()->
+  rule_calculate = new _schedule.RecurrenceRule()
+  rule_backup = new _schedule.RecurrenceRule()
+
+  rule_calculate.dayOfWeek = [new _schedule.Range(0, 6)]
+  rule_calculate.hour = 3
+  rule_calculate.minute = 0
+
+  rule_backup.dayOfWeek = [1]
+  rule_backup.hour = 3
+  rule_backup.minute = 30
+
+  calculate = _schedule.scheduleJob rule_calculate, ()->
     _records.calculateRecords (err, result)->
+
+  backup = _schedule.scheduleJob rule_backup, ()->
+    _records.backUpRecords (err, result)->
 
     
   

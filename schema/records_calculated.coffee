@@ -23,6 +23,10 @@ exports.schema =
     dom_ready: 'integer'
 
     load_time: 'integer'
-  	
+    
     first_view: 'integer'
+    
+    type: 'integer'
+    
+    flash_percent: 'float'
 

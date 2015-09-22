@@ -6,6 +6,8 @@ exports.schema =
 
     ip: ''
 
+    version: ''
+
     resolution: ''
 
     district: ''
@@ -27,4 +29,8 @@ exports.schema =
     first_view: 'integer'
     
     flash_load: 'integer'
+
+    hash: ''
+
+    url: ''
 

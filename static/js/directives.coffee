@@ -120,6 +120,26 @@ define [
 
   ])
 
+  .directive('pieChart', ['$rootScope', 'API', ($rootScope, API)->
+    restrict: 'A'
+    replace: true
+    scope: title: "@"
+    link: (scope, element, attrs)->
+      chart = {}
+      loadChart = (data)->
+        require ['chart/pie-chart'], (_pieChart)->
+          chart = new _pieChart(element[0])
+
+          chart.reload data.browser, scope.title
+
+      $rootScope.$on 'main:chart:loaded',(event, data)->
+        loadChart data
+
+      $rootScope.$on 'main:data:loaded', (event, data)->
+        chart.reload data.browser, scope.title
+
+  ])
+
   .directive('mainTopInfo', ['$rootScope', 'API', ($rootScope, API)->
     restrict: 'E'
     replace: true
