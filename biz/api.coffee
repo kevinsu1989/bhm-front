@@ -71,7 +71,7 @@ calculateRecords = (records)->
     first_view: 0
     dom_ready: 0
     load_time: 0
-    flash_flag: 0
+    flash_load: 0
     pv_cal: 0 #参与计算的数据
     pv: 0 #总数据
   }
@@ -81,7 +81,7 @@ calculateRecords = (records)->
     result.first_view += parseInt(record.first_view)
     result.dom_ready += parseInt(record.dom_ready)
     result.load_time += parseInt(record.load_time)
-    result.flash_flag += record.flash_flag
+    result.flash_load += record.flash_load
     result.pv_cal += 1 if parseInt(record.first_paint) isnt 0
 
   
@@ -91,26 +91,31 @@ calculateRecords = (records)->
       first_view: result.first_view / result.pv_cal
       dom_ready: result.dom_ready / result.pv_cal
       load_time: result.load_time / result.pv_cal
-      flash_flag: result.flash_flag
+      flash_load: result.flash_load
       pv_cal: result.pv_cal
       pv: records.length
     }
   result
 
+getFlashLoad = ()->
+
   
 
 # 最终返回结果拼接
-getReturns = (records, browser, pv_count, pv_cal)->
+getReturns = (records, browser, pv_count, pv_cal, flash_load)->
   result = {
     first_paint: 0
     first_view: 0
     dom_ready: 0
     load_time: 0
-    flash_flag: 0
+    flash_load: 0
     pv: pv_count
     records: records
     browser: browser
   }
+
+  console.log flash_load
+  console.log pv_count
   # 计算所有数据的平局值
   if records
     for record in records
@@ -118,9 +123,9 @@ getReturns = (records, browser, pv_count, pv_cal)->
       result.first_view += record.result.first_view * record.result.pv_cal / pv_cal
       result.dom_ready += record.result.dom_ready * record.result.pv_cal / pv_cal
       result.load_time += record.result.load_time * record.result.pv_cal / pv_cal
-      result.flash_flag += record.result.flash_flag
+      # result.flash_load += record.result.flash_load
 
-  result.flash_flag = result.flash_flag / pv_count
+  result.flash_load = flash_load / pv_count
   result
 
 
@@ -148,6 +153,7 @@ exports.getRecordsSplit = (req, res, cb)->
   queue = [] 
   pv_count = 0
   pv_cal = 0
+  flash_load = 0
   queue.push((done)->
     _entity.records.findRecords data, (err, result)->
       pv_count = result?.length || 0
@@ -164,12 +170,19 @@ exports.getRecordsSplit = (req, res, cb)->
   )
 
   queue.push((records, data, done)->
+    done null, records, data if data.page_name is '首页'
+    _entity.records.findFlashRecords data, (err, result)->
+      flash_load = result[0].flash_count
+      done null, records, data
+  )
+
+  queue.push((records, data, done)->
     _entity.records.browserPercent data, (err, result)->
       done null, records, result
   )
 
   _async.waterfall queue,(err, records, browser)->
-    cb err, getReturns(records, browser, pv_count, pv_cal)
+    cb err, getReturns(records, browser, pv_count, pv_cal, flash_load)
 
 
 

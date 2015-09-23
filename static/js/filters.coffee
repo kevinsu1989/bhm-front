@@ -78,5 +78,5 @@ define [
   .filter('perFilter', [()->
     (number)->
       return 0 if !number
-      number.toFixed(4) * 100 + "%"
+      Math.round(number * 10000)/100 + "%"
   ])

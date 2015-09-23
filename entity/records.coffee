@@ -15,11 +15,21 @@ class Records extends _BaseEntity
 
 
   findRecords: (data, cb)->
-    sql = "select a.*, b.flag as flash_flag from records a left join records_flash b on a.hash = b.hash where 
+    sql = "select a.* from records a where 
     a.timestamp > #{data.time_start} and a.timestamp < #{data.time_end} and 
     a.page_name = '#{data.page_name}'"
+    @execute sql, cb
+
+  findFlashRecords: (data, cb)->
+    sql = "select count(*) as flash_count from records_flash a where a.timestamp > #{data.time_start} and a.timestamp < #{data.time_end} "
+
+    if data.page_name is '完美假期-首页'
+      sql += " and a.url like '%http://www.hunantv.com/wmjq%'" 
+    else
+      sql += " and a.url not like '%http://www.hunantv.com/wmjq%'" 
 
     @execute sql, cb
+
 
   findRecordsToBackUp: (timeStart, timeEnd,cb)->
     sql = "select * from records where timestamp < #{timestamp} and timestamp > #{timeEnd}"
@@ -39,7 +49,7 @@ class Records extends _BaseEntity
   browserPercent: (data, cb)->
     sql = "select browser_name as name, count(*) as value from records a where 
     a.timestamp > #{data.time_start} and a.timestamp < #{data.time_end} and 
-    a.page_name = '#{data.page_name}' group by browser_name"
+    a.page_name = '#{data.page_name}' group by browser_name order by value asc"
 
     @execute sql, cb
 
