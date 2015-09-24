@@ -20,7 +20,7 @@
 
     <textarea id="tmpl-main-top-menu">
         <div class="ui form">
-            <div class="four fields">
+            <div class="five fields">
                 <div class="field">
                     <select ng-change="reload()" ng-model="timeSelect" class="ui dropdown" name="card[expire-time]">
                         <option ng-selected="true" value="today">今天</option>
@@ -28,6 +28,15 @@
                         <option value="60">1小时内</option>
                         <option value="180">3小时内</option>
                         <option value="720">12小时内</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <select ng-change="reload()" ng-model="browser_name" class="ui dropdown" name="card[expire-browser]">
+                        <option ng-selected="true" value="">全部浏览器</option>
+                        <option value="chrome">chrome</option>
+                        <option value="ie">ie</option>
+<!--                         <option value="firefox">firefox</option>
+                        <option value="safari">safari</option> -->
                     </select>
                 </div>
                 <div class="field">

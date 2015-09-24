@@ -45,7 +45,8 @@ define [
           query.timeStep = scope.timeSelect * 60 *10
         else
           query = {}
-        
+
+        query.browser_name = scope.browser_name if scope.browser_name
         
         scope.$emit 'top:menu:select', query
 
@@ -58,7 +59,7 @@ define [
           time_end: new Date(scope.time_end).valueOf(),
           timeStep: (new Date(scope.time_end).valueOf() - new Date(scope.time_start).valueOf()) / 100
         }
-        console.log query
+        query.browser_name = scope.browser_name if scope.browser_name
         scope.$emit 'top:menu:select', query
 
 
