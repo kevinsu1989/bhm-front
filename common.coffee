@@ -97,4 +97,5 @@ exports.getClientIp = (req)->
     
   ipAddress = req.connection.remoteAddress if !ipAddress
 
-  ipAddress.split("ffff:").pop()
+  ipAddress = if /((?:(?:25[0-5]|2[0-4]\d|((1\d{2})|([1-9]?\d)))\.){3}(?:25[0-5]|2[0-4]\d|((1\d{2})|([1-9]?\d))))/.test ipAddress then RegExp.$1 else '127.0.0.1'
+

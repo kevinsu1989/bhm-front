@@ -15,9 +15,15 @@ class Records extends _BaseEntity
 
 
   findRecords: (data, cb)->
-    sql = "select a.* from records a where 
+    sql = "select a.*, b.flag as flash_flag from records a left join records_flash b on a.hash = b.hash where 
     a.timestamp > #{data.time_start} and a.timestamp < #{data.time_end} and 
     a.page_name = '#{data.page_name}'"
+    @execute sql, cb
+
+  getFlashLoadCount: (data, cb)->
+    sql = "SELECT flash_load, count(*) as count FROM records where
+    timestamp > #{data.time_start} and timestamp < #{data.time_end} and page_name='#{data.page_name}' and flash_load in (0,1)
+    group by flash_load order by flash_load"
     @execute sql, cb
 
   findFlashRecords: (data, cb)->

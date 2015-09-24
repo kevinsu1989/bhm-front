@@ -81,7 +81,7 @@ calculateRecords = (records)->
     result.first_view += parseInt(record.first_view)
     result.dom_ready += parseInt(record.dom_ready)
     result.load_time += parseInt(record.load_time)
-    result.flash_load += record.flash_load
+    result.flash_load += record.flash_flag
     result.pv_cal += 1 if parseInt(record.first_paint) isnt 0
 
   
@@ -96,8 +96,6 @@ calculateRecords = (records)->
       pv: records.length
     }
   result
-
-getFlashLoad = ()->
 
   
 
@@ -114,8 +112,6 @@ getReturns = (records, browser, pv_count, pv_cal, flash_load)->
     browser: browser
   }
 
-  console.log flash_load
-  console.log pv_count
   # 计算所有数据的平局值
   if records
     for record in records
@@ -123,9 +119,9 @@ getReturns = (records, browser, pv_count, pv_cal, flash_load)->
       result.first_view += record.result.first_view * record.result.pv_cal / pv_cal
       result.dom_ready += record.result.dom_ready * record.result.pv_cal / pv_cal
       result.load_time += record.result.load_time * record.result.pv_cal / pv_cal
-      # result.flash_load += record.result.flash_load
-
-  result.flash_load = flash_load / pv_count
+      result.flash_load += record.result.flash_load
+  result.flash_load_1 = result.flash_load / pv_count
+  result.flash_load = flash_load
   result
 
 
@@ -170,9 +166,11 @@ exports.getRecordsSplit = (req, res, cb)->
   )
 
   queue.push((records, data, done)->
-    done null, records, data if data.page_name is '首页'
-    _entity.records.findFlashRecords data, (err, result)->
-      flash_load = result[0].flash_count
+    # done null, records, data if data.page_name is '首页'
+    _entity.records.getFlashLoadCount data, (err, result)->
+      console.log result
+      flash_load = (result[1].count * 1) /(result[0].count * 1 + result[1].count * 1) if result.length > 1
+      console.log flash_load
       done null, records, data
   )
 
@@ -182,6 +180,7 @@ exports.getRecordsSplit = (req, res, cb)->
   )
 
   _async.waterfall queue,(err, records, browser)->
+    # cb err, getReturns(records, browser, pv_count, pv_cal)
     cb err, getReturns(records, browser, pv_count, pv_cal, flash_load)
 
 
