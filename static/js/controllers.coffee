@@ -35,7 +35,9 @@ define [
       $rootScope.page_name = ""
       $rootScope.query = {}
       loadData = ()->
+        $scope.loading = true
         API.pages($rootScope.page_name).retrieve($rootScope.query).then (result)->
+          $scope.loading = false
           $rootScope.$broadcast 'main:data:loaded', result
 
       $rootScope.$on 'pages:menu:click', (event, page_name)->

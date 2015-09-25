@@ -168,9 +168,7 @@ exports.getRecordsSplit = (req, res, cb)->
   queue.push((records, data, done)->
     # done null, records, data if data.page_name is '首页'
     _entity.records.getFlashLoadCount data, (err, result)->
-      console.log result
       flash_load = (result[1].count * 1) /(result[0].count * 1 + result[1].count * 1) if result.length > 1
-      console.log flash_load
       done null, records, data
   )
 
