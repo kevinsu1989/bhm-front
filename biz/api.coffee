@@ -186,7 +186,7 @@ exports.getRecordsSplit = (req, res, cb)->
 
 
 exports.getPages = (req, res, cb)->
-  _entity.records.findPages (err, result)->
+  _entity.page.findPages (err, result)->
     cb err, result
 
 

@@ -16,16 +16,37 @@ class Records extends _BaseEntity
 
   findRecords: (data, cb)->
     sql = "select a.*, b.flag as flash_flag from records a left join records_flash b on a.hash = b.hash where 
-    a.timestamp > #{data.time_start} and a.timestamp < #{data.time_end} and 
-    a.page_name = '#{data.page_name}' " 
+    a.timestamp > #{data.time_start} and a.timestamp < #{data.time_end} "
+
+
+    if data.page_name is '电视剧'
+      sql += " and page_name='底层' and a.url like 'http://www.hunantv.com/v/2%'" 
+    else if data.page_name is '底层'
+      sql += " and page_name='底层' and a.url not like 'http://www.hunantv.com/v/2%'"
+    else
+      sql += " and page_name='#{data.page_name}'" 
+
+
     sql += " and browser_name='#{data.browser_name}'" if data.browser_name
+    
     @execute sql, cb
 
   getFlashLoadCount: (data, cb)->
     sql = "SELECT flash_load, count(*) as count FROM records where
-    timestamp > #{data.time_start} and timestamp < #{data.time_end} and page_name='#{data.page_name}' and flash_load in (0,1)"
-    sql += " and browser_name='#{data.browser_name}'" if data.browser_name
+    timestamp > #{data.time_start} and timestamp < #{data.time_end} and flash_load in (0,1)"
+    sql += " and browser_name='#{data.browser_name}' " if data.browser_name
+
+
+    if data.page_name is '电视剧'
+      sql += " and page_name='底层' and url like 'http://www.hunantv.com/v/2%'" 
+    else if data.page_name is '底层'
+      sql += " and page_name='底层' and url not like 'http://www.hunantv.com/v/2%'"
+    else
+      sql += " and page_name='#{data.page_name}'" 
+
+
     sql += "group by flash_load order by flash_load "
+
     @execute sql, cb
 
   findFlashRecords: (data, cb)->
@@ -49,10 +70,10 @@ class Records extends _BaseEntity
 
     @execute sql, cb
 
-  findPages: (cb)->
-    sql = "select page_name from records where page_name is not null group by page_name"
+  # findPages: (cb)->
+  #   sql = "select page_name from records where page_name is not null group by page_name"
 
-    @execute sql, cb
+  #   @execute sql, cb
 
   browserPercent: (data, cb)->
     sql = "select browser_name as name, count(*) as value from records a where 
