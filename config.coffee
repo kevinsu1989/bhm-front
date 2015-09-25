@@ -5,8 +5,8 @@ module.exports =
     client: 'mysql',
     connection:
       host     : '123.59.21.19',
-      user     : 'root',
-      password : 'root',
+      user     : 'monitor',
+      password : 'hunantv.com~110629962',
       database : 'monitor'
 
   api_runner: 'app.coffee'
