@@ -7,13 +7,14 @@ define [
   'ng'
 ], (_ng)->
   _ng.module("app.controllers", ['app.services'])
-  .controller('homeController', ['$rootScope', 'API', ($rootScope, API)->
-    loadData = (page_name, data)->
-      API.pages(page_name).retrive(data).then (result)->
-        $rootScope.data = result
+  # .controller('homeController', ['$rootScope', 'API', ($rootScope, API)->
+  #   loadData = (page_name, data)->
+  #     API.pages(page_name).retrive(data).then (result)->
+  #       $scope.loading = false
+  #       $rootScope.data = result
 
-    loadData('BHF')
-  ])
+  #   loadData('BHF')
+  # ])
 
   .controller('agentController', ['$rootScope', '$scope', 'API',
     ($rootScope, $scope, API)->

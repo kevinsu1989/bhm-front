@@ -16,6 +16,7 @@ define [
     replace: true
     template: _utils.extractTemplate '#tmpl-main-left-menu', _template
     link: (scope, element, attrs)->
+      scope.loading = true
       API.pages().retrieve().then (result)->
         $rootScope.page_name = result[0].page_name
         scope.pages = result
@@ -89,6 +90,7 @@ define [
           chart = new _mainChart(element[0])
 
           API.pages(page_name).retrieve().then (result)->
+            scope.loading = false
             $rootScope.$emit 'main:chart:loaded', result
             chart.reload result.records
       scope.$on 'pages:menu:loaded',(event, page_name)->
