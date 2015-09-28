@@ -28,12 +28,12 @@ class Records extends _BaseEntity
 
 
     sql += " and browser_name='#{data.browser_name}'" if data.browser_name
-    
+
     @execute sql, cb
 
   getFlashLoadCount: (data, cb)->
     sql = "SELECT flash_load, count(*) as count FROM records where
-    timestamp > #{data.time_start} and timestamp < #{data.time_end} and flash_load in (0,1)"
+    timestamp > #{data.time_start} and timestamp < #{data.time_end} and flash_load in (0,1) and flash_installed <> 0 "
     sql += " and browser_name='#{data.browser_name}' " if data.browser_name
 
 
@@ -46,6 +46,8 @@ class Records extends _BaseEntity
 
 
     sql += "group by flash_load order by flash_load "
+
+    console.log sql
 
     @execute sql, cb
 

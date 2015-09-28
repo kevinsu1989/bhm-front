@@ -169,6 +169,7 @@ exports.getRecordsSplit = (req, res, cb)->
     # done null, records, data if data.page_name is '首页'
     _entity.records.getFlashLoadCount data, (err, result)->
       flash_load = (result[1].count * 1) /(result[0].count * 1 + result[1].count * 1) if result.length > 1
+      flash_load = 1 if result.length and result[0].flash_load is 1
       done null, records, data
   )
 
