@@ -73,12 +73,9 @@ class Records extends _BaseEntity
     sql = "select browser_name as name, count(*) as value from records a where 
     a.timestamp > #{data.time_start} and a.timestamp < #{data.time_end} "
 
-    if data.page_name is '电视剧'
-      sql += " and page_name='底层' and url like 'http://www.hunantv.com/v/2%'" 
-    else if data.page_name is '底层'
-      sql += " and page_name='底层' and url not like 'http://www.hunantv.com/v/2%'"
-    else
-      sql += " and page_name='#{data.page_name}'" 
+    sql += " and page_name='#{data.page_name}'" if !data.page_like
+
+    sql += " and url like 'http://www.hunantv.com#{data.page_like}%'" if data.page_like
 
     sql += " group by browser_name order by value asc"
 
