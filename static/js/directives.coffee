@@ -48,7 +48,7 @@ define [
           query = {}
 
         query.browser_name = scope.browser_name if scope.browser_name
-        
+        query.page_like = $rootScope.query.page_like if $rootScope.query.page_like
         scope.$emit 'top:menu:select', query
 
       scope.reloadByTime = ()->
@@ -61,6 +61,7 @@ define [
           timeStep: (new Date(scope.time_end).valueOf() - new Date(scope.time_start).valueOf()) / 100
         }
         query.browser_name = scope.browser_name if scope.browser_name
+        query.page_like = $rootScope.query.page_like if $rootScope.query.page_like
         scope.$emit 'top:menu:select', query
 
 

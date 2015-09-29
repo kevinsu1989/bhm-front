@@ -49,6 +49,7 @@ initSchedule = ()->
 
   backup = _schedule.scheduleJob rule_backup, ()->
     _records.backUpRecords (err, result)->
+      console.log arguments
 
     
   

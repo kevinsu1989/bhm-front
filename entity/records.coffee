@@ -24,7 +24,7 @@ class Records extends _BaseEntity
 
     sql += " and browser_name='#{data.browser_name}'" if data.browser_name
 
-    # console.log sql
+    console.log sql
     
     @execute sql, cb
 
@@ -55,8 +55,8 @@ class Records extends _BaseEntity
 
 
   findRecordsToBackUp: (timeStart, timeEnd,cb)->
-    sql = "select * from records where timestamp < #{timestamp} and timestamp > #{timeEnd}"
-
+    sql = "select * from records where timestamp < #{timeEnd} and timestamp > #{timeStart}"
+    console.log sql
     @execute sql, cb
 
   deleteBackUpRecords: (timestamp, cb)->

@@ -81,17 +81,20 @@ exports.calculateRecords = ()->
 exports.backUpRecords = ()->
   console.log "开始备份#{_moment().startOf('week').format('YYYYMMDD')}到#{_moment().subtract(1,'day').format('YYYYMMDD')}的数据"
   timeStart = _moment().startOf('week').valueOf()
+  timeStart = 0
   timeEnd = _moment().startOf('day').valueOf() - 1
   queue = []
   queue.push(
     (done)->
       _entity.records.findRecordsToBackUp timeStart, timeEnd, (err, result)->
+        console.log result.length
         done err, result
   )
   
   queue.push(
     (result, done)->
       _entity.records_history.saveHistoryRecords result, (err, result)->
+        console.log "备份完成"
         done err, result
   )
   # queue.push(
