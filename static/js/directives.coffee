@@ -23,7 +23,7 @@ define [
         scope.$emit 'pages:menu:loaded', result[0].page_name
 
       scope.pageChange = (page)->
-        $rootScope.$emit "pages:menu:click", page.page_name
+        $rootScope.$emit "pages:menu:click", page
 
   ])
   .directive('mainTopMenu', ['$rootScope', '$interval', ($rootScope, $interval)->

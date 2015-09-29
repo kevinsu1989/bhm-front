@@ -186,7 +186,19 @@ exports.getRecordsSplit = (req, res, cb)->
 
 exports.getPages = (req, res, cb)->
   _entity.page.findPages (err, result)->
-    cb err, result
+    pages = [];
+    for item in result 
+      if item.parent is 0
+        item.children = []
+        pages.push(item) 
+
+    for page in pages
+      for item in result 
+        page.children.push(item) if item.parent is page.id
+
+    # console.log pages
+
+    cb err, pages
 
 
 # exports.receiveData = (req, res, cb)->

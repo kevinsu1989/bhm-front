@@ -41,8 +41,9 @@ define [
           $scope.loading = false
           $rootScope.$broadcast 'main:data:loaded', result
 
-      $rootScope.$on 'pages:menu:click', (event, page_name)->
-        $rootScope.page_name = page_name
+      $rootScope.$on 'pages:menu:click', (event, page)->
+        $rootScope.page_name = page.page_name
+        $rootScope.query.page_like = page.page_like
         loadData()
 
       $rootScope.$on 'top:menu:select', (event, query)->

@@ -20,7 +20,11 @@
 
     <textarea id="tmpl-main-left-menu">
         <div class="ui vertical menu">
-          <a class="teal item" ng-class="page.page_name==page_name?'active':''" ng-repeat="page in pages" ng-click="pageChange(page)">{{page.page_name}}</a>
+            <div class="parent" ng-repeat="page in pages">
+                <a class="teal item" ng-class="page.page_name==page_name?'active':''" ng-click="pageChange(page)">{{page.page_name}}</a>
+                <a ng-repeat="child in page.children" class="teal item child" ng-class="child.page_name==page_name?'active':''" ng-click="pageChange(child)">{{child.page_name}}</a>
+                
+            </div>
         </div>
     </textarea>
 
@@ -72,7 +76,7 @@
             <div class="chart child-chart" child-chart data-cntitle="PV" data-title="pv"></div>
             <div class="chart child-chart" child-chart data-cntitle="完全加载" data-title="load_time"></div>
             <div class="chart child-chart" child-chart data-cntitle="首屏时间" data-title="first_view"></div>
-            <div class="chart child-chart" child-chart data-cntitle="开始渲染" data-title="first_paint"></div>
+            <div class="chart child-chart" child-chart data-cntitle="白屏时间" data-title="first_paint"></div>
             <div class="chart child-chart" child-chart data-cntitle="页面解析" data-title="dom_ready"></div>
         </div>
 
@@ -89,7 +93,7 @@
                 【{{page_name}}】的平均性能指标：
             </div>
             <div class="item">
-                开始渲染：{{records.first_paint|msFilter}}ms
+                白屏时间：{{records.first_paint|msFilter}}ms
             </div>
             <div class="item">
                 页面解析：{{records.dom_ready|msFilter}}ms
