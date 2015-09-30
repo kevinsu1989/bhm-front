@@ -97,7 +97,26 @@ calculateRecords = (records)->
     }
   result
 
-  
+makeCalculatedRecords = (result)->        
+  records = []
+  flash_load = flash_count = pv_cal = pv_count = 0
+  for record in result
+    records.push 
+      time_start: record.time_start
+      time_end: record.time_end
+      result: record
+    pv_count += record.pv
+    pv_cal += record.pv_cal
+    flash_count += record.flash_count
+    flash_load += record.flash_percent * record.flash_count
+  flash_load = flash_load / flash_count
+  {
+    pv_count: pv_count
+    pv_cal: pv_cal
+    flash_count: flash_count
+    flash_load: flash_load
+    records: records
+  }
 
 # 最终返回结果拼接
 getReturns = (records, browser, pv_count, pv_cal, flash_load, flash_count)->
@@ -153,40 +172,48 @@ exports.getRecordsSplit = (req, res, cb)->
   pv_cal = 0
   flash_load = 0
   flash_count = 0
-  # 当查询的数据小于一天，则实时计算
-  # if data.time_start - data.time_end < 24 * 60 * 60 * 1000
-  queue.push((done)->
-    _entity.records.findRecords data, (err, result)->
-      pv_count = result?.length || 0
-      done err, result, data
-  )
+  # 用户要求快速查询时，进行快速查询
+  if data.isSpeed is 'true'    
+    queue.push((done)->
+      _entity.records_calculated.findRecords data, (err, result)->
+        result = makeCalculatedRecords result
 
-  queue.push((records, data, done)->
-    recordsArr = devideRecordsByTime records, data
-    for records in recordsArr
-      records.result = calculateRecords records.records
-      pv_cal += records.result.pv_cal
-      delete records.records 
-    done null, recordsArr, data
-  )
+        flash_load = result.flash_load
+        pv_cal = result.pv_cal
+        pv_count = result.pv_count
+        flash_count = result.flash_count
 
-  queue.push((records, data, done)->
-    # done null, records, data if data.page_name is '首页'
-    _entity.records.getFlashLoadCount data, (err, result)->
-      if result.length > 1
-        flash_count = result[0].count * 1 + result[1].count * 1 
-      else if result.length is 1
-        flash_count = result[0].count * 1
-      flash_load = (result[1].count * 1) /flash_count if result.length > 1
-      flash_load = 1 if result.length and result[0].flash_load is 1
-      done null, records, data
-  )
-  # else 
-  #   queue.push((done)->
-  #     _entity.records_calculated.findRecords data, (err, result)->
-  #       console.log
-  #       done err, result, data
-  #   )
+        done err, result.records, data
+    )
+  else 
+    queue.push((done)->
+      _entity.records.findRecords data, (err, result)->
+        pv_count = result?.length || 0
+        done err, result, data
+    )
+
+    queue.push((records, data, done)->
+      recordsArr = devideRecordsByTime records, data
+      for records in recordsArr
+        records.result = calculateRecords records.records
+        pv_cal += records.result.pv_cal
+        delete records.records 
+      done null, recordsArr, data
+    )
+
+    queue.push((records, data, done)->
+      # done null, records, data if data.page_name is '首页'
+      _entity.records.getFlashLoadCount data, (err, result)->
+        if result.length > 1
+          flash_count = result[0].count * 1 + result[1].count * 1 
+        else if result.length is 1
+          flash_count = result[0].count * 1
+        flash_load = (result[1].count * 1) /flash_count if result.length > 1
+        flash_load = 1 if result.length and result[0].flash_load is 1
+        console.log records
+        done null, records, data
+    )
+
 
   queue.push((records, data, done)->
     _entity.records.browserPercent data, (err, result)->

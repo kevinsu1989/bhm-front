@@ -29,4 +29,6 @@ exports.schema =
     type: 'integer'
     
     flash_percent: 'float'
+    
+    flash_count: 'integer'
 

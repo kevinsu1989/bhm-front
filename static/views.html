@@ -57,9 +57,19 @@
                 </div>
                 <div class="field">
                     <button class="ui primary button" ng-click="reloadByTime()">统计</button>
+                </div>
+
+            </div>
+
+            <div class="five fields">
+                <div class="fild">
                     <div class="ui toggle checkbox">
                       <input ng-model="isAuto" ng-change="autoLoad()" type="checkbox" name="public">
                       <label>自动刷新</label>
+                    </div>
+                    <div class="ui toggle checkbox">
+                      <input ng-model="isSpeed" ng-change="speedLoad()" type="checkbox" name="public">
+                      <label>快速查询</label>
                     </div>
                 </div>
             </div>
@@ -73,11 +83,13 @@
         <div>
             <div class="chart main-chart" main-chart></div>
             <div class="chart child-chart" pie-chart data-title="浏览器占比"></div>
+            <div class="chart child-chart" gauge-chart data-title="播放器加载成功率"></div>
+            <div class="chart bar-chart" bar-chart data-title="【{{page_name}}】的平均性能指标"></div>
             <div class="chart child-chart" child-chart data-cntitle="PV" data-title="pv"></div>
-            <div class="chart child-chart" child-chart data-cntitle="完全加载" data-title="load_time"></div>
+<!--             <div class="chart child-chart" child-chart data-cntitle="完全加载" data-title="load_time"></div>
             <div class="chart child-chart" child-chart data-cntitle="首屏时间" data-title="first_view"></div>
             <div class="chart child-chart" child-chart data-cntitle="白屏时间" data-title="first_paint"></div>
-            <div class="chart child-chart" child-chart data-cntitle="页面解析" data-title="dom_ready"></div>
+            <div class="chart child-chart" child-chart data-cntitle="页面解析" data-title="dom_ready"></div> -->
         </div>
 
     </textarea>
@@ -88,7 +100,7 @@
     </textarea>
 
     <textarea id="tmpl-main-top-info">
-        <div class="ui horizontal list">
+        <div class="ui horizontal list" ng-show='false'>
             <div class="item">
                 【{{page_name}}】的平均性能指标：
             </div>

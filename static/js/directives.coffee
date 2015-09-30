@@ -52,14 +52,15 @@ define [
         scope.$emit 'top:menu:select', query
 
       scope.reloadByTime = ()->
-        console.log scope
-        return if !scope.time_start || !scope.time_end
-        scope.timeSelect = null
-        query = {
-          time_start: new Date(scope.time_start).valueOf(),
-          time_end: new Date(scope.time_end).valueOf(),
-          timeStep: (new Date(scope.time_end).valueOf() - new Date(scope.time_start).valueOf()) / 100
-        }
+        # console.log scope
+        query = {}
+        if scope.time_start && scope.time_end
+          scope.timeSelect = null
+          query = {
+            time_start: new Date(scope.time_start).valueOf(),
+            time_end: new Date(scope.time_end).valueOf(),
+            timeStep: (new Date(scope.time_end).valueOf() - new Date(scope.time_start).valueOf()) / 100
+          }
         query.browser_name = scope.browser_name if scope.browser_name
         query.page_like = $rootScope.query.page_like if $rootScope.query.page_like
         scope.$emit 'top:menu:select', query
@@ -70,6 +71,10 @@ define [
           timer = $interval loadBySelect, 60 * 1000
         else
           $interval.cancel timer
+
+
+      scope.speedLoad = ()->
+        $rootScope.isSpeed = scope.isSpeed
 
 
 
@@ -103,15 +108,15 @@ define [
 
   ])
 
-  .directive('childChart', ['$rootScope', 'API', ($rootScope, API)->
+  .directive('childChart', ['$rootScope', ($rootScope)->
     restrict: 'A'
     replace: true
     scope: title: "@", cntitle: "@"
     link: (scope, element, attrs)->
       chart = {}
       loadChart = (data)->
-        require ['chart/child-chart'], (_childChart)->
-          chart = new _childChart(element[0])
+        require ['chart/child-chart'], (_chart)->
+          chart = new _chart(element[0])
 
           chart.reload data.records, scope.title, scope.cntitle
 
@@ -124,15 +129,15 @@ define [
 
   ])
 
-  .directive('pieChart', ['$rootScope', 'API', ($rootScope, API)->
+  .directive('pieChart', ['$rootScope', ($rootScope)->
     restrict: 'A'
     replace: true
     scope: title: "@"
     link: (scope, element, attrs)->
       chart = {}
       loadChart = (data)->
-        require ['chart/pie-chart'], (_pieChart)->
-          chart = new _pieChart(element[0])
+        require ['chart/pie-chart'], (_chart)->
+          chart = new _chart(element[0])
 
           chart.reload data.browser, scope.title
 
@@ -141,6 +146,46 @@ define [
 
       $rootScope.$on 'main:data:loaded', (event, data)->
         chart.reload data.browser, scope.title
+
+  ])
+
+  .directive('gaugeChart', ['$rootScope', ($rootScope)->
+    restrict: 'A'
+    replace: true
+    scope: title: "@"
+    link: (scope, element, attrs)->
+      chart = {}
+      loadChart = (data)->
+        require ['chart/gauge-chart'], (_chart)->
+          chart = new _chart(element[0])
+
+          chart.reload data.flash_load, scope.title
+
+      $rootScope.$on 'main:chart:loaded',(event, data)->
+        loadChart data
+
+      $rootScope.$on 'main:data:loaded', (event, data)->
+        chart.reload data.flash_load, scope.title
+
+  ])
+
+  .directive('barChart', ['$rootScope', ($rootScope)->
+    restrict: 'A'
+    replace: true
+    scope: title: "@"
+    link: (scope, element, attrs)->
+      chart = {}
+      loadChart = (data)->
+        require ['chart/bar-chart'], (_chart)->
+          chart = new _chart(element[0])
+
+          chart.reload data, scope.title
+
+      $rootScope.$on 'main:chart:loaded',(event, data)->
+        loadChart data
+
+      $rootScope.$on 'main:data:loaded', (event, data)->
+        chart.reload data, scope.title
 
   ])
 

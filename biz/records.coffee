@@ -94,6 +94,7 @@ calculateByHour = (time, page, cb)->
         pv: result.pv,
         pv_cal: result.records[0].result.pv_cal,
         page_name: page.page_name,
+        flash_count: result.flash_count,
         type: 'hour'
       }
       console.log record
