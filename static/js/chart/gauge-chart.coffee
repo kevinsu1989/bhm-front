@@ -17,7 +17,7 @@ define [
           splitNumber: 5   
           axisLine: 
             lineStyle:   
-              color: [[0.2, '#228b22'],[0.8, '#48b'],[1, '#ff4500']]
+              color: [[0.8, '#ff4500'],[0.85, '#A4C21E'],[1, '#228b22']]
               width: 8
    
           axisTick: 

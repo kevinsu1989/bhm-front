@@ -25,7 +25,6 @@ calculateByPage = (time, page, cb)->
   queue.push(
     (done)->
       _api.getRecordsSplit req, null, (err, result)->
-        console.log result
         done err, result, time
   )
 
@@ -97,7 +96,6 @@ calculateByHour = (time, page, cb)->
         flash_count: result.flash_count,
         type: 'hour'
       }
-      console.log record
       _entity.records_calculated.saveCalculatedRecords [record], done
   )
 
@@ -147,7 +145,6 @@ exports.backUpRecords = ()->
   queue.push(
     (done)->
       _entity.records.findRecordsToBackUp timeStart, timeEnd, (err, result)->
-        console.log result.length
         done err, result
   )
   
