@@ -181,7 +181,7 @@ exports.getRecordsSplit = (req, res, cb)->
       flash_load = 1 if result.length and result[0].flash_load is 1
       done null, records, data
   )
-  # else
+  # else 
   #   queue.push((done)->
   #     _entity.records_calculated.findRecords data, (err, result)->
   #       console.log
