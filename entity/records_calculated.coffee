@@ -13,4 +13,12 @@ class RecordsCalculated extends _BaseEntity
     @entity().insert(list).exec (err, data)->
       cb err, data
 
+
+  findRecords: (data, cb)->
+    sql = "select * from records_calculated where 
+      time_start >= #{data.time_start} and time_start < #{data.time_end} and
+      page_name = '#{data.page_name}' "
+    
+    @execute sql, cb
+  
 module.exports = new RecordsCalculated

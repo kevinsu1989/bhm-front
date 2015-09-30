@@ -35,22 +35,28 @@ initBijou = (app)->
 initSchedule = ()->
   rule_calculate = new _schedule.RecurrenceRule()
   rule_backup = new _schedule.RecurrenceRule()
+  rule_hour = new _schedule.RecurrenceRule();
+
 
   rule_calculate.dayOfWeek = [new _schedule.Range(0, 6)]
-  rule_calculate.hour = 3
-  rule_calculate.minute = 0
+  rule_calculate.hour = 18
+  rule_calculate.minute = 44
 
   rule_backup.dayOfWeek = [1]
   rule_backup.hour = 3
   rule_backup.minute = 30
 
-  calculate = _schedule.scheduleJob rule_calculate, ()->
-    _records.calculateRecords (err, result)->
-
+  rule_hour.minute = 5
+  # 每天定时计算
+  # calculate = _schedule.scheduleJob rule_calculate, ()->
+  #   _records.calculateRecords (err, result)->
+  # 每周数据备份
   backup = _schedule.scheduleJob rule_backup, ()->
     _records.backUpRecords (err, result)->
-      console.log arguments
-
+      
+  # 每小时计算上一小时的数据
+  hour = _schedule.scheduleJob rule_hour, ()->
+    _records.calculateRecordsByHour (err, result)->
     
   
 
@@ -59,6 +65,7 @@ module.exports = (app)->
   require('./router').init(app)
   initBijou app
   initSchedule()
+  # _records.calculateRecordsByHour (err, result)->
 
 
 

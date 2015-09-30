@@ -100,13 +100,14 @@ calculateRecords = (records)->
   
 
 # 最终返回结果拼接
-getReturns = (records, browser, pv_count, pv_cal, flash_load)->
+getReturns = (records, browser, pv_count, pv_cal, flash_load, flash_count)->
   result = {
     first_paint: 0
     first_view: 0
     dom_ready: 0
     load_time: 0
     flash_load: 0
+    flash_count: 0
     pv: pv_count
     records: records
     browser: browser
@@ -122,6 +123,7 @@ getReturns = (records, browser, pv_count, pv_cal, flash_load)->
       result.flash_load += record.result.flash_load
   result.flash_load_1 = result.flash_load / pv_count
   result.flash_load = flash_load
+  result.flash_count = flash_count
   result
 
 
@@ -150,6 +152,9 @@ exports.getRecordsSplit = (req, res, cb)->
   pv_count = 0
   pv_cal = 0
   flash_load = 0
+  flash_count = 0
+  # 当查询的数据小于一天，则实时计算
+  # if data.time_start - data.time_end < 24 * 60 * 60 * 1000
   queue.push((done)->
     _entity.records.findRecords data, (err, result)->
       pv_count = result?.length || 0
@@ -168,10 +173,20 @@ exports.getRecordsSplit = (req, res, cb)->
   queue.push((records, data, done)->
     # done null, records, data if data.page_name is '首页'
     _entity.records.getFlashLoadCount data, (err, result)->
-      flash_load = (result[1].count * 1) /(result[0].count * 1 + result[1].count * 1) if result.length > 1
+      if result.length > 1
+        flash_count = result[0].count * 1 + result[1].count * 1 
+      else if result.length is 1
+        flash_count = result[0].count * 1
+      flash_load = (result[1].count * 1) /flash_count if result.length > 1
       flash_load = 1 if result.length and result[0].flash_load is 1
       done null, records, data
   )
+  # else
+  #   queue.push((done)->
+  #     _entity.records_calculated.findRecords data, (err, result)->
+  #       console.log
+  #       done err, result, data
+  #   )
 
   queue.push((records, data, done)->
     _entity.records.browserPercent data, (err, result)->
@@ -180,7 +195,7 @@ exports.getRecordsSplit = (req, res, cb)->
 
   _async.waterfall queue,(err, records, browser)->
     # cb err, getReturns(records, browser, pv_count, pv_cal)
-    cb err, getReturns(records, browser, pv_count, pv_cal, flash_load)
+    cb err, getReturns(records, browser, pv_count, pv_cal, flash_load, flash_count)
 
 
 
@@ -200,20 +215,3 @@ exports.getPages = (req, res, cb)->
 
     cb err, pages
 
-
-# exports.receiveData = (req, res, cb)->
-#   data = req.query
-#   data.timestamp = new Date().valueOf()
-#   data.ip = _ip.ipToInt _common.getClientIp(req)
-
-#   records.push data if validateData(data)
-
-#   # if new Date().valueOf() - timestamp > 10000
-#   if records.length > 10
-#     # timestamp = new Date().valueOf()
-#     _records = records
-#     records = []
-#     _entity.records.addRecords _records, (err, result)->
-#       cb err
-#   else
-#     cb null
