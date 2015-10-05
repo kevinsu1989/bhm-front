@@ -64,7 +64,6 @@ define [
       @option.series[0].data[0] = 
       	value: Math.round(data * 10000)/100
       	name: title
-      console.log @option
       @chart.setOption @option, true
         
 

@@ -35,7 +35,6 @@ define [
           itemStyle: 
             normal: 
               color: (params, index)->
-                console.log arguments
                 colorList = ['#2f91da', '#ff00ff', '#00ff00', '#ff0000']
                 colorList[index]
               label: 
