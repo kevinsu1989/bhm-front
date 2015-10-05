@@ -52,11 +52,11 @@ initSchedule = ()->
   #   _records.calculateRecords (err, result)->
   # 每周数据备份
   backup = _schedule.scheduleJob rule_backup, ()->
-    # _records.backUpRecords (err, result)->
+    _records.backUpRecords (err, result)->
       
   # 每小时计算上一小时的数据
   hour = _schedule.scheduleJob rule_hour, ()->
-    # _records.calculateRecordsByHour (err, result)->
+    _records.calculateRecordsByHour (err, result)->
     
   
 
