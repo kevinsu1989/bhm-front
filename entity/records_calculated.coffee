@@ -1,3 +1,8 @@
+#    Author: 苏衎
+#    E-mail: kevinsu1989@gmail.com
+#    Date: 08/13/15 11:01 AM
+#    Description:计算后的数据
+
 
 _BaseEntity = require('bijou').BaseEntity
 _async = require 'async'
@@ -18,7 +23,7 @@ class RecordsCalculated extends _BaseEntity
     sql = "select * from records_calculated where 
       time_start >= #{data.time_start} and time_start < #{data.time_end} and
       page_name = '#{data.page_name}' "
-    
+
     @execute sql, cb
   
 module.exports = new RecordsCalculated

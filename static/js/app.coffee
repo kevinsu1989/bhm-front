@@ -1,6 +1,6 @@
-#    Author: 易晓峰
-#    E-mail: wvv8oo@gmail.com
-#    Date: 1/13/15 11:29 AM
+#    Author: 苏衎
+#    E-mail: kevinsu1989@gmail.com
+#    Date: 08/13/15 11:01 AM
 #    Description:
 'use strict'
 

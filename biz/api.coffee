@@ -1,22 +1,13 @@
-
+#    Author: 苏衎
+#    E-mail: kevinsu1989@gmail.com
+#    Date: 08/13/15 11:01 AM
+#    Description:
 _async = require 'async'
 _http = require('bijou').http
 _ = require 'lodash'
 _entity = require '../entity'
 _common = require '../common'
 _ip = require 'lib-qqwry'
-
-
-records = []
-
-# timestamp = new Date().valueOf()
-
-
-    
-# 验证数据
-# validateData = (data)->
-#   reg = /^\d+(\.\d+)?$/
-#   return reg.test(data.first_paint) && reg.test(data.dom_ready) && reg.test(data.load_time) && reg.test(data.first_view)
 
 
 devideRecordsByTime = (records, data)->
@@ -105,8 +96,8 @@ makeCalculatedRecords = (result)->
       time_start: record.time_start
       time_end: record.time_end
       result: record
-    pv_count += record.pv
-    pv_cal += record.pv_cal
+    pv_count += record.pv * 1
+    pv_cal += record.pv_cal 
     flash_count += record.flash_count
     flash_load += record.flash_percent * record.flash_count
   flash_load = flash_load / flash_count
@@ -165,6 +156,7 @@ exports.getRecordsSplit = (req, res, cb)->
   data.time_start = _common.getDayStart().valueOf() if !data.time_start
   data.time_end = _common.getDayStart().valueOf() + 24 * 60 * 60 * 1000 - 1  if !data.time_end
   data.timeStep = 24 * 60 * 60 * 10 if !data.timeStep
+  # 最小时间间隔1分钟
   data.timeStep = 60 * 1000 if data.timeStep < 60 * 1000
 
   queue = [] 
@@ -202,7 +194,6 @@ exports.getRecordsSplit = (req, res, cb)->
     )
 
     queue.push((records, data, done)->
-      # done null, records, data if data.page_name is '首页'
       _entity.records.getFlashLoadCount data, (err, result)->
         if result.length > 1
           flash_count = result[0].count * 1 + result[1].count * 1 
@@ -220,7 +211,6 @@ exports.getRecordsSplit = (req, res, cb)->
   )
 
   _async.waterfall queue,(err, records, browser)->
-    # cb err, getReturns(records, browser, pv_count, pv_cal)
     cb err, getReturns(records, browser, pv_count, pv_cal, flash_load, flash_count)
 
 
@@ -236,8 +226,6 @@ exports.getPages = (req, res, cb)->
     for page in pages
       for item in result 
         page.children.push(item) if item.parent is page.id
-
-    # console.log pages
 
     cb err, pages
 

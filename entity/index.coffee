@@ -1,3 +1,8 @@
+#    Author: 苏衎
+#    E-mail: kevinsu1989@gmail.com
+#    Date: 08/13/15 11:01 AM
+#    Description:
+
 _fs = require 'fs'
 _common = require '../common'
 _path = require 'path'

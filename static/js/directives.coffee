@@ -32,6 +32,7 @@ define [
     template: _utils.extractTemplate '#tmpl-main-top-menu', _template
     link: (scope, element, attrs)->
       timer = null
+      $rootScope.isSpeed = true
       scope.reload = loadBySelect = ()->
         timestamp = new Date().valueOf()
         scope.timeStart = scope.time_end = null
@@ -95,7 +96,7 @@ define [
         require ['chart/main-chart'], (_mainChart)->
           chart = new _mainChart(element[0])
 
-          API.pages(page_name).retrieve().then (result)->
+          API.pages(page_name).retrieve({isSpeed:$rootScope.isSpeed}).then (result)->
             scope.loading = false
             $rootScope.$emit 'main:chart:loaded', result
             chart.reload result.records
