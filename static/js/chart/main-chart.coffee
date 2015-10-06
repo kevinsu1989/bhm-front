@@ -89,7 +89,8 @@ define [
       xAxis = [
         type: 'category'
         data: _.keys originTimes
-        splitLine: show: false
+        splitLine: show: true
+        boundaryGap: false
         axisLabel:
           formatter: (text)->
             text
@@ -97,7 +98,7 @@ define [
 
       yAxis = [
         type: 'value'
-        splitLine: show: false
+        splitLine: show: true
         name: 'ms'
       ]
       option =

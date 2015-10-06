@@ -64,7 +64,7 @@ calculateByPage = (time, page, cb)->
   _async.waterfall queue, (err, result)->
     cb err, result
 
-calculateByHour = (time, page, cb)->
+calculateByHour = (time, page, browser_name, cb)->
   req = {
     query: {
       time_start: time.timeStart,
@@ -76,7 +76,7 @@ calculateByHour = (time, page, cb)->
       page_name: page.page_name
     }
   } 
-
+  req.query.browser_name = browser_name if browser_name
   queue = []
 
   queue.push(
@@ -101,6 +101,7 @@ calculateByHour = (time, page, cb)->
         flash_count: result.flash_count,
         type: 'hour'
       }
+      record.browser_name = browser_name if browser_name
       _entity.records_calculated.saveCalculatedRecords [record], done
   )
 
@@ -118,8 +119,10 @@ exports.calculateRecordsByHour = ()->
       timeEnd: _moment().startOf('hour').valueOf() - 1
       timeStep: 60 * 60 * 1000
     }
+    browser = ['', 'ie', 'chrome']
     for page in pages
-      calculateByHour time, page, (err, result)->
+      for browser_name in browser
+        calculateByHour time, page, browser_name, (err, result)->
 
 
 

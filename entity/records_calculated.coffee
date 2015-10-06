@@ -23,6 +23,7 @@ class RecordsCalculated extends _BaseEntity
     sql = "select * from records_calculated where 
       time_start >= #{data.time_start} and time_start < #{data.time_end} and
       page_name = '#{data.page_name}' "
+    sql += " and browser_name='#{data.browser_name}'" if data.browser_name
 
     @execute sql, cb
   

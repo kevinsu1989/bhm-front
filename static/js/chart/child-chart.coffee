@@ -44,7 +44,8 @@ define [
       ]
 
       _.map data, (item)->
-        result[0].data.push(Math.round item.result[title])
+        result[0].data.push(Math.round(item.result[title])) if title isnt 'flash_percent'
+        result[0].data.push(Math.round(item.result[title]*10000)/100) if title is 'flash_percent'
 
       result
 
@@ -70,7 +71,7 @@ define [
       xAxis = [
         type: 'category'
         data: _.keys originTimes
-        splitLine: show: false
+        boundaryGap: false
         axisLabel:
           formatter: (text)->
             text
@@ -78,11 +79,10 @@ define [
 
       yAxis = [
         type: 'value'
-        splitLine: show: false
         name: 'ms'
       ]
-      console.log title
       yAxis[0].name = '百次' if title is 'pv'
+      yAxis[0].name = '%' if title is 'flash_percent'
       option =
         xAxis: xAxis
         yAxis: yAxis

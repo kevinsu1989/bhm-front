@@ -32,3 +32,5 @@ exports.schema =
     
     flash_count: 'integer'
 
+    browser_name: ''
+
