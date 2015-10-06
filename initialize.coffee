@@ -64,7 +64,7 @@ module.exports = (app)->
   console.log "启动中..."
   require('./router').init(app)
   initBijou app
-  initSchedule()
+  # initSchedule()
   # _records.calculateRecordsByHour (err, result)->
 
 

@@ -4,8 +4,8 @@
 #    Description:
 
 define [
-
-], ()->
+  "moment"
+], (_moment)->
   #去除前后的空格
   trim: (text)-> text and text.replace(/^\s+/, "" ).replace(/\s+$/, "")
   #格式化文本
@@ -18,6 +18,44 @@ define [
   #提取text中包括规则的模板html，即包含在textarea中的
   extractTemplate: (expr, text)->
     $(text).find(expr).val()
+
+
+  #根据关键词获得开始结束时间
+  getQueryTime: (text)->
+    time = {}
+    moment = _moment()
+    switch text
+      when "today"
+        time = 
+          time_start: moment.startOf('day').valueOf()
+          time_end: moment.endOf('day').valueOf()
+      when "yestoday"
+        moment = _moment().subtract(1, 'days')
+        time = 
+          time_start: moment.startOf('day').valueOf()
+          time_end: moment.endOf('day').valueOf()
+      when "week"
+        time = 
+          time_start: moment.startOf('week').valueOf()
+          time_end: moment.endOf('week').valueOf()
+      when "lastweek"
+        moment = _moment().subtract(1, 'weeks')
+        time = 
+          time_start: moment.startOf('week').valueOf()
+          time_end: moment.endOf('week').valueOf()
+      when "month"
+        time = 
+          time_start: moment.startOf('month').valueOf()
+          time_end: moment.endOf('month').valueOf()
+      when "lastmonth"
+        moment = _moment().subtract(1, 'months')
+        time = 
+          time_start: moment.startOf('month').valueOf()
+          time_end: moment.endOf('month').valueOf()
+
+    time
+
+
 
 
   hex2rgba: (hex)->

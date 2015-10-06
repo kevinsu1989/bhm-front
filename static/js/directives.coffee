@@ -46,7 +46,7 @@ define [
           query.time_start = timestamp - scope.timeSelect * 60 *1000
           query.timeStep = scope.timeSelect * 60 *10
         else
-          query = {}
+          query = _utils.getQueryTime(scope.timeSelect)
 
         query.browser_name = scope.browser_name if scope.browser_name
         query.page_like = $rootScope.query.page_like if $rootScope.query.page_like

@@ -34,8 +34,12 @@
                 <div class="field">
                     <select ng-change="reload()" ng-model="timeSelect" class="ui dropdown" name="card[expire-time]">
                         <option ng-selected="true" value="today">今天</option>
+                        <option value="yestoday">昨天</option>
+                        <option value="week">本周</option>
+                        <option value="lastweek">上周</option>
+                        <option value="month">本月</option>
+                        <option value="lastmonth">上月</option>
                         <option value="30">30分钟内</option>
-                        <option value="60">1小时内</option>
                         <option value="180">3小时内</option>
                         <option value="720">12小时内</option>
                     </select>
