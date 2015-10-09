@@ -32,7 +32,7 @@
         <div class="ui form">
             <div class="five fields">
                 <div class="field">
-                    <select ng-change="reload()" ng-model="timeSelect" class="ui dropdown" name="card[expire-time]">
+                    <select ng-change="reload(0)" ng-model="timeSelect" class="ui dropdown" name="card[expire-time]">
                         <option ng-selected="true" value="today">今天</option>
                         <option value="yestoday">昨天</option>
                         <option value="week">本周</option>
@@ -66,7 +66,7 @@
                     <input type="text" ng-model="time_end" placeholder="结束时间" datetype="datetime" datetype="date" datetime-picker format="yyyy/mm/dd hh:ii">
                 </div>
                 <div class="field">
-                    <button class="ui primary button" ng-click="reloadByTime()">统计</button>
+                    <button class="ui primary button" ng-click="reload(1)">统计</button>
                     <button class="ui primary button" ng-click="showTable()">表格</button>
                 </div>
 
@@ -108,20 +108,26 @@
     </textarea>
 
     <textarea id="tmpl-data-table">
-        <table class="records-table" ng-show="show" ng-click="hideTable()">
-            <tr>
-                <th>时间</th><th>白屏时间</th><th>页面解析</th><th>首屏时间</th><th>完全加载</th><th>播放器加载</th>
-            </tr>
-            <tr ng-repeat="item in data">
-                <td ng-if="item.result.type=='day'">{{item.time_start|date: 'MM月dd日'}}</td>
-                <td ng-if="item.result.type=='hour'">{{item.time_start|date: 'MM月dd日hh时'}}</td>
-                <td>{{item.result.first_paint}}ms</td>
-                <td>{{item.result.dom_ready}}ms</td>
-                <td>{{item.result.first_view}}ms</td>
-                <td>{{item.result.load_time}}ms</td>
-                <td>{{item.result.flash_percent|perFilter}}</td>
-            </tr>
-        </table>
+        <div class="table-container" ng-show="show" ng-click="hideTable()">
+            <table class="records-table">
+                <tr>
+                    <th>时间</th><th>白屏时间</th><th>页面解析</th><th>首屏时间</th><th>完全加载</th><th>播放器加载</th><th>PV</th>
+                </tr>
+                <tr ng-repeat="item in data">
+                    <td ng-if="item.result.type=='day'">{{item.time_start|date: 'MM月dd日'}}</td>
+                    <td ng-if="item.result.type=='hour'">{{item.time_start|date: 'MM月dd日HH时'}}</td>
+                    <td>{{item.result.first_paint}}ms</td>
+                    <td>{{item.result.dom_ready}}ms</td>
+                    <td>{{item.result.first_view}}ms</td>
+                    <td>{{item.result.load_time}}ms</td>
+                    <td>{{item.result.flash_percent|perFilter}}</td>
+                    <td>{{item.result.pv}}00</td>
+                </tr>
+            </table>
+            <div class="table-background">
+                
+            </div>
+        </div>
         
     </textarea>
 

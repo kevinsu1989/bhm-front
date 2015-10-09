@@ -32,42 +32,49 @@ define [
     template: _utils.extractTemplate '#tmpl-main-top-menu', _template
     link: (scope, element, attrs)->
       timer = null
+      query = {}
       $rootScope.isSpeed = true
       $rootScope.type = 'hour'
-      scope.reload = loadBySelect = ()->
+
+      scope.reload = loadBySelect = (timeType)->
         $rootScope.type = scope.type
         timestamp = new Date().valueOf()
-        scope.time_start = scope.time_end = null
-        
-        query = {
-          timeStart: 0,
-          time_end: timestamp,
-          timeStep: 0
-        }
-        if Number(scope.timeSelect) > 0
-          query.time_start = timestamp - scope.timeSelect * 60 *1000
-          query.timeStep = scope.timeSelect * 60 *10
-        else
-          query = _utils.getQueryTime(scope.timeSelect)
 
-        query.browser_name = scope.browser_name if scope.browser_name
-        query.type = scope.type
-        query.page_like = $rootScope.query.page_like if $rootScope.query.page_like
-        scope.$emit 'top:menu:select', query
-
-      scope.reloadByTime = ()->
-        # console.log scope
-        query = {}
-        if scope.time_start && scope.time_end
+        if timeType is 0
+          scope.time_start = scope.time_end = null 
+          if Number(scope.timeSelect) > 0
+            query.time_start = timestamp - scope.timeSelect * 60 *1000
+            query.time_end = timestamp
+            query.timeStep = scope.timeSelect * 60 *10
+          else
+            timeObj = _utils.getQueryTime(scope.timeSelect)
+            query.time_start = timeObj.time_start
+            query.time_end = timeObj.time_end
+            query.timeStep = timeObj.timeStep
+        else if timeType is 1 && scope.time_start && scope.time_end
           scope.timeSelect = null
-          query = {
-            time_start: new Date(scope.time_start).valueOf(),
-            time_end: new Date(scope.time_end).valueOf(),
-            timeStep: (new Date(scope.time_end).valueOf() - new Date(scope.time_start).valueOf()) / 100
-          }
+          query.time_start = new Date(scope.time_start).valueOf()
+          query.time_end = new Date(scope.time_end).valueOf()
+          query.timeStep = (new Date(scope.time_end).valueOf() - new Date(scope.time_start).valueOf()) / 100
+        query.type = scope.type
         query.browser_name = scope.browser_name if scope.browser_name
         query.page_like = $rootScope.query.page_like if $rootScope.query.page_like
         scope.$emit 'top:menu:select', query
+
+      # scope.reload = ()->
+      #   # console.log scope
+      #   query = {}
+      #   if scope.time_start && scope.time_end
+      #     scope.timeSelect = null
+      #     query = {
+      #       time_start: new Date(scope.time_start).valueOf(),
+      #       time_end: new Date(scope.time_end).valueOf(),
+      #       timeStep: (new Date(scope.time_end).valueOf() - new Date(scope.time_start).valueOf()) / 100
+      #     }
+      #   query.type = scope.type
+      #   query.browser_name = scope.browser_name if scope.browser_name
+      #   query.page_like = $rootScope.query.page_like if $rootScope.query.page_like
+      #   scope.$emit 'top:menu:select', query
 
 
       scope.autoLoad = ()->
@@ -215,7 +222,6 @@ define [
     link: (scope, element, attrs)->
       scope.show = false
       loadTable = (data)->
-        console.log data
         scope.data = data.records
 
       $rootScope.$on 'main:chart:loaded',(event, data)->
