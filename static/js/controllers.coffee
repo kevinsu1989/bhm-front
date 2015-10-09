@@ -45,11 +45,13 @@ define [
         $rootScope.page_name = page.page_name
         $rootScope.query.page_like = page.page_like
         $rootScope.query.isSpeed = $rootScope.isSpeed
+        $rootScope.query.type = $rootScope.type
         loadData()
 
       $rootScope.$on 'top:menu:select', (event, query)->
         $rootScope.query = query
         $rootScope.query.isSpeed = $rootScope.isSpeed
+        $rootScope.query.type = $rootScope.type
         loadData()
   ])
 

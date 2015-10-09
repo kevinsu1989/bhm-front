@@ -4,6 +4,7 @@
 _path = require 'path'
 _crypto = require 'crypto'
 _events = require 'events'
+_moment = require 'moment'
 _ = require 'lodash'
 
 _util = require 'util'
@@ -83,6 +84,22 @@ exports.getDayStart = (date)->
   date = new Date() if !date
   new Date(date.toJSON().split('T')[0]+' 00:00:00')
 
+
+exports.getSplitTime = (timeStart, timeEnd, timeType)-> 
+  timeArr = []
+  type = 
+    minute: 60 * 1000
+    hour: 60 * 60 * 1000
+    day: 24 * 60 * 60 * 1000
+  content = Math.round((timeEnd - timeStart)/type[timeType])
+  for i in [0...content]
+    moment = _moment(timeEnd).subtract(content - i, timeType)
+    timeArr.push
+      timeStart: moment.startOf(timeType).valueOf()
+      timeEnd: moment.endOf(timeType).valueOf()
+      timeStep: type[timeType]
+      timeType: timeType
+  timeArr
 
   # 获取客户端IP
 exports.getClientIp = (req)-> 

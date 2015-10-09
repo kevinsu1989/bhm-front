@@ -54,6 +54,12 @@
                     </select>
                 </div>
                 <div class="field">
+                    <select ng-change="reload()" ng-model="type" class="ui dropdown" name="card[expire-browser]">
+                        <option ng-selected="true" value="hour">按小时统计</option>
+                        <option value="day">按天统计</option>
+                    </select>
+                </div>
+                <div class="field">
                     <input type="text" ng-model="time_start" placeholder="开始时间" datetype="datetime" datetype="date" datetime-picker format="yyyy/mm/dd hh:ii"/>
                 </div>
                 <div class="field">
@@ -61,6 +67,7 @@
                 </div>
                 <div class="field">
                     <button class="ui primary button" ng-click="reloadByTime()">统计</button>
+                    <button class="ui primary button" ng-click="showTable()">表格</button>
                 </div>
 
             </div>
@@ -86,11 +93,12 @@
 
         <div>
             <div class="chart bar-chart" bar-chart data-title="【{{page_name}}】的平均性能指标"></div>
-            <div class="chart child-chart" pie-chart data-title="浏览器占比"></div>
             <div class="chart child-chart" gauge-chart data-title="播放器加载成功率"></div>
+            <div class="chart child-chart" pie-chart data-title="浏览器占比"></div>
             <div class="chart main-chart" main-chart></div>
             <div class="chart child-chart" child-chart data-cntitle="PV" data-title="pv"></div>
             <div class="chart child-chart" child-chart data-cntitle="播放器加载成功率" data-title="flash_percent"></div>
+            <records-table></records-table>
 <!--             <div class="chart child-chart" child-chart data-cntitle="完全加载" data-title="load_time"></div>
             <div class="chart child-chart" child-chart data-cntitle="首屏时间" data-title="first_view"></div>
             <div class="chart child-chart" child-chart data-cntitle="白屏时间" data-title="first_paint"></div>
@@ -99,8 +107,21 @@
 
     </textarea>
 
-    <textarea id="tmpl-page-item">
-        
+    <textarea id="tmpl-data-table">
+        <table class="records-table" ng-show="show" ng-click="hideTable()">
+            <tr>
+                <th>时间</th><th>白屏时间</th><th>页面解析</th><th>首屏时间</th><th>完全加载</th><th>播放器加载</th>
+            </tr>
+            <tr ng-repeat="item in data">
+                <td ng-if="item.result.type=='day'">{{item.time_start|date: 'MM月dd日'}}</td>
+                <td ng-if="item.result.type=='hour'">{{item.time_start|date: 'MM月dd日hh时'}}</td>
+                <td>{{item.result.first_paint}}ms</td>
+                <td>{{item.result.dom_ready}}ms</td>
+                <td>{{item.result.first_view}}ms</td>
+                <td>{{item.result.load_time}}ms</td>
+                <td>{{item.result.flash_percent|perFilter}}</td>
+            </tr>
+        </table>
         
     </textarea>
 

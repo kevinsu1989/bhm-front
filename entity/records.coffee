@@ -29,7 +29,7 @@ class Records extends _BaseEntity
 
     sql += " and browser_name='#{data.browser_name}'" if data.browser_name
 
-    console.log sql
+    # console.log sql
     
     @execute sql, cb
 
@@ -45,15 +45,14 @@ class Records extends _BaseEntity
     sql += " and url like 'http://www.hunantv.com#{data.page_like}%'" if data.page_like
 
     sql += " group by flash_load order by flash_load "
-
-    console.log sql
-
+    # console.log sql
     @execute sql, cb
 
+    
   # 查询将要备份的记录
   findRecordsToBackUp: (timeStart, timeEnd,cb)->
     sql = "select * from records where timestamp < #{timeEnd} and timestamp > #{timeStart}"
-    console.log sql
+    # console.log sql
     @execute sql, cb
   
   # 删除备份好的记录

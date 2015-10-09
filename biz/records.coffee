@@ -12,59 +12,7 @@ _common = require '../common'
 _moment = require 'moment'
 
 
-calculateByPage = (time, page, cb)->
-  req = {
-    query: {
-      time_start: time.timeStart,
-      time_end: time.timeEnd,
-      timeStep: time.timeStep,
-      page_like: page.page_like
-    },
-    params:{
-      page_name: page.page_name
-    }
-  } 
-
-  queue = []
-
-  queue.push(
-    (done)->
-      _api.getRecordsSplit req, null, (err, result)->
-        done err, result, time
-  )
-
-  queue.push(
-    (result, time, done)->
-      pv_cal = 0
-      for record in result.records
-        record[key] = value for key, value of record.result
-        record.page_name = page.page_name
-        record.flash_percent = 0.123
-        record.type = 'hour'
-        pv_cal += record.pv_cal
-        delete record.result
-      
-      result.records.push({
-        time_start: time.timeStart,
-        time_end: time.timeEnd,
-        first_paint: result.first_paint,
-        first_view: result.first_view,
-        dom_ready: result.dom_ready,
-        load_time: result.load_time,
-        flash_percent: result.flash_load,
-        pv: result.pv,
-        pv_cal: pv_cal,
-        page_name: page.page_name,
-        type: 'day'
-      })
-      _entity.records_calculated.saveCalculatedRecords result.records, done
-  )
-
-
-  _async.waterfall queue, (err, result)->
-    cb err, result
-
-calculateByHour = (time, page, browser_name, cb)->
+calculateByTime = (time, page, browser_name, cb)->
   req = {
     query: {
       time_start: time.timeStart,
@@ -82,11 +30,13 @@ calculateByHour = (time, page, browser_name, cb)->
   queue.push(
     (done)->
       _api.getRecordsSplit req, null, (err, result)->
+        console.log arguments
         done err, result, time
   )
 
   queue.push(
     (result, time, done)->
+      console.log result
       record = {
         time_start: time.timeStart,
         time_end: time.timeEnd,
@@ -99,9 +49,10 @@ calculateByHour = (time, page, browser_name, cb)->
         pv_cal: result.records[0].result.pv_cal,
         page_name: page.page_name,
         flash_count: result.flash_count,
-        type: 'hour'
+        type: time.timeType
       }
       record.browser_name = browser_name if browser_name
+      console.log record
       _entity.records_calculated.saveCalculatedRecords [record], done
   )
 
@@ -113,30 +64,38 @@ calculateByHour = (time, page, browser_name, cb)->
 
 exports.calculateRecordsByHour = ()->
   _entity.page.findPages (err, pages)->
-    records = []
     time = {
       timeStart: _moment().subtract(1,'hour').startOf('hour').valueOf()
       timeEnd: _moment().startOf('hour').valueOf() - 1
       timeStep: 60 * 60 * 1000
+      timeType: 'hour'
     }
     browser = ['', 'ie', 'chrome']
     for page in pages
       for browser_name in browser
-        calculateByHour time, page, browser_name, (err, result)->
+        calculateByTime time, page, browser_name, (err, result)->
 
 
 
-exports.calculateRecords = ()->
-  console.log "开始统计#{_moment().subtract(1,'day').format('YYYYMMDD')}的数据"
+exports.calculateRecordsByTime = (timeStart, timeEnd, timeType)->
+  # return null
+  timeArr = [{
+    timeStart: _moment().subtract(1,'hour').startOf('hour').valueOf()
+    timeEnd: _moment().startOf('hour').valueOf() - 1
+    timeStep: 60 * 60 * 1000
+    timeType: 'hour'
+  }]
+  timeArr = _common.getSplitTime timeStart, timeEnd, timeType if timeStart && timeEnd && timeType
   _entity.page.findPages (err, pages)->
-    records = []
-    time = {
-      timeStart: _moment().subtract(1,'day').startOf('day').valueOf()
-      timeEnd: _moment().startOf('day').valueOf() - 1
-      timeStep: 60 * 60 * 1000
-    }
-    for page in pages
-      calculateByPage time, page, (err, result)->
+    browser = [null, 'ie', 'chrome']
+    for time, index in timeArr
+      ((time)->
+        setTimeout(()->
+          for page in pages
+            for browser_name in browser
+              calculateByTime time, page, browser_name, (err, result)->
+        , index * 4 * 30 * 1000)
+      )(time)
 
 
 

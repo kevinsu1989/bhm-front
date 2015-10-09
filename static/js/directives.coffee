@@ -33,9 +33,11 @@ define [
     link: (scope, element, attrs)->
       timer = null
       $rootScope.isSpeed = true
+      $rootScope.type = 'hour'
       scope.reload = loadBySelect = ()->
+        $rootScope.type = scope.type
         timestamp = new Date().valueOf()
-        scope.timeStart = scope.time_end = null
+        scope.time_start = scope.time_end = null
         
         query = {
           timeStart: 0,
@@ -49,6 +51,7 @@ define [
           query = _utils.getQueryTime(scope.timeSelect)
 
         query.browser_name = scope.browser_name if scope.browser_name
+        query.type = scope.type
         query.page_like = $rootScope.query.page_like if $rootScope.query.page_like
         scope.$emit 'top:menu:select', query
 
@@ -73,10 +76,11 @@ define [
         else
           $interval.cancel timer
 
-
       scope.speedLoad = ()->
         $rootScope.isSpeed = scope.isSpeed
 
+      scope.showTable = ()->
+        $rootScope.$emit 'table:show'
 
 
   ])
@@ -96,7 +100,7 @@ define [
         require ['chart/main-chart'], (_mainChart)->
           chart = new _mainChart(element[0])
 
-          API.pages(page_name).retrieve({isSpeed:$rootScope.isSpeed}).then (result)->
+          API.pages(page_name).retrieve({isSpeed:$rootScope.isSpeed,type:$rootScope.type}).then (result)->
             scope.loading = false
             $rootScope.$emit 'main:chart:loaded', result
             chart.reload result.records
@@ -190,6 +194,7 @@ define [
 
   ])
 
+
   .directive('mainTopInfo', ['$rootScope', 'API', ($rootScope, API)->
     restrict: 'E'
     replace: true
@@ -203,6 +208,30 @@ define [
 
   ])
   
+  .directive('recordsTable', ['$rootScope', ($rootScope)->
+    restrict: 'E'
+    replace: true
+    template: _utils.extractTemplate '#tmpl-data-table', _template
+    link: (scope, element, attrs)->
+      scope.show = false
+      loadTable = (data)->
+        console.log data
+        scope.data = data.records
+
+      $rootScope.$on 'main:chart:loaded',(event, data)->
+        loadTable data
+
+      $rootScope.$on 'main:data:loaded', (event, data)->
+        loadTable data
+
+      $rootScope.$on 'table:show', (event)->
+        scope.show = !scope.show
+
+      scope.hideTable = ()->
+        scope.show = !scope.show
+
+  ])
+
   .directive('datetimePicker', ()->
     restrict: 'AC'
     link: (scope, element, attrs)->

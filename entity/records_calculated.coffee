@@ -24,7 +24,9 @@ class RecordsCalculated extends _BaseEntity
       time_start >= #{data.time_start} and time_start < #{data.time_end} and
       page_name = '#{data.page_name}' "
     sql += " and browser_name='#{data.browser_name}'" if data.browser_name
-
+    sql += " and browser_name is null" if !data.browser_name
+    sql += " and type='#{data.type}' "
+    sql += " order by time_start"
     @execute sql, cb
   
 module.exports = new RecordsCalculated
