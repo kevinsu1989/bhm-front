@@ -7,6 +7,7 @@ _moment = require 'moment'
 _config = require './config' 
 _schedule = require 'node-schedule'
 _records = require './biz/records'
+_browser = require './biz/browser'
 
 
 #初始化bijou
@@ -54,11 +55,21 @@ initSchedule = ()->
 
   # 每天凌晨3点计算前一天的数据
   day = _schedule.scheduleJob rule_day, ()->
-    _records.calculateRecordsByTime _moment().subtract(1,'day').startOf('day').valueOf(), _moment().startOf('day').valueOf(), 'day', (err, result)->
+    time_start = _moment().subtract(1,'day').startOf('day').valueOf()
+    time_end = _moment().startOf('day').valueOf()
+    _browser.calculateBrowserRecords time_start, time_end, 'day', (err, result)->
+    setTimeout(()->
+      _records.calculateRecordsByTime time_start, time_end, 'day', (err, result)->
+    , 30 * 1000)
 
   # 每小时计算上一小时的数据
   hour = _schedule.scheduleJob rule_hour, ()->
-    _records.calculateRecordsByTime _moment().subtract(1,'hour').startOf('hour').valueOf(), _moment().startOf('hour').valueOf(), 'hour', (err, result)->
+    time_start = _moment().subtract(1,'hour').startOf('hour').valueOf()
+    time_end = _moment().startOf('hour').valueOf()
+    _browser.calculateBrowserRecords time_start, time_end, 'hour', (err, result)->
+    setTimeout(()->
+      _records.calculateRecordsByTime time_start, time_end, 'hour', (err, result)->
+    , 15 * 1000)
     
   
 
@@ -66,8 +77,8 @@ module.exports = (app)->
   console.log "启动中..."
   require('./router').init(app)
   initBijou app
-  initSchedule()
-  # _records.calculateRecordsByTime 1444233600000, 1444320000000, 'day', (err, result)->
+  # initSchedule()
+  # _browser.calculateBrowserRecords 1444233600000, 1444440207090, 'day', (err, result)->
 
 
 

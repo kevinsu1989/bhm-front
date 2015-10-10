@@ -191,17 +191,26 @@
     max-height: 80%;
     left: 30%;
     top: 10%;
-    border-top: 1px solid;
-    border-left: 1px solid;
+    border-top: 1px solid #ccc;
+    border-left: 1px solid #ccc;
     overflow-y: scroll;
     tr{
       td,th{
         width: 100px;
-        height: 30px;
+        height: 35px;
         text-align: center;
-        border-right: 1px solid;
-        border-bottom: 1px solid;
+        border-right: 1px solid #ccc;
+        border-bottom: 1px solid #ccc;
       }
+      th{
+        background: #f0f0f0
+      }
+      td:first-child{
+        background: #fafafa
+      }
+    }
+    tr:nth-child(even){
+      background: #fafafa
     }
     z-index: 99;
   }

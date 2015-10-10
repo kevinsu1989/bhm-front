@@ -177,6 +177,10 @@ exports.getRecordsSplit = (req, res, cb)->
 
         done err, result.records, data
     )
+    queue.push((records, data, done)->
+      _entity.browser_calculated.findRecords data, (err, result)->
+        done null, records, result
+    )
   else 
     queue.push((done)->
       _entity.records.findRecords data, (err, result)->
@@ -204,11 +208,12 @@ exports.getRecordsSplit = (req, res, cb)->
         done null, records, data
     )
 
+    queue.push((records, data, done)->
+      _entity.records.browserPercent data, (err, result)->
+        done null, records, result
+    )
 
-  queue.push((records, data, done)->
-    _entity.records.browserPercent data, (err, result)->
-      done null, records, result
-  )
+
 
   _async.waterfall queue,(err, records, browser)->
     cb err, getReturns(records, browser, pv_count, pv_cal, flash_load, flash_count)

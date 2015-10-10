@@ -26,7 +26,7 @@ exports.schema =
     
     first_view: 'integer'
     
-    type: 'integer'
+    type: ''
     
     flash_percent: 'float'
     
