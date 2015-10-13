@@ -22,6 +22,10 @@ define [
         scope.pages = result
         scope.$emit 'pages:menu:loaded', result[0].page_name
 
+      scope.showItems = (page,show)->
+        page.show_items = show
+
+
       scope.pageChange = (page)->
         $rootScope.$emit "pages:menu:click", page
 
@@ -57,24 +61,9 @@ define [
           query.time_end = new Date(scope.time_end).valueOf()
           query.timeStep = (new Date(scope.time_end).valueOf() - new Date(scope.time_start).valueOf()) / 100
         query.type = scope.type
-        query.browser_name = scope.browser_name if scope.browser_name
+        query.browser_name = scope.browser_name
         query.page_like = $rootScope.query.page_like if $rootScope.query.page_like
         scope.$emit 'top:menu:select', query
-
-      # scope.reload = ()->
-      #   # console.log scope
-      #   query = {}
-      #   if scope.time_start && scope.time_end
-      #     scope.timeSelect = null
-      #     query = {
-      #       time_start: new Date(scope.time_start).valueOf(),
-      #       time_end: new Date(scope.time_end).valueOf(),
-      #       timeStep: (new Date(scope.time_end).valueOf() - new Date(scope.time_start).valueOf()) / 100
-      #     }
-      #   query.type = scope.type
-      #   query.browser_name = scope.browser_name if scope.browser_name
-      #   query.page_like = $rootScope.query.page_like if $rootScope.query.page_like
-      #   scope.$emit 'top:menu:select', query
 
 
       scope.autoLoad = ()->
@@ -88,7 +77,6 @@ define [
 
       scope.showTable = ()->
         $rootScope.$emit 'table:show'
-
 
   ])
   .directive('mainChartsContainer', ['$rootScope', 'API', ($rootScope, API)->

@@ -234,3 +234,18 @@ exports.getPages = (req, res, cb)->
 
     cb err, pages
 
+exports.getIp = ()->
+
+  queue = [] 
+  queue.push((done)->
+    _entity.records.getIp (err, result)->
+      done err, result
+  )
+  _async.waterfall queue,(err, list)->
+    console.log _ip
+    for ip in list
+      ip = _ip.intToIP ip.ip
+      console.log ip
+
+  
+

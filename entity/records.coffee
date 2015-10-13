@@ -74,4 +74,11 @@ class Records extends _BaseEntity
 
     @execute sql, cb
 
+
+  # 浏览器占比
+  getIp: (cb)->
+    sql = "SELECT ip FROM records where ip is not null order by id desc limit 0,100"
+    
+    @execute sql, cb
+
 module.exports = new Records

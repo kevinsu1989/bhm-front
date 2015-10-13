@@ -21,8 +21,20 @@
     <textarea id="tmpl-main-left-menu">
         <div class="ui vertical menu">
             <div class="parent" ng-repeat="page in pages">
-                <a class="teal item" ng-class="page.page_name==page_name?'active':''" ng-click="pageChange(page)">{{page.page_name}}</a>
-                <a ng-repeat="child in page.children" class="teal item child" ng-class="child.page_name==page_name?'active':''" ng-click="pageChange(child)">{{child.page_name}}</a>
+                <a class="teal item" ng-if="page.children.length==0" ng-class="page.page_name==page_name?'active':''" ng-click="pageChange(page)">{{page.page_name}}</a>
+
+
+                <div class="ui dropdown item" ng-if="page.children.length>0" ng-mouseover="showItems(page,true)" ng-mouseout="showItems(page,false)">
+                    <i class="dropdown icon"></i>
+                    {{page.page_name}}
+                    <div class="menu" ng-class="page.show_items==true?'show':'hide'" >
+                        <a class="item" ng-click="pageChange(page)">全部</a>
+                        <a ng-repeat="child in page.children" class="item" ng-click="pageChange(child)">{{child.page_name}}</a>
+                    </div>
+                </div>
+
+        
+                <!-- <a ng-repeat="child in page.children" class="teal item child" ng-class="child.page_name==page_name?'active':''" ng-click="pageChange(child)">{{child.page_name}}</a> -->
                 
             </div>
         </div>
@@ -109,21 +121,23 @@
 
     <textarea id="tmpl-data-table">
         <div class="table-container" ng-show="show" ng-click="hideTable()">
-            <table class="records-table">
-                <tr>
-                    <th>时间</th><th>白屏时间</th><th>页面解析</th><th>首屏时间</th><th>完全加载</th><th>播放器加载</th><th>PV</th>
-                </tr>
-                <tr ng-repeat="item in data">
-                    <td ng-if="item.result.type=='day'">{{item.time_start|date: 'MM月dd日'}}</td>
-                    <td ng-if="item.result.type=='hour'">{{item.time_start|date: 'MM月dd日HH时'}}</td>
-                    <td>{{item.result.first_paint}}ms</td>
-                    <td>{{item.result.dom_ready}}ms</td>
-                    <td>{{item.result.first_view}}ms</td>
-                    <td>{{item.result.load_time}}ms</td>
-                    <td>{{item.result.flash_percent|perFilter}}</td>
-                    <td>{{item.result.pv}}00</td>
-                </tr>
-            </table>
+            <div class="records-table-container">
+                <table class="records-table">
+                    <tr>
+                        <th>时间</th><th>白屏时间</th><th>页面解析</th><th>首屏时间</th><th>完全加载</th><th>播放器加载</th><th>PV</th>
+                    </tr>
+                    <tr ng-repeat="item in data">
+                        <td ng-if="item.result.type=='day'">{{item.time_start|date: 'MM月dd日'}}</td>
+                        <td ng-if="item.result.type=='hour'">{{item.time_start|date: 'MM月dd日HH时'}}</td>
+                        <td>{{item.result.first_paint}}ms</td>
+                        <td>{{item.result.dom_ready}}ms</td>
+                        <td>{{item.result.first_view}}ms</td>
+                        <td>{{item.result.load_time}}ms</td>
+                        <td>{{item.result.flash_percent|perFilter}}</td>
+                        <td>{{item.result.pv}}00</td>
+                    </tr>
+                </table>
+            </div>
             <div class="table-background">
                 
             </div>

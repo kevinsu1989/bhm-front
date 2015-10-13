@@ -8,6 +8,7 @@ _config = require './config'
 _schedule = require 'node-schedule'
 _records = require './biz/records'
 _browser = require './biz/browser'
+_api = require './biz/api'
 
 
 #初始化bijou
@@ -77,6 +78,7 @@ module.exports = (app)->
   console.log "启动中..."
   require('./router').init(app)
   initBijou app
+  # _api.getIp()
   # initSchedule()
   # _browser.calculateBrowserRecords 1444233600000, 1444440207090, 'day', (err, result)->
 
