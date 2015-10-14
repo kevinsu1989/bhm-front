@@ -47,8 +47,6 @@ define [
       return if data.length is 0
 
       times = @getAllTimes data
-      console.log data
-      console.log times
       console.log @prepareSeries data
       option =
         series: @prepareSeries data
@@ -57,8 +55,6 @@ define [
           data: _.keys times
           boundaryGap: false
         ]
-      console.log option
-      console.log _.extend(@option, option)
       @chart.setOption _.extend(@option, option), true
         
 

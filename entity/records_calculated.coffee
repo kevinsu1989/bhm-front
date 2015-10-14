@@ -31,8 +31,8 @@ class RecordsCalculated extends _BaseEntity
 
     #统计各浏览器PV
     sql="select m.*,time_start as ts,
-    (select pv from browser_calculated where browser_name='ie' and time_start=ts and page_name='#{data.page_name}' and type='#{data.type}' ) as iepv,
-    (select pv from browser_calculated where browser_name='chrome' and time_start=ts and page_name='#{data.page_name}' and type='#{data.type}' ) as chromepv
+    (select pv from browser_calculated where browser_name='ie' and time_start=ts and page_name='#{data.page_name}' and type='#{data.type}' limit 0,1) as iepv,
+    (select pv from browser_calculated where browser_name='chrome' and time_start=ts and page_name='#{data.page_name}' and type='#{data.type}' limit 0,1) as chromepv
     from (select * from records_calculated a where 
     a.time_start >= #{data.time_start} and a.time_start < #{data.time_end} and a.page_name = '#{data.page_name}'"
 

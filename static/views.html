@@ -125,7 +125,7 @@
             <div class="records-table-container">
                 <table class="records-table">
                     <tr>
-                        <th>时间</th><th>白屏时间</th><th>页面解析</th><th>首屏时间</th><th>完全加载</th><th>播放器加载</th><th>PV</th>
+                        <th>时间</th><th>白屏时间</th><th>页面解析</th><th>首屏时间</th><th>完全加载</th><th>播放器加载</th><th>PV</th><th>IE</th><th>Chrome</th>
                     </tr>
                     <tr ng-repeat="item in data">
                         <td ng-if="item.result.type=='day'">{{item.time_start|date: 'MM月dd日'}}</td>
@@ -136,6 +136,8 @@
                         <td>{{item.result.load_time}}ms</td>
                         <td>{{item.result.flash_percent|perFilter}}</td>
                         <td>{{item.result.pv}}00</td>
+                        <td>{{item.result.iepv/item.result.pv|perFilter}}</td>
+                        <td>{{item.result.chromepv/item.result.pv|perFilter}}</td>
                     </tr>
                 </table>
             </div>
