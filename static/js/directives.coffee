@@ -79,6 +79,92 @@ define [
         $rootScope.$emit 'table:show'
 
   ])
+
+
+
+  .directive('mainTopInfo', ['$rootScope', 'API', ($rootScope, API)->
+    restrict: 'E'
+    replace: true
+    template: _utils.extractTemplate '#tmpl-main-top-info', _template
+    link: (scope, element, attrs)->
+      
+      $rootScope.$on 'main:chart:loaded', (event, data)->
+        scope.records = data
+      $rootScope.$on 'main:data:loaded', (event, data)->
+        scope.records = data
+
+  ])
+  
+  .directive('recordsTable', ['$rootScope', ($rootScope)->
+    restrict: 'E'
+    replace: true
+    template: _utils.extractTemplate '#tmpl-data-table', _template
+    link: (scope, element, attrs)->
+      scope.show = false
+      loadTable = (data)->
+        scope.data = data.records
+
+      $rootScope.$on 'main:chart:loaded',(event, data)->
+        loadTable data
+
+      $rootScope.$on 'main:data:loaded', (event, data)->
+        loadTable data
+
+      $rootScope.$on 'table:show', (event)->
+        scope.show = !scope.show
+
+      scope.hideTable = ()->
+        scope.show = !scope.show
+
+  ])
+
+  .directive('datetimePicker', ()->
+    restrict: 'AC'
+    link: (scope, element, attrs)->
+      dateOpt =
+        format: 'yyyy-mm-dd'
+        startView: 2
+        minView: 2
+
+      timeOpt =
+        format: 'hh:ii:ss'
+        startView: 1
+        minView: 0
+        maxView: 1
+
+      dateTimeOpt =
+        format: 'yyyy-mm-dd hh:ii:ss'
+        startView: 2
+
+      name = attrs.name
+      type = attrs.datetype
+      format = attrs.format
+
+      #判断类型
+      switch type
+        when 'time' then dateOpt = timeOpt
+        when 'datetime'then dateOpt = dateTimeOpt
+
+      #设定默认值
+      dateOpt.showMeridian = true
+      dateOpt.autoclose = true
+      if format then dateOpt.format = format
+
+      #延时加载datepicker
+      require ['datepicker'], ->
+        $this = $(element)
+        $this.datetimepicker(dateOpt)
+
+        $this.on 'changeDate', (ev)->
+          scope.$emit 'datetime:change', name, ev.date.valueOf() - 8 * 3600 * 1000
+
+        $this.on 'show', ()->
+          current = attrs.date
+          current = new Date(Number(current)) if current
+          $this.datetimepicker 'setDate', current || new Date()
+
+  )
+
   .directive('mainChartsContainer', ['$rootScope', 'API', ($rootScope, API)->
     restrict: 'E'
     replace: true
@@ -189,87 +275,23 @@ define [
 
   ])
 
-
-  .directive('mainTopInfo', ['$rootScope', 'API', ($rootScope, API)->
-    restrict: 'E'
+  .directive('linePiledChart', ['$rootScope', ($rootScope)->
+    restrict: 'A'
     replace: true
-    template: _utils.extractTemplate '#tmpl-main-top-info', _template
+    scope: title: "@"
     link: (scope, element, attrs)->
-      
-      $rootScope.$on 'main:chart:loaded', (event, data)->
-        scope.records = data
-      $rootScope.$on 'main:data:loaded', (event, data)->
-        scope.records = data
+      chart = {}
+      loadChart = (data)->
+        require ['chart/line-piled-chart'], (_chart)->
+          chart = new _chart(element[0])
 
-  ])
-  
-  .directive('recordsTable', ['$rootScope', ($rootScope)->
-    restrict: 'E'
-    replace: true
-    template: _utils.extractTemplate '#tmpl-data-table', _template
-    link: (scope, element, attrs)->
-      scope.show = false
-      loadTable = (data)->
-        scope.data = data.records
+          chart.reload data, scope.title
 
       $rootScope.$on 'main:chart:loaded',(event, data)->
-        loadTable data
+        loadChart data
 
       $rootScope.$on 'main:data:loaded', (event, data)->
-        loadTable data
-
-      $rootScope.$on 'table:show', (event)->
-        scope.show = !scope.show
-
-      scope.hideTable = ()->
-        scope.show = !scope.show
+        chart.reload data, scope.title
 
   ])
-
-  .directive('datetimePicker', ()->
-    restrict: 'AC'
-    link: (scope, element, attrs)->
-      dateOpt =
-        format: 'yyyy-mm-dd'
-        startView: 2
-        minView: 2
-
-      timeOpt =
-        format: 'hh:ii:ss'
-        startView: 1
-        minView: 0
-        maxView: 1
-
-      dateTimeOpt =
-        format: 'yyyy-mm-dd hh:ii:ss'
-        startView: 2
-
-      name = attrs.name
-      type = attrs.datetype
-      format = attrs.format
-
-      #判断类型
-      switch type
-        when 'time' then dateOpt = timeOpt
-        when 'datetime'then dateOpt = dateTimeOpt
-
-      #设定默认值
-      dateOpt.showMeridian = true
-      dateOpt.autoclose = true
-      if format then dateOpt.format = format
-
-      #延时加载datepicker
-      require ['datepicker'], ->
-        $this = $(element)
-        $this.datetimepicker(dateOpt)
-
-        $this.on 'changeDate', (ev)->
-          scope.$emit 'datetime:change', name, ev.date.valueOf() - 8 * 3600 * 1000
-
-        $this.on 'show', ()->
-          current = attrs.date
-          current = new Date(Number(current)) if current
-          $this.datetimepicker 'setDate', current || new Date()
-
-  )
 

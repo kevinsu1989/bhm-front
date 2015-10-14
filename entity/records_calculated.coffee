@@ -20,13 +20,34 @@ class RecordsCalculated extends _BaseEntity
 
 
   findRecords: (data, cb)->
-    sql = "select * from records_calculated where 
-      time_start >= #{data.time_start} and time_start < #{data.time_end} and
-      page_name = '#{data.page_name}' "
+    #不区分浏览器PV
+    # sql = "select * from records_calculated where 
+    #   time_start >= #{data.time_start} and time_start < #{data.time_end} and
+    #   page_name = '#{data.page_name}' "
+    # sql += " and browser_name='#{data.browser_name}'" if data.browser_name
+    # sql += " and browser_name is null" if !data.browser_name
+    # sql += " and type='#{data.type}' "
+    # sql += " order by time_start"
+
+    #统计各浏览器PV
+    sql="select m.*,time_start as ts,
+    (select pv from browser_calculated where browser_name='ie' and time_start=ts and page_name='#{data.page_name}' and type='#{data.type}' ) as iepv,
+    (select pv from browser_calculated where browser_name='chrome' and time_start=ts and page_name='#{data.page_name}' and type='#{data.type}' ) as chromepv
+    from (select * from records_calculated a where 
+    a.time_start >= #{data.time_start} and a.time_start < #{data.time_end} and a.page_name = '#{data.page_name}'"
+
     sql += " and browser_name='#{data.browser_name}'" if data.browser_name
     sql += " and browser_name is null" if !data.browser_name
     sql += " and type='#{data.type}' "
-    sql += " order by time_start"
+    sql += " order by a.time_start) m"
+
+    console.log sql
     @execute sql, cb
+
+
+
+
+
+
   
 module.exports = new RecordsCalculated
