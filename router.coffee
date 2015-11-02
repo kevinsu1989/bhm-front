@@ -6,8 +6,12 @@ _async = require 'async'
 _http = require('bijou').http
 
 # _config = require './config'
-_api = require './biz/api'
 _cluster = require 'cluster'
+
+
+_api = require './biz/api'
+_records = require './biz/records'
+_browser = require './biz/browser'
 
 receiveData = (req, res, next)->
   _api.receiveData req, res, (err, result)-> _http.responseJSON err, result, res
@@ -20,6 +24,18 @@ getRecords = (req, res, next)->
 
 getPages = (req, res, next)->
   _api.getPages req, res, (err, result)-> _http.responseJSON err, result, res
+
+##########################
+
+calRecords = (req, res, next)->
+  return if !req.query.time_start || !req.query.time_end || !req.query.type
+  _records.calculateRecordsByTime req.query.time_start * 1, req.query.time_end * 1, req.query.type, (err, result)->
+    _http.responseJSON err, result, res
+
+calBrowser = (req, res, next)->
+  return if !req.query.time_start || !req.query.time_end || !req.query.type
+  _browser.calculateBrowserRecords req.query.time_start * 1, req.query.time_end * 1, req.query.type, (err, result)->
+    _http.responseJSON err, result, res
 
 
 #初始化路由
@@ -41,5 +57,14 @@ exports.init = (app)->
   #定时分析
   app.get '/api/pages/:page_name/recent', getRecords
 
+  ################################
+
+  #计算数据
+  app.get '/api/cal/records', calRecords
+  #计算浏览器占比
+  app.get '/api/cal/browser', calBrowser
+
+
   app.get /(\/\w+)?$/, (req, res, next)-> res.sendfile 'static/index.html'
+
 

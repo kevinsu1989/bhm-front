@@ -18,7 +18,9 @@
     "uuid": "^2.0.1",
     "cluster": "^0.7.7",
     "node-schedule": "^0.2.9",
-    "lib-qqwry": ""
+    "lib-qqwry": "^0.0.6",
+    "request": "^2.51.0",
+    "fs-extra": "^0.13.0"
   },
   "scripts": {
     "start": "node-dev app.coffee"

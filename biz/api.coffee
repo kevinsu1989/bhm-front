@@ -92,23 +92,32 @@ calculateRecords = (records)->
 
 makeCalculatedRecords = (result)->        
   records = []
-  flash_load = flash_count = pv_cal = pv_count = 0
+  flash_load = flash_count = pv_cal = pv_count = js_count = js_load = 0
   for record in result
+    # console.log record
     records.push 
       time_start: record.time_start
       time_end: record.time_end
       result: record
     pv_count += record.pv * 1
     pv_cal += record.pv_cal 
+
     flash_count += record.flash_count
     flash_load += record.flash_percent * record.flash_count
+
+    js_count += record.js_count
+    js_load += record.js_load * record.js_count
+
+  js_load = js_load / js_count
   flash_load = flash_load / flash_count
   {
+    records: records
     pv_count: pv_count
     pv_cal: pv_cal
     flash_count: flash_count
     flash_load: flash_load
-    records: records
+    js_count: js_count
+    js_load: js_load
   }
 
 # 最终返回结果拼接
@@ -178,9 +187,13 @@ exports.getRecordsSplit = (req, res, cb)->
         result = makeCalculatedRecords result
 
         flash_load = result.flash_load
+        flash_count = result.flash_count
+
         pv_cal = result.pv_cal
         pv_count = result.pv_count
-        flash_count = result.flash_count
+
+        js_count = result.js_count
+        js_load = result.js_load
 
         done err, result.records, data
     )

@@ -24,6 +24,7 @@ calculateBrowser = (time, page, cb)->
   queue.push(
     (done)->
       _entity.records.browserPercent params, (err, result)->
+        console.log arguments
         done err, result, time
   )
 
@@ -57,8 +58,10 @@ exports.calculateBrowserRecords = (timeStart, timeEnd, timeType)->
     timeType: 'hour'
   }]
   timeArr = _common.getSplitTime timeStart, timeEnd, timeType if timeStart && timeEnd && timeType
+
   _entity.page.findPages (err, pages)->
     browser = [null, 'ie', 'chrome']
+
     for time, index in timeArr
       ((time)->
         setTimeout(()->
