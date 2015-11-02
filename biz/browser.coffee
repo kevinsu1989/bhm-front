@@ -24,7 +24,6 @@ calculateBrowser = (time, page, cb)->
   queue.push(
     (done)->
       _entity.records.browserPercent params, (err, result)->
-        console.log arguments
         done err, result, time
   )
 
