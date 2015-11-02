@@ -160,7 +160,6 @@ exports.getRecords = (req, res, cb)->
       time_end: data.time_end
       result: result
     }
-    
 
 
 

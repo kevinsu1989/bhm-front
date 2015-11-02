@@ -4,9 +4,11 @@ _browser = require './browser'
 _api = require './api'
 _moment = require 'moment'
 _child = require 'child_process'
+_async = require 'async'
 
 
 report = ()->
+  pages = ['首页','完美假期-首页','底层', '电视剧', '综艺']
   req = 
     query:{
       time_start: _moment().subtract(1,'day').startOf('day').valueOf()
@@ -17,24 +19,40 @@ report = ()->
     params:{
       page_name: '底层'
     }
+  list = []
+  index = 0
+  _async.whilst(
+    (-> index < pages?.length)
+    ((done)->
+      page = pages[index++]
+      req.params.page_name = page
+      _api.getRecordsSplit req, null, (err, result)->
+        list.push result.records[0].result
+        done null
+    )
+    ()->
+      sendMsg list
+  )
 
-  _api.getRecordsSplit req, null, (err, result)->
-    # console.log result.records[0]
-    sendMsg(result.records[0].result)
+  # _api.getRecordsSplit req, null, (err, result)->
+  #   # console.log result.records[0]
+  #   sendMsg(result.records[0].result)
 
 
 
-sendMsg = (record)->
-  console.log record.result
-  text = "
-      播放器加载成功率：#{Math.round(record.flash_percent*10000)/100}%,\\n
-      白屏时间：#{record.first_paint}ms,
-      页面解析：#{record.dom_ready}ms,
-      首屏时间：#{record.first_view}ms,
-      完全加载：#{record.load_time}ms。\\n
-  "
+sendMsg = (records)->
+  text = ""
+  for record in records
+	  text += "
+	     【#{record.page_name}】\\n
+	      播放器加载成功率：#{Math.round(record.flash_percent*10000)/100}%,\\n
+	      白屏时间：#{record.first_paint}ms,
+	      页面解析：#{record.dom_ready}ms,
+	      首屏时间：#{record.first_view}ms,
+	      完全加载：#{record.load_time}ms。\\n
+	  "
 
-  send_options = "{\"text\":\"昨日【#{record.page_name}】统计数据\",\"attachments\":[{\"title\":\"【#{record.page_name}】\",\"text\":\"#{text}\",\"color\":\"#ffa500\"}]}"
+  send_options = "{\"text\":\"昨日数据\",\"attachments\":[{\"title\":\"\",\"text\":\"#{text}\",\"color\":\"#ffa500\"}]}"
 
   command = "curl -H \"Content-Type: application/json\" -d '"+send_options+"' \"https://hook.bearychat.com/=bw7by/incoming/088146355989e6687d1d3b35acd608de\" ";
 
@@ -49,10 +67,9 @@ exports.initReportSchedule = ()->
 
   rule_day = new _schedule.RecurrenceRule()
 
-  rule_day.hour = 17
-  rule_day.minute = 32
-  rule_day.second = 30
-  report()
+  rule_day.hour = 10
+  rule_day.minute = 0
+  # report()
   day = _schedule.scheduleJob rule_day, report
 
 
