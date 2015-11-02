@@ -20,7 +20,7 @@ class Records extends _BaseEntity
 
   # 查询基础数据    
   findRecords: (data, cb)->
-    sql = "select a.*, b.flag as flash_flag from records a left join records_flash b on a.hash = b.hash where 
+    sql = "select a.*, 1 as flash_flag from records a where 
     a.timestamp > #{data.time_start} and a.timestamp < #{data.time_end} "
 
     sql += " and page_name='#{data.page_name}'" if !data.page_like
@@ -29,7 +29,7 @@ class Records extends _BaseEntity
 
     sql += " and browser_name='#{data.browser_name}'" if data.browser_name
 
-    # console.log sql
+    console.log sql
     
     @execute sql, cb
 
@@ -45,7 +45,24 @@ class Records extends _BaseEntity
     sql += " and url like 'http://www.hunantv.com#{data.page_like}%'" if data.page_like
 
     sql += " group by flash_load order by flash_load "
-    # console.log sql
+    console.log sql
+    @execute sql, cb
+
+  # 查询播放器JS加载成功率
+  getJsLoad: (data, cb)->
+    sql = "select js_load,count(*) as count from (select case when flash_js_load is not null then 1 else 0 end as js_load from records 
+        where first_paint>0 and flash_installed=1 and cli_version='1.0.1' and timestamp > #{data.time_start} and timestamp < #{data.time_end} "
+
+    sql += " and browser_name='#{data.browser_name}' " if data.browser_name
+
+    sql += " and page_name='#{data.page_name}'" if !data.page_like
+
+    sql += " and url like 'http://www.hunantv.com#{data.page_like}%'" if data.page_like
+
+    sql += " ) a group by a.js_load"
+
+    console.log sql
+
     @execute sql, cb
 
     
@@ -77,8 +94,15 @@ class Records extends _BaseEntity
 
   # 浏览器占比
   getIp: (cb)->
-    sql = "SELECT ip FROM records where ip is not null order by id desc limit 0,100"
-    
+    time_start = 1445011200000
+    time_end = 1445356800000
+    sql = "select ip,count(*) as c from records where flash_load=0 and flash_installed=1 and url like '%hunantv.com/v/1%' group by ip order by c desc limit 0,100"
+    # sql = "SELECT ip FROM records where ip is not null order by id desc limit 0,100"
+    # sql = "SELECT ip,url,FROM_UNIXTIME(timestamp/1000, '%m-%d %H:%i') as t FROM monitor.records  where FROM_UNIXTIME(timestamp/1000, '%H')>=0 and FROM_UNIXTIME(timestamp/1000, '%H')<6 and  url like '%hunantv.com/v/1%' and flash_load=0 and flash_installed=1 and timestamp>#{time_start} "
+    # sql = "select t,count(*) as c from(SELECT ip,url,FROM_UNIXTIME(timestamp/1000, '%H:%i') as t FROM monitor.records  
+    # where FROM_UNIXTIME(timestamp/1000, '%H')>=0 and FROM_UNIXTIME(timestamp/1000, '%H')<6 
+    # and  url like '%hunantv.com/v/1%' and flash_load=0 and flash_installed=1 and timestamp>1445356800000 )m group by t"
+    # sql="SELECT ip,count(*) as c FROM monitor.records  where FROM_UNIXTIME(timestamp/1000, '%H')>=0 and FROM_UNIXTIME(timestamp/1000, '%H')<6 and  url like '%hunantv.com/v/1%' and flash_load=0 and flash_installed=1 and timestamp>#{time_start} group by ip order by c desc"
     @execute sql, cb
 
 module.exports = new Records

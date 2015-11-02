@@ -8,6 +8,8 @@ _ = require 'lodash'
 _entity = require '../entity'
 _common = require '../common'
 _ip = require 'lib-qqwry'
+_fs = require 'fs-extra'
+_request = require 'request'
 
 
 devideRecordsByTime = (records, data)->
@@ -110,7 +112,8 @@ makeCalculatedRecords = (result)->
   }
 
 # 最终返回结果拼接
-getReturns = (records, browser, pv_count, pv_cal, flash_load, flash_count)->
+getReturns = (records, browser, pv_count, pv_cal, flash_load, flash_count, js_load, js_count)->
+
   result = {
     first_paint: 0
     first_view: 0
@@ -134,6 +137,8 @@ getReturns = (records, browser, pv_count, pv_cal, flash_load, flash_count)->
   result.flash_load_1 = result.flash_load / pv_count
   result.flash_load = flash_load
   result.flash_count = flash_count
+  result.js_load = js_load
+  result.js_count = js_count
   result
 
 
@@ -164,6 +169,8 @@ exports.getRecordsSplit = (req, res, cb)->
   pv_cal = 0
   flash_load = 0
   flash_count = 0
+  js_load = 0
+  js_count = 0
   # 用户要求快速查询时，进行快速查询
   if data.isSpeed is 'true'    
     queue.push((done)->
@@ -215,14 +222,26 @@ exports.getRecordsSplit = (req, res, cb)->
     )
 
     queue.push((records, data, done)->
+      _entity.records.getJsLoad data, (err, result)->
+        if result.length > 1
+          js_count = result[0].count * 1 + result[1].count * 1 
+        else if result.length is 1
+          js_count = result[0].count * 1
+        js_load = (result[1].count * 1) /js_count if result.length > 1
+        js_load = 1 if result.length and result[0].js_load is 1
+        done null, records, data
+    )
+
+    queue.push((records, data, done)->
       _entity.records.browserPercent data, (err, result)->
         done null, records, result
     )
 
 
 
+
   _async.waterfall queue,(err, records, browser)->
-    cb err, getReturns(records, browser, pv_count, pv_cal, flash_load, flash_count)
+    cb err, getReturns(records, browser, pv_count, pv_cal, flash_load, flash_count, js_load, js_count)
 
 
 
@@ -248,10 +267,18 @@ exports.getIp = ()->
       done err, result
   )
   _async.waterfall queue,(err, list)->
-    console.log _ip
-    for ip in list
-      ip = _ip.intToIP ip.ip
-      console.log ip
+    ipArr = []
+
+    for item in list
+      ip = _ip.intToIP item.ip
+      # _request "http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=json&ip=#{ip}", (err, response, result)-> 
+      #   console.log response
+      ipArr.push 
+        ip: ip
+        count: item.c
+        # url: item.url
+      # console.log ip
+    _fs.writeFile 'time_count_top100.text', JSON.stringify(ipArr)
 
   
 

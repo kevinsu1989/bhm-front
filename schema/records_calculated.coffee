@@ -34,3 +34,7 @@ exports.schema =
 
     browser_name: ''
 
+    js_load: 'float'
+
+    js_count: 'integer'
+

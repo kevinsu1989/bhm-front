@@ -80,7 +80,8 @@ module.exports = (app)->
   initBijou app
   # _api.getIp()
   # initSchedule()
-  # _browser.calculateBrowserRecords 1444233600000, 1444440207090, 'day', (err, result)->
+  # _records.calculateRecordsByTime 1446447600000, 1446451200000, 'hour', (err, result)->
+  # _browser.calculateBrowserRecords 1445616000000, 1445702400000, 'day', (err, result)->
 
 
 
