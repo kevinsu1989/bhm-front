@@ -12,14 +12,22 @@ define [
 ], (_ng, _app, _utils, _template) ->
 
   _app.config(['$locationProvider', '$stateProvider', '$urlRouterProvider',
-    ($locationProvider, $stateProvider) ->
+    ($locationProvider, $stateProvider, $urlRouterProvider) ->
       $locationProvider.html5Mode enabled: true, requireBase: false
 
+      $urlRouterProvider.otherwise('/login')
+
       $stateProvider
-      .state('main',
+      .state('index',
         url: '/'
         template: _utils.extractTemplate('#tmpl-main', _template)
         controller: 'mainController'
+      )
+      
+      .state('login',
+        url: '/login'
+        template: _utils.extractTemplate('#tmpl-login', _template)
+        controller: 'loginController'
       )
       
   ])

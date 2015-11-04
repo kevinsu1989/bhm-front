@@ -44,8 +44,10 @@ define [
       ]
 
       _.map data, (item)->
-        result[0].data.push(Math.round(item.result[title])) if title isnt 'flash_percent'
-        result[0].data.push(Math.round(item.result[title]*10000)/100) if title is 'flash_percent'
+        if title is 'js_load' || title is 'flash_percent'
+          result[0].data.push(Math.round(item.result[title]*10000)/100)
+        else
+          result[0].data.push(Math.round(item.result[title])) 
 
       result
 
@@ -83,6 +85,7 @@ define [
       ]
       yAxis[0].name = '百次' if title is 'pv'
       yAxis[0].name = '%' if title is 'flash_percent'
+      yAxis[0].name = '%' if title is 'js_load'
       option =
         xAxis: xAxis
         yAxis: yAxis

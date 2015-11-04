@@ -5,34 +5,22 @@
 
 define [
   'ng'
-], (_ng)->
+  'v/cookies'
+], (_ng,_cookies)->
   _ng.module("app.controllers", ['app.services'])
-  # .controller('homeController', ['$rootScope', 'API', ($rootScope, API)->
-  #   loadData = (page_name, data)->
-  #     API.pages(page_name).retrive(data).then (result)->
-  #       $scope.loading = false
-  #       $rootScope.data = result
 
-  #   loadData('BHF')
-  # ])
+  .controller('loginController', ['$rootScope', '$scope', '$state',
+    ($rootScope, $scope, $state)->
+      $scope.login = ()->
+        if $scope.name is 'honey' and $scope.pwd is '123456'
+          _cookies.set('SNDIWUNX', 'MOISDJWOJO', { expires: 3600 })
+          $state.go('index') 
 
-  .controller('agentController', ['$rootScope', '$scope', 'API',
-    ($rootScope, $scope, API)->
-      $rootScope.activeMenu = 'agent'
-#      $scope.status = {}
-#      updateStatus = (event, status)->
-#        $scope.status = status
-#        $scope.$apply()
-#
-#      #服务器主动推送代理的状态
-#      $rootScope.$on 'socket:status', updateStatus
-#
-#      #获取服务器状态
-#      SOCKET.getHoobotStatus (status)-> updateStatus null, status
   ])
 
   .controller('mainController', ['$rootScope', '$scope', 'API',
     ($rootScope, $scope, API)->
+      $state.go('login') if _cookies.get('SNDIWUNX') isnt 'MOISDJWOJO'
       $rootScope.page_name = ""
       $rootScope.query = {}
       loadData = ()->

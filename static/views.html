@@ -1,5 +1,38 @@
 
 <div>
+    <textarea id="tmpl-login">
+        <div class="ui middle aligned center aligned grid">
+            <div class="column" style="width:450px;">
+                <h2 class="ui teal image header">
+                  <div class="content">
+                    Log-in to your account
+                  </div>
+                </h2>
+                <form class="ui large form">
+                    <div class="ui stacked segment">
+                        <div class="field">
+                            <div class="ui left icon input">
+                                <i class="user icon"></i>
+                                <input type="text" name="loginname" ng-model='name' placeholder="LoginName">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui left icon input">
+                                <i class="lock icon"></i>
+                                <input type="password" name="password" ng-model='pwd' placeholder="Password">
+                            </div>
+                        </div>
+                        <div class="ui fluid large teal submit button" ng-click='login()'>Login</div>
+                    </div>
+
+                    <div class="ui error message"></div>
+
+                </form>
+            </div>
+        </div>
+
+    </textarea>
+
     <textarea id="tmpl-main">
         <div class="ui grid">
             <div class="three wide column">
@@ -111,6 +144,7 @@
             <div class="chart child-chart" child-chart data-cntitle="PV" data-title="pv"></div>
             <div class="chart child-chart" child-chart data-cntitle="播放器加载成功率" data-title="flash_percent"></div>
             <div class="chart child-chart long" line-piled-chart data-title="浏览器占比"></div>
+            <div class="chart child-chart" child-chart data-cntitle="JS加载成功率" data-title="js_load"></div>
             <records-table></records-table>
 <!--             <div class="chart child-chart" child-chart data-cntitle="完全加载" data-title="load_time"></div>
             <div class="chart child-chart" child-chart data-cntitle="首屏时间" data-title="first_view"></div>
@@ -125,7 +159,7 @@
             <div class="records-table-container">
                 <table class="records-table">
                     <tr>
-                        <th>时间</th><th>白屏时间</th><th>页面解析</th><th>首屏时间</th><th>完全加载</th><th>IE占比</th><th>Chrome占比</th><th>播放器加载</th><!-- <th>PV</th> -->
+                        <th>时间</th><th>白屏时间</th><th>页面解析</th><th>首屏时间</th><th>完全加载</th><th>IE占比</th><th>Chrome占比</th><th>播放器加载</th><th>JS加载</th><!-- <th>PV</th> -->
                     </tr>
                     <tr ng-repeat="item in data">
                         <td ng-if="item.result.type=='day'">{{item.time_start|date: 'MM月dd日'}}</td>
@@ -137,6 +171,7 @@
                         <td>{{item.result.iepv/item.result.pv|perFilter}}</td>
                         <td>{{item.result.chromepv/item.result.pv|perFilter}}</td>
                         <td>{{item.result.flash_percent|perFilter}}</td>
+                        <td>{{item.result.js_load|perFilter}}</td>
                         <!-- <td>{{item.result.pv}}00</td> -->
                     </tr>
                 </table>

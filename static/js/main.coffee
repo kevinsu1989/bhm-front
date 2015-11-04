@@ -21,7 +21,7 @@ require.config
     'notify': ['jquery', 'v/jquery.noty']
     ng:
       exports : 'angular'
-      deps: ['semantic']
+      deps: ['semantic'],
 #    'v/jquery.transit': ['jquery', '_']
     app: ['ng', 'jquery']
     'semantic': ['jquery']
