@@ -111,7 +111,7 @@
                         <option value="720">12小时内</option>
                     </select>
                 </div>
-                <div class="field">
+                <div class="field" ng-show='active_menu=="index"'>
                     <select ng-change="reload()" ng-model="browser_name" class="ui dropdown" name="card[expire-browser]">
                         <option ng-selected="true" value="">全部浏览器</option>
                         <option value="chrome">chrome</option>
@@ -183,7 +183,7 @@
             <div class="chart child-chart mobile" child-chart data-cntitle="PV" data-title="pv"></div>
             <div class="chart child-chart mobile" child-chart data-cntitle="资源加载成功率" data-title="pv2source"></div>
             <div class="chart child-chart mobile" child-chart data-cntitle="PV-VV转化率" data-title="pv2vv"></div>
-            <!-- <records-table></records-table> -->
+            <records-table></records-table>
         </div>
 
     </textarea>
@@ -191,7 +191,7 @@
     <textarea id="tmpl-data-table">
         <div class="table-container" ng-show="show" ng-click="hideTable()">
             <div class="records-table-container">
-                <table class="records-table">
+                <table class="records-table" ng-show='active_menu=="index"'>
                     <tr>
                         <th>时间</th><th>白屏时间</th><th>页面解析</th><th>首屏时间</th><th>完全加载</th><th>IE占比</th><th>Chrome占比</th><th>播放器加载</th><th>JS加载</th><!-- <th>PV</th> -->
                     </tr>
@@ -207,6 +207,18 @@
                         <td>{{item.result.flash_percent|perFilter}}</td>
                         <td>{{item.result.js_load|perFilter}}</td>
                         <!-- <td>{{item.result.pv}}00</td> -->
+                    </tr>
+                </table>
+                <table class="records-table" ng-show='active_menu=="mobile"'>
+                    <tr>
+                        <th>时间</th><th>资源加载成功率</th><th>PV-VV转化率</th><th>PV</th>
+                    </tr>
+                    <tr ng-repeat="item in data">
+                        <td ng-if="item.type=='day'">{{item.time_start|date: 'MM月dd日'}}</td>
+                        <td ng-if="item.type=='hour'">{{item.time_start|date: 'MM月dd日HH时'}}</td>
+                        <td>{{item.pv2source|perFilter}}</td>
+                        <td>{{item.pv2vv|perFilter}}</td>
+                        <td>{{item.pv}}00</td>
                     </tr>
                 </table>
             </div>

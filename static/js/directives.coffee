@@ -103,6 +103,7 @@ define [
       scope.show = false
       loadTable = (data)->
         scope.data = data.records
+        console.log scope.data
 
       $rootScope.$on 'main:chart:loaded',(event, data)->
         loadTable data

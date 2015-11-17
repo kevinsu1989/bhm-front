@@ -16,13 +16,12 @@ class RecordsCalculated extends _BaseEntity
 
   findRecords: (data, cb)->
     sql = "select pv, detail, source, vv, app, 
-    (vv+app)/pv as pv2vv , app/pv as pv2app , detail/pv as pv2detail , source/pv as pv2source, time_start
+    (vv+app)/pv as pv2vv , app/pv as pv2app , detail/pv as pv2detail , source/pv as pv2source, time_start, time_type as type
     from m_records_calculated where time_start>#{data.time_start} and time_start<#{data.time_end} "
 
     sql += " and time_type='#{data.type}' "
     sql += " order by time_start"
 
-    console.log sql
     @execute sql, cb
 
   findSumRecords: (data, cb)->
@@ -33,7 +32,6 @@ class RecordsCalculated extends _BaseEntity
     sql += " and time_type='#{data.type}' "
     sql += " order by time_start"
 
-    console.log sql
     @execute sql, cb
 
 module.exports = new RecordsCalculated

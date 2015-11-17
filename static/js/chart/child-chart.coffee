@@ -91,6 +91,5 @@ define [
         yAxis: yAxis
         legend: data: _.pluck(data, 'name'), x: 'right', padding: [8, 20, 5, 5]
         series: series
-      console.log _.extend(@option, option)
       @chart.setOption _.extend(@option, option), true
         

@@ -50,7 +50,6 @@ define [
       return if data.length is 0
 
       times = @getAllTimes data
-      console.log @prepareSeries data
       option =
         series: @prepareSeries data
         xAxis: [
