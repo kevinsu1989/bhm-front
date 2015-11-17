@@ -8,7 +8,7 @@ _async = require 'async'
 
 
 report = ()->
-  pages = ['首页','完美假期-首页','底层', '电视剧', '综艺']
+  pages = ['首页', '底层', '电视剧', '综艺']
   req = 
     query:{
       time_start: _moment().subtract(1,'day').startOf('day').valueOf()

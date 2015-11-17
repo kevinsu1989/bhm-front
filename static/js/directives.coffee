@@ -27,7 +27,7 @@ define [
 
 
       scope.pageChange = (page, show_id)->
-        $rootScope.$emit "pages:menu:click", page, show_id
+        scope.$emit "pages:menu:click", page, show_id
 
   ])
   .directive('mainTopMenu', ['$rootScope', '$interval', ($rootScope, $interval)->
@@ -103,7 +103,6 @@ define [
       scope.show = false
       loadTable = (data)->
         scope.data = data.records
-        console.log scope.data
 
       $rootScope.$on 'main:chart:loaded',(event, data)->
         loadTable data

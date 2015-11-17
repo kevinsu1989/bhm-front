@@ -36,7 +36,6 @@ define [
         $scope.loading = true
         API.mpage().retrieve($rootScope.query).then (result)->
           $scope.loading = false
-          console.log result
           $rootScope.$broadcast 'main:data:loaded', result, $state.current.name
 
       $rootScope.$on 'top:menu:select', (event, query)->
@@ -61,7 +60,7 @@ define [
           $scope.loading = false
           $rootScope.$broadcast 'main:data:loaded', result, $state.current.name
 
-      $rootScope.$on 'pages:menu:click', (event, page)->
+      $scope.$on 'pages:menu:click', (event, page)->
         return if $state.current.name isnt "index"
         $rootScope.page_name = page.page_name
         $rootScope.query.page_like = page.page_like
@@ -69,7 +68,7 @@ define [
         $rootScope.query.type = $rootScope.type
         loadData()
 
-      $rootScope.$on 'top:menu:select', (event, query)->
+      $scope.$on 'top:menu:select', (event, query)->
         return if $state.current.name isnt "index"
         $rootScope.query = query
         $rootScope.query.isSpeed = $rootScope.isSpeed

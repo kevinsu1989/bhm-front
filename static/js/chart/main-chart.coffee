@@ -80,7 +80,7 @@ define [
       data: data.data
 
     reload: (origin)->
-      return if origin.length is 0
+      return if !origin || origin.length is 0
       originTimes = @getAllTimes origin
       data = @prepareSeries origin
       colors = ['#2f91da', '#00ff00', '#ff00ff', '#ff0000']
