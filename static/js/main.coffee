@@ -16,6 +16,7 @@ require.config
     pkg:'/package'
     datepicker: '/package/datetime/datetimepicker'
     'semantic': '/package/semantic/semantic.min'
+    'bootstrap': '/package/angular-bootstrap/ui-bootstrap.min'
   shim:
     'v/jquery.noty': 'jquery'
     'notify': ['jquery', 'v/jquery.noty']

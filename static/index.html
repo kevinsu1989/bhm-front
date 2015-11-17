@@ -6,13 +6,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
     <script src="js/vendor/require.js" data-main="/js/main.js"></script>
     <link rel="stylesheet" type="text/css" href="/package/semantic/semantic.css">
+    <link rel="stylesheet" type="text/css" href="/package/semantic/components/menu.min.css">
     <link rel="stylesheet" type="text/css" href="/package/datetime/datetimepicker.css">
     <link rel="stylesheet" type="text/css" href="/css/main.css">
     <link href="css/main.css" media="screen" rel="stylesheet" />
     <base href="/">
 </head>
 <body>
-
+        <div class="header" ng-if="active_menu">
+<!--           <div href="/" class="header item">
+            <img class="logo" src="assets/images/logo.png">
+            Project Name
+          </div> -->
+          <a href="/" class="item" ng-class="{active: active_menu == 'index'}">主站</a>
+          <a href="/mobile" class="item" ng-class="{active: active_menu == 'mobile'}">M站</a>
+        </div>
 
     <div class="ui internally celled grid">
         <div class="sixteen wide column">

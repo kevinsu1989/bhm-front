@@ -44,11 +44,11 @@ define [
       ]
 
       _.map data, (item)->
-        if title is 'js_load' || title is 'flash_percent'
-          result[0].data.push(Math.round(item.result[title]*10000)/100)
+        item = item.result || item
+        if title in['js_load', 'flash_percent', 'pv2vv', 'pv2source']
+          result[0].data.push(Math.round(item[title]*10000)/100)
         else
-          result[0].data.push(Math.round(item.result[title])) 
-
+          result[0].data.push(Math.round(item[title])) 
       result
 
     getStyles: (data, color)->
@@ -84,12 +84,13 @@ define [
         name: 'ms'
       ]
       yAxis[0].name = '百次' if title is 'pv'
-      yAxis[0].name = '%' if title is 'flash_percent'
-      yAxis[0].name = '%' if title is 'js_load'
+      if title in ['flash_percent','js_load','pv2vv','pv2source']
+        yAxis[0].name = '%' 
       option =
         xAxis: xAxis
         yAxis: yAxis
         legend: data: _.pluck(data, 'name'), x: 'right', padding: [8, 20, 5, 5]
         series: series
+      console.log _.extend(@option, option)
       @chart.setOption _.extend(@option, option), true
         

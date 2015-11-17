@@ -34,19 +34,38 @@
     </textarea>
 
     <textarea id="tmpl-main">
-        <div class="ui grid">
-            <div class="three wide column">
-                <main-left-menu></main-left-menu>
+        <div>
+            <div class="ui grid">
+                <div class="three wide column">
+                    <main-left-menu></main-left-menu>
+                </div>
+                <div class="thirteen wide column">
+                    <main-top-menu></main-top-menu>
+                    <main-charts-container></main-charts-container>
+                </div>
+                <div class="loading sixteen wide column" ng-show="loading">
+                    
+                </div>
+                <div class="loading-gif" ng-show="loading">
+                    <img src="/img/loading.gif">
+                </div>
             </div>
-            <div class="thirteen wide column">
-                <main-top-menu></main-top-menu>
-                <main-charts-container></main-charts-container>
-            </div>
-            <div class="loading sixteen wide column" ng-show="loading">
-                
-            </div>
-            <div class="loading-gif" ng-show="loading">
-                <img src="/img/loading.gif">
+        </div>
+    </textarea>
+
+    <textarea id="tmpl-mobile">
+        <div>
+            <div class="ui grid">
+                <div class="sixteen wide column">
+                    <main-top-menu></main-top-menu>
+                    <mobile-charts-container></mobile-charts-container>
+                </div>
+                <div class="loading sixteen wide column" ng-show="loading">
+                    
+                </div>
+                <div class="loading-gif" ng-show="loading">
+                    <img src="/img/loading.gif">
+                </div>
             </div>
         </div>
     </textarea>
@@ -69,6 +88,9 @@
         
                 <!-- <a ng-repeat="child in page.children" class="teal item child" ng-class="child.page_name==page_name?'active':''" ng-click="pageChange(child)">{{child.page_name}}</a> -->
                 
+            </div>
+            <div class="parent">
+                <a class="teal item" ng-if="page.children.length==0" ng-class="page.page_name==page_name?'active':''" ng-click="pageChangeM()">M站</a>
             </div>
         </div>
     </textarea>
@@ -138,7 +160,7 @@
 
         <div>
             <div class="chart bar-chart" bar-chart data-title="【{{page_name}}】的平均性能指标"></div>
-            <div class="chart child-chart" gauge-chart data-title="播放器加载成功率"></div>
+            <div class="chart child-chart" gauge-chart data-title="播放器加载成功率" data-field='flash_load'></div>
             <div class="chart child-chart" pie-chart data-title="浏览器占比"></div>
             <div class="chart main-chart" main-chart></div>
             <div class="chart child-chart" child-chart data-cntitle="PV" data-title="pv"></div>
@@ -150,6 +172,18 @@
             <div class="chart child-chart" child-chart data-cntitle="首屏时间" data-title="first_view"></div>
             <div class="chart child-chart" child-chart data-cntitle="白屏时间" data-title="first_paint"></div>
             <div class="chart child-chart" child-chart data-cntitle="页面解析" data-title="dom_ready"></div> -->
+        </div>
+
+    </textarea>
+
+    <textarea id="tmpl-mobile-charts-container">
+
+        <div>
+            <div class="chart child-chart mobile" gauge-chart data-title="PV-VV转化率" data-field='pv2vv'></div>
+            <div class="chart child-chart mobile" child-chart data-cntitle="PV" data-title="pv"></div>
+            <div class="chart child-chart mobile" child-chart data-cntitle="资源加载成功率" data-title="pv2source"></div>
+            <div class="chart child-chart mobile" child-chart data-cntitle="PV-VV转化率" data-title="pv2vv"></div>
+            <!-- <records-table></records-table> -->
         </div>
 
     </textarea>
@@ -206,6 +240,8 @@
         </div>
         
     </textarea>
+
+
 </div>
 
 

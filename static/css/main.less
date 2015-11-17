@@ -133,6 +133,10 @@
     &.long{
       width: 75%;
     }
+    &.mobile{
+      width: 50%;
+      height: 300px;
+    }
   }
   &.bar-chart{
     width: 50%;
@@ -241,7 +245,22 @@
     display: none;
   }
 }
-
+.header{
+  height: 50px;
+  line-height: 50px;
+  padding-left: 15px;
+  background: #222;
+  .item{
+    padding: 0px 15px;
+    color: #fff;
+    height: 50px;    
+    display: block;
+    float: left;
+    &.active,&:hover{
+      background: #666;
+    }
+  }
+}
 
 
 

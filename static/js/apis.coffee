@@ -11,4 +11,8 @@ define [], ->
     {
       "url": "pages/:page_name/recent",
       "methods": {}
+    },
+    {
+      "url": "mpage",
+      "methods": {}
     }]

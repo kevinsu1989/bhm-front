@@ -7,6 +7,7 @@
 define [
   'ng'
   'v/ui-router'
+  'bootstrap'
   './services'
   './filters'
   './directives'
@@ -17,4 +18,5 @@ define [
     'app.directives'
     'app.controllers'
     'ui.router'
+    'ui.bootstrap'
   ]

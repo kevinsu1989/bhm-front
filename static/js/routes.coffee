@@ -29,5 +29,11 @@ define [
         template: _utils.extractTemplate('#tmpl-login', _template)
         controller: 'loginController'
       )
+
+      .state('mobile',
+        url: '/mobile'
+        template: _utils.extractTemplate('#tmpl-mobile', _template)
+        controller: 'mobileController'
+      )
       
   ])

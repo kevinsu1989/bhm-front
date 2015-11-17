@@ -20,14 +20,14 @@ define [
       API.pages().retrieve().then (result)->
         $rootScope.page_name = result[0].page_name
         scope.pages = result
-        scope.$emit 'pages:menu:loaded', result[0].page_name
+        scope.$emit 'pages:menu:loaded', result[0].page_name, 'index'
 
       scope.showItems = (page,show)->
         page.show_items = show
 
 
-      scope.pageChange = (page)->
-        $rootScope.$emit "pages:menu:click", page
+      scope.pageChange = (page, show_id)->
+        $rootScope.$emit "pages:menu:click", page, show_id
 
   ])
   .directive('mainTopMenu', ['$rootScope', '$interval', ($rootScope, $interval)->
@@ -163,7 +163,7 @@ define [
           current = new Date(Number(current)) if current
           $this.datetimepicker 'setDate', current || new Date()
 
-  )
+  )  
 
   .directive('mainChartsContainer', ['$rootScope', 'API', ($rootScope, API)->
     restrict: 'E'
@@ -172,24 +172,39 @@ define [
     link: (scope, element, attrs)->
 
   ])
+
+  .directive('mobileChartsContainer', ['$rootScope', 'API', ($rootScope, API)->
+    restrict: 'E'
+    replace: true
+    template: _utils.extractTemplate '#tmpl-mobile-charts-container', _template
+    link: (scope, element, attrs)->
+
+  ])
+
   .directive('mainChart', ['$rootScope', 'API', ($rootScope, API)->
     restrict: 'A'
     replace: true
     link: (scope, element, attrs)->
       chart = {}
-      loadChart = (page_name)->
+      loadChart = (page_name, page)->
         require ['chart/main-chart'], (_mainChart)->
           chart = new _mainChart(element[0])
 
           API.pages(page_name).retrieve({isSpeed:$rootScope.isSpeed,type:$rootScope.type}).then (result)->
             scope.loading = false
-            $rootScope.$emit 'main:chart:loaded', result
+            $rootScope.$emit 'main:chart:loaded', result, page
             chart.reload result.records
-      scope.$on 'pages:menu:loaded',(event, page_name)->
-        loadChart page_name
+      scope.$on 'pages:menu:loaded',(event, page_name, page)->
+        return if page not in ['index']
+        loadChart page_name, page
 
-      $rootScope.$on 'main:data:loaded', (event, data)->
-        chart.reload data.records
+      $rootScope.$on 'main:data:loaded', (event, data, page)->
+        return if page not in ['index']
+        if data.records
+          if chart.reload
+            chart.reload data.records, scope.title, scope.cntitle 
+          else
+            loadChart data
 
 
   ])
@@ -206,11 +221,17 @@ define [
 
           chart.reload data.records, scope.title, scope.cntitle
 
-      $rootScope.$on 'main:chart:loaded',(event, data)->
+      $rootScope.$on 'main:chart:loaded',(event, data, page)->
+        return if page not in ['index','mobile']
         loadChart data
 
-      $rootScope.$on 'main:data:loaded', (event, data)->
-        chart.reload data.records, scope.title, scope.cntitle
+      $rootScope.$on 'main:data:loaded', (event, data, page)->
+        return if page not in ['index','mobile']
+        if data.records
+          if chart.reload
+            chart.reload data.records, scope.title, scope.cntitle 
+          else
+            loadChart data
 
 
   ])
@@ -227,31 +248,43 @@ define [
 
           chart.reload data.browser, scope.title
 
-      $rootScope.$on 'main:chart:loaded',(event, data)->
+      $rootScope.$on 'main:chart:loaded',(event, data, page)->
+        return if page not in ['index']
         loadChart data
 
-      $rootScope.$on 'main:data:loaded', (event, data)->
-        chart.reload data.browser, scope.title
+      $rootScope.$on 'main:data:loaded', (event, data, page)->
+        return if page not in ['index']
+        if data.browser
+          if chart.reload
+            chart.reload data.browser, scope.title 
+          else
+            loadChart data
 
   ])
 
   .directive('gaugeChart', ['$rootScope', ($rootScope)->
     restrict: 'A'
     replace: true
-    scope: title: "@"
+    scope: title: "@", field: "@"
     link: (scope, element, attrs)->
       chart = {}
       loadChart = (data)->
         require ['chart/gauge-chart'], (_chart)->
           chart = new _chart(element[0])
 
-          chart.reload data.flash_load, scope.title
+          chart.reload data[scope.field], scope.title
 
-      $rootScope.$on 'main:chart:loaded',(event, data)->
+      $rootScope.$on 'main:chart:loaded',(event, data, page)->
+        return if page not in ['index','mobile']
         loadChart data
 
-      $rootScope.$on 'main:data:loaded', (event, data)->
-        chart.reload data.flash_load, scope.title
+      $rootScope.$on 'main:data:loaded', (event, data, page)->
+        return if page not in ['index','mobile']
+        if data[scope.field]
+          if chart.reload
+            chart.reload data[scope.field], scope.title 
+          else
+            loadChart data
 
   ])
 
@@ -267,11 +300,16 @@ define [
 
           chart.reload data, scope.title
 
-      $rootScope.$on 'main:chart:loaded',(event, data)->
+      $rootScope.$on 'main:chart:loaded',(event, data, page)->
+        return if page not in ['index']
         loadChart data
 
-      $rootScope.$on 'main:data:loaded', (event, data)->
-        chart.reload data, scope.title
+      $rootScope.$on 'main:data:loaded', (event, data, page)->
+        return if page not in ['index']
+        if chart.reload
+          chart.reload data, scope.title
+        else
+          loadChart data
 
   ])
 
@@ -287,11 +325,16 @@ define [
 
           chart.reload data, scope.title
 
-      $rootScope.$on 'main:chart:loaded',(event, data)->
+      $rootScope.$on 'main:chart:loaded',(event, data, page)->
+        return if page not in ['index']
         loadChart data
 
-      $rootScope.$on 'main:data:loaded', (event, data)->
-        chart.reload data, scope.title
+      $rootScope.$on 'main:data:loaded', (event, data, page)->
+        return if page not in ['index']
+        if chart.reload
+          chart.reload data, scope.title
+        else
+          loadChart data
 
   ])
 
