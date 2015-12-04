@@ -75,6 +75,9 @@ define [
       scope.speedLoad = ()->
         $rootScope.isSpeed = scope.isSpeed
 
+      scope.WITHOUTIE7 = ()->
+        $rootScope.ie7 = scope.ie7
+
       scope.showTable = ()->
         $rootScope.$emit 'table:show'
 
@@ -189,8 +192,8 @@ define [
       loadChart = (page_name, page)->
         require ['chart/main-chart'], (_mainChart)->
           chart = new _mainChart(element[0])
-
           API.pages(page_name).retrieve({isSpeed:$rootScope.isSpeed,type:$rootScope.type}).then (result)->
+          # API.pages('动漫').retrieve({page_like:'/v/3',time_end:1448236800000,time_start:1444867200000}).then (result)->
             scope.loading = false
             $rootScope.$emit 'main:chart:loaded', result, page
             chart.reload result.records
@@ -208,6 +211,8 @@ define [
 
 
   ])
+
+
 
   .directive('childChart', ['$rootScope', ($rootScope)->
     restrict: 'A'
@@ -338,3 +343,133 @@ define [
 
   ])
 
+  .directive('ieChart', ['$rootScope', 'API', ($rootScope, API)->
+    restrict: 'A'
+    replace: true
+    link: (scope, element, attrs)->
+      chart = {}
+      loadChart = (data)->
+        data = [{
+          time_start:1448121600000,
+          IE9: 830,
+          IE8: 1,
+          IE8: 2789,
+          IE7: 529,
+          IE6: 1,
+          IE11: 934,
+          IE10: 485
+        },
+        {
+          time_start:1448208000000,
+          IE9: 792,
+          IE8: 2731,
+          IE7: 432,
+          IE6: 3,
+          IE11: 860,
+          IE10: 481
+        },
+        {
+          time_start:1448294400000,
+          IE9: 1059,
+          IE8: 3294,
+          IE7: 466,
+          IE6: 1,
+          IE11: 1142,
+          IE10: 567
+        },
+        {
+          time_start:1448380800000,
+          IE9: 791,
+          IE8: 2525,
+          IE7: 403,
+          IE6: 2,
+          IE11: 853,
+          IE10: 445
+        },
+        {
+          time_start:1448467200000,
+          IE9: 559,
+          IE8: 2073,
+          IE7: 338,
+          IE6: 1,
+          IE11: 712,
+          IE10: 363
+        },
+        {
+          time_start:1448553600000,
+          IE9: 675,
+          IE8: 2242,
+          IE7: 382,
+          IE11: 764,
+          IE10: 452
+        },
+        {
+          time_start:1448640000000,
+          IE9: 824,
+          IE8: 2772,
+          IE7: 459,
+          IE6: 4,
+          IE11: 981,
+          IE10: 516
+        },
+        {
+          time_start:1448726400000,
+          IE9: 768,
+          IE8: 2426,
+          IE7: 374,
+          IE6: 1,
+          IE11: 918,
+          IE10: 457
+        },
+        {
+          time_start:1448812800000,
+          IE9: 687,
+          IE8: 2008,
+          IE7: 419,
+          IE6: 3,
+          IE11: 744,
+          IE10: 332
+        },
+        {
+          time_start:1448899200000,
+          IE9: 654,
+          IE8: 1953,
+          IE7: 1164,
+          IE6: 3,
+          IE11: 775,
+          IE10: 370
+        },
+        {
+          time_start:1448985600000,
+          IE9: 746,
+          IE8: 2045,
+          IE7: 1939,
+          IE6: 3,
+          IE11: 737,
+          IE10: 361
+        },
+        {
+          time_start:1449072000000,
+          IE9: 606,
+          IE8: 1713,
+          IE7: 1827,
+          IE6: 1,
+          IE11: 689,
+          IE10: 304
+        }]
+        require ['chart/ie-chart'], (_chart)->
+          chart = new _chart(element[0])
+
+          chart.reload data, scope.title
+
+      $rootScope.$on 'main:chart:loaded',(event, data, page)->
+        loadChart data
+
+      $rootScope.$on 'main:data:loaded', (event, data, page)->
+        if chart.reload
+          chart.reload data, scope.title
+        else
+          loadChart data
+
+
+  ])

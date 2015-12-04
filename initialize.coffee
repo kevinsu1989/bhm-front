@@ -5,6 +5,7 @@ _ = require 'lodash'
 
 _config = require './config' 
 _schedule = require './biz/schedule'
+_api = require './biz/api'
 
 
 #初始化bijou

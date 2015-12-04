@@ -67,6 +67,7 @@ calculateRecords = (records)->
     flash_load: 0
     pv_cal: 0 #参与计算的数据
     pv: 0 #总数据
+    #r800: 0
   }
   return result if !records || records.length is 0
   for record in records
@@ -76,6 +77,8 @@ calculateRecords = (records)->
     result.load_time += parseInt(record.load_time)
     result.flash_load += record.flash_flag
     result.pv_cal += 1 if parseInt(record.first_paint) isnt 0
+
+    #result.r800 += 1 if record.resolution is '800*600'
 
   
   if result.pv_cal > 0
@@ -87,6 +90,8 @@ calculateRecords = (records)->
       flash_load: result.flash_load
       pv_cal: result.pv_cal
       pv: records.length
+
+      #r800: result.r800/records.length
     }
   result
 
@@ -168,7 +173,7 @@ exports.getRecordsSplit = (req, res, cb)->
   data.page_name = req.params.page_name
   data.time_start = _common.getDayStart().valueOf() if !data.time_start
   data.time_end = _common.getDayStart().valueOf() + 24 * 60 * 60 * 1000 - 1  if !data.time_end
-  data.timeStep = 24 * 60 * 60 * 10 if !data.timeStep
+  data.timeStep = 24 * 60 * 60 * 1000 if !data.timeStep
   # 最小时间间隔1分钟
   data.timeStep = 60 * 1000 if data.timeStep < 60 * 1000
 
@@ -271,7 +276,7 @@ exports.getPages = (req, res, cb)->
 
     cb err, pages
 
-exports.getIp = ()->
+exports.getIp = (req, res, cb)->
 
   queue = [] 
   queue.push((done)->
@@ -283,14 +288,25 @@ exports.getIp = ()->
 
     for item in list
       ip = _ip.intToIP item.ip
-      # _request "http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=json&ip=#{ip}", (err, response, result)-> 
-      #   console.log response
-      ipArr.push 
-        ip: ip
-        count: item.c
+      ((count)->
+        _request "http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=json&ip=#{ip}", (err, response, result)-> 
+          result = JSON.parse(result)
+          dis = result.province + result.city
+          ipArr.push 
+            ip: ip
+            dis: dis
+            count: count
+          if ipArr.length is list.length
+            disArr = {}
+            for item in ipArr
+              if disArr[item.dis]
+                disArr[item.dis] += item.count
+              else
+                disArr[item.dis] = item.count
+            cb disArr 
+      )(item.c)
+        # _fs.writeFile 'ip.text', JSON.stringify(ipArr) if ipArr.length is list.length
         # url: item.url
       # console.log ip
-    _fs.writeFile 'time_count_top100.text', JSON.stringify(ipArr)
 
-  
 

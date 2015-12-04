@@ -42,7 +42,8 @@ calBrowser = (req, res, next)->
   _browser.calculateBrowserRecords req.query.time_start * 1, req.query.time_end * 1, req.query.type, (err, result)->
     _http.responseJSON err, result, res
 
-
+getIp = (req, res, next)->
+  _api.getIp req, res, (err, result)-> _http.responseJSON err, result, res
 #初始化路由
 exports.init = (app)->
 
@@ -64,6 +65,8 @@ exports.init = (app)->
   app.get '/api/cal/records', calRecords
   #计算浏览器占比
   app.get '/api/cal/browser', calBrowser
+  #计算ip
+  app.get '/api/ip', getIp
 
 
   app.get /(\/\w+)?$/, (req, res, next)-> res.sendfile 'static/index.html'

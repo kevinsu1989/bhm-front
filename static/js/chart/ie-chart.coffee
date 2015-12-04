@@ -5,7 +5,7 @@ define [
   '_'
 ], (_echarts, _utils, _moment, _)->
 
-  class mainChart
+  class ieChart
     constructor: (@container)->
       @option =
         legend: x: 'right', padding: [8, 20, 5, 5]
@@ -15,6 +15,7 @@ define [
 
         toolbox: show: false
         calculable: true
+        boundaryGap: true
         xAxis: [
           type: "category"
           boundaryGap: false
@@ -38,17 +39,24 @@ define [
       list.splice 0, 5
 
     #准备数据
-    prepareSeries: (data, title, cntitle)->
+    prepareSeries: (data)->
       result = [
-        {name: cntitle, type: "line", data: []}
+        {name: "IE7", type: "line", data: []},
+        {name: "IE8", type: "line", data: []},
+        {name: "IE9", type: "line", data: []},
+        {name: "IE10", type: "line", data: []},
+        {name: "IE11", type: "line", data: []}
       ]
 
       _.map data, (item)->
-        item = item.result || item
-        if title in['js_load', 'flash_percent', 'pv2vv', 'pv2source','r800']
-          result[0].data.push(Math.round(item[title]*10000)/100)
-        else
-          result[0].data.push(Math.round(item[title])) 
+        result[0].data.push(Math.round item.IE7)
+        result[1].data.push(Math.round item.IE8)
+        result[2].data.push(Math.round item.IE9)
+        result[3].data.push(Math.round item.IE10)
+        result[4].data.push(Math.round item.IE11)
+        
+      # @cutTopN result
+
       result
 
     getStyles: (data, color)->
@@ -61,18 +69,29 @@ define [
       itemStyle:
         normal:
           color: color
+        # normal:
+        #   color: color
+        #   lineStyle: 
+        #     color: color
+          # nodeStyle:
+          #   color: color
+          #   borderWidth: 2
+          # areaStyle:
+          #   color: color
+          #   type: "default"
       data: data.data
 
-    reload: (origin, title, cntitle)->
-      return if origin.length is 0
+    reload: (origin)->
+      return if !origin || origin.length is 0
       originTimes = @getAllTimes origin
-      data = @prepareSeries origin, title, cntitle
-      colors = { "first_paint": '#2f91da', "dom_ready": '#00ff00', "first_view": '#ff00ff', "load_time": '#ff0000', "pv": '#ff0000'}
+      data = @prepareSeries origin
+      colors = ['#2f91da', '#00ff00', '#ff00ff', '#ff0000', '#ffff00']
 
-      series = [@getStyles data[0], colors[title] || '#2f91da']
+      series = (@getStyles(item, colors[index]) for item, index in data)
       xAxis = [
         type: 'category'
         data: _.keys originTimes
+        splitLine: show: true
         boundaryGap: false
         axisLabel:
           formatter: (text)->
@@ -81,15 +100,14 @@ define [
 
       yAxis = [
         type: 'value'
-        name: 'ms'
+        splitLine: show: true
+        name: '次'
       ]
-      yAxis[0].name = '百次' if title is 'pv'
-      if title in ['flash_percent','js_load','pv2vv','pv2source','r800']
-        yAxis[0].name = '%' 
       option =
         xAxis: xAxis
         yAxis: yAxis
         legend: data: _.pluck(data, 'name'), x: 'right', padding: [8, 20, 5, 5]
         series: series
+
       @chart.setOption _.extend(@option, option), true
         

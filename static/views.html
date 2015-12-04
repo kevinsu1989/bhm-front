@@ -139,13 +139,17 @@
 
             </div>
 
-            <div class="five fields" ng-show='false'>
+            <div class="five fields">
                 <div class="fild">
-                    <div class="ui toggle checkbox">
+                    <div class="ui toggle checkbox" ng-show="page_name in ['底层','综艺','电视剧']">
+                      <input ng-model="ie7" ng-change="WITHOUTIE7()" type="checkbox" name="public">
+                      <label>除IE7</label>
+                    </div>
+                    <div class="ui toggle checkbox" ng-show='false'>
                       <input ng-model="isAuto" ng-change="autoLoad()" type="checkbox" name="public">
                       <label>自动刷新</label>
                     </div>
-                    <div class="ui toggle checkbox">
+                    <div class="ui toggle checkbox" ng-show='false'>
                       <input ng-model="isSpeed" ng-change="speedLoad()" type="checkbox" name="public">
                       <label>快速查询</label>
                     </div>
@@ -167,8 +171,11 @@
             <div class="chart child-chart" child-chart data-cntitle="播放器加载成功率" data-title="flash_percent"></div>
             <div class="chart child-chart long" line-piled-chart data-title="浏览器占比"></div>
             <div class="chart child-chart" child-chart data-cntitle="JS加载成功率" data-title="js_load"></div>
+            <!-- <div class="chart child-chart" child-chart data-cntitle="800*600" data-title="r800"></div> -->
             <records-table></records-table>
-<!--             <div class="chart child-chart" child-chart data-cntitle="完全加载" data-title="load_time"></div>
+
+           <!--  <div class="chart main-chart" ie-chart data-title="IE"></div> -->
+<!--        <div class="chart child-chart" child-chart data-cntitle="完全加载" data-title="load_time"></div>
             <div class="chart child-chart" child-chart data-cntitle="首屏时间" data-title="first_view"></div>
             <div class="chart child-chart" child-chart data-cntitle="白屏时间" data-title="first_paint"></div>
             <div class="chart child-chart" child-chart data-cntitle="页面解析" data-title="dom_ready"></div> -->

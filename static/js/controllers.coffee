@@ -65,6 +65,7 @@ define [
         $rootScope.page_name = page.page_name
         $rootScope.query.page_like = page.page_like
         $rootScope.query.isSpeed = $rootScope.isSpeed
+        $rootScope.query.ie7 = $rootScope.ie7
         $rootScope.query.type = $rootScope.type
         loadData()
 
@@ -72,6 +73,7 @@ define [
         return if $state.current.name isnt "index"
         $rootScope.query = query
         $rootScope.query.isSpeed = $rootScope.isSpeed
+        $rootScope.query.ie7 = $rootScope.ie7
         $rootScope.query.type = $rootScope.type
         loadData()
   ])

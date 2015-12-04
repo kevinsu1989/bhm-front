@@ -13,7 +13,7 @@ class Page extends _BaseEntity
 
 
   findPages: (cb)->
-    sql = "select * from page"
+    sql = "select * from page where is_show = 1"
 
     @execute sql, cb
 
