@@ -89,8 +89,8 @@ class Records extends _BaseEntity
 
     sql += " and url like 'http://www.hunantv.com#{data.page_like}%'" if data.page_like
 
-    sql += " group by browser_name order by value asc"
-
+    sql += " group by browser_name order by value desc limit 0,5"
+    console.log sql
     @execute sql, cb
 
 

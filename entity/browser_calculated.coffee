@@ -29,7 +29,7 @@ class BrowserCalculated extends _BaseEntity
 
   findSumRecords: (data, cb)->
     sql = "select browser_name as name , sum(pv) as value from browser_calculated where 
-      time_start >= #{data.time_start} and time_start < #{data.time_end} and
+      time_start >= #{data.time_start} and time_start < #{data.time_end} and browser_name in ('ie','chrome','firefox','safari') and
       page_name = '#{data.page_name}' "
     sql += " and type='#{data.type}' "
     sql += "  group by browser_name order by time_start"
