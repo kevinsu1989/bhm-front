@@ -10,6 +10,7 @@ _common = require '../common'
 _ip = require 'lib-qqwry'
 _fs = require 'fs-extra'
 _request = require 'request'
+_ua = require 'ua-parser-js'
 
 
 devideRecordsByTime = (records, data)->
@@ -306,6 +307,10 @@ exports.getIp = (req, res, cb)->
                 disArr[item.dis] = item.count
             cb disArr 
       )(item.c)
+
+
+exports.getUA = (req, res, cb)->
+  cb null, _ua(req.query.ua)
         # _fs.writeFile 'ip.text', JSON.stringify(ipArr) if ipArr.length is list.length
         # url: item.url
       # console.log ip

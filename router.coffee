@@ -44,6 +44,9 @@ calBrowser = (req, res, next)->
 
 getIp = (req, res, next)->
   _api.getIp req, res, (err, result)-> _http.responseJSON err, result, res
+
+getUA = (req, res, next)->
+  _api.getUA req, res, (err, result)-> _http.responseJSON err, result, res
 #初始化路由
 exports.init = (app)->
 
@@ -67,6 +70,8 @@ exports.init = (app)->
   app.get '/api/cal/browser', calBrowser
   #计算ip
   app.get '/api/ip', getIp
+  #计算ua
+  app.get '/api/ua', getUA
 
 
   app.get /(\/\w+)?$/, (req, res, next)-> res.sendfile 'static/index.html'

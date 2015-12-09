@@ -20,7 +20,8 @@
     "node-schedule": "^0.2.9",
     "lib-qqwry": "^0.0.6",
     "request": "^2.51.0",
-    "fs-extra": "^0.13.0"
+    "fs-extra": "^0.13.0",
+    "ua-parser-js": "^0.7.9"
   },
   "scripts": {
     "start": "node-dev app.coffee"
