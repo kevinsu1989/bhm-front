@@ -71,7 +71,7 @@ exports.init = (app)->
   #计算ip
   app.get '/api/ip', getIp
   #计算ua
-  app.get '/api/ua/:ua', getUA
+  app.get '/api/ua', getUA
 
 
   app.get /(\/\w+)?$/, (req, res, next)-> res.sendfile 'static/index.html'

@@ -310,7 +310,7 @@ exports.getIp = (req, res, cb)->
 
 
 exports.getUA = (req, res, cb)->
-  cb null, _ua(req.params.ua)
+  cb null, _ua(req.query.ua)
         # _fs.writeFile 'ip.text', JSON.stringify(ipArr) if ipArr.length is list.length
         # url: item.url
       # console.log ip
