@@ -15,4 +15,8 @@ define [], ->
     {
       "url": "mpage",
       "methods": {}
+    },
+    {
+      "url": "flash",
+      "methods": {}
     }]

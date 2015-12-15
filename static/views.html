@@ -70,6 +70,23 @@
         </div>
     </textarea>
 
+    <textarea id="tmpl-player">
+        <div>
+            <div class="ui grid">
+                <div class="sixteen wide column">
+                    <main-top-menu></main-top-menu>
+                    <player-charts-container></player-charts-container>
+                </div>
+                <div class="loading sixteen wide column" ng-show="loading">
+                    
+                </div>
+                <div class="loading-gif" ng-show="loading">
+                    <img src="/img/loading.gif">
+                </div>
+            </div>
+        </div>
+    </textarea>
+
     <textarea id="tmpl-main-left-menu">
         <div class="ui vertical menu">
             <div class="parent" ng-repeat="page in pages">
@@ -190,6 +207,16 @@
             <div class="chart child-chart mobile" child-chart data-cntitle="PV" data-title="pv"></div>
             <div class="chart child-chart mobile" child-chart data-cntitle="资源加载成功率" data-title="pv2source"></div>
             <div class="chart child-chart mobile" child-chart data-cntitle="PV-VV转化率" data-title="pv2vv"></div>
+            <records-table></records-table>
+        </div>
+
+    </textarea>
+
+    <textarea id="tmpl-player-charts-container">
+
+        <div>
+            <div class="chart child-chart mobile" funnel-chart data-title="PV-VV漏斗图"></div>
+            <div class="chart child-chart mobile" player-line-chart data-cntitle="PV-VV分时折线图"></div>
             <records-table></records-table>
         </div>
 

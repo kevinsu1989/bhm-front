@@ -5,7 +5,7 @@ module.exports =
     client: 'mysql',
     connection:
       host     : '123.59.21.19',
-      user     : 'monitor',
+      user     : 'root',
       password : 'hunantv.com~110629962',
       database : 'monitor'
 

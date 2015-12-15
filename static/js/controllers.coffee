@@ -27,27 +27,6 @@ define [
 
   ])
 
-  .controller('mobileController', ['$rootScope', '$scope', '$state', 'API',
-    ($rootScope, $scope, $state, API)->
-      $rootScope.active_menu = 'mobile'
-      $state.go('login') if _cookies.get('SNDIWUNX') isnt 'MOISDJWOJO'
-      $rootScope.query = {}
-      loadData = ()->
-        $scope.loading = true
-        API.mpage().retrieve($rootScope.query).then (result)->
-          $scope.loading = false
-          $rootScope.$broadcast 'main:data:loaded', result, $state.current.name
-
-      $rootScope.$on 'top:menu:select', (event, query)->
-        return if $state.current.name isnt "mobile"
-        $rootScope.query = query
-        $rootScope.query.type = $rootScope.type
-        loadData()
-
-      loadData()
-
-  ])
-
   .controller('mainController', ['$rootScope', '$scope', '$state', 'API',
     ($rootScope, $scope, $state, API)->
       $rootScope.active_menu = 'index'
@@ -79,3 +58,44 @@ define [
   ])
 
   
+  .controller('mobileController', ['$rootScope', '$scope', '$state', 'API',
+    ($rootScope, $scope, $state, API)->
+      $rootScope.active_menu = 'mobile'
+      $state.go('login') if _cookies.get('SNDIWUNX') isnt 'MOISDJWOJO'
+      $rootScope.query = {}
+      loadData = ()->
+        $scope.loading = true
+        API.mpage().retrieve($rootScope.query).then (result)->
+          $scope.loading = false
+          $rootScope.$broadcast 'main:data:loaded', result, $state.current.name
+
+      $rootScope.$on 'top:menu:select', (event, query)->
+        return if $state.current.name isnt "mobile"
+        $rootScope.query = query
+        $rootScope.query.type = $rootScope.type
+        loadData()
+
+      loadData()
+
+  ])
+
+  .controller('playerController', ['$rootScope', '$scope', '$state', 'API',
+    ($rootScope, $scope, $state, API)->
+      $rootScope.active_menu = 'player'
+      $state.go('login') if _cookies.get('SNDIWUNX') isnt 'MOISDJWOJO'
+      $rootScope.query = {}
+      loadData = ()->
+        $scope.loading = true
+        API.flash().retrieve($rootScope.query).then (result)->
+          $scope.loading = false
+          $rootScope.$broadcast 'main:data:loaded', result, $state.current.name
+
+      $rootScope.$on 'top:menu:select', (event, query)->
+        return if $state.current.name isnt "player"
+        $rootScope.query = query
+        $rootScope.query.type = $rootScope.type
+        loadData()
+
+      loadData()
+
+  ])

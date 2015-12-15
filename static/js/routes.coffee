@@ -35,5 +35,11 @@ define [
         template: _utils.extractTemplate('#tmpl-mobile', _template)
         controller: 'mobileController'
       )
+
+      .state('player',
+        url: '/player'
+        template: _utils.extractTemplate('#tmpl-player', _template)
+        controller: 'playerController'
+      )
       
   ])

@@ -13,6 +13,7 @@ _api = require './biz/api'
 _records = require './biz/records'
 _mrecords = require './biz/m_records'
 _browser = require './biz/browser'
+_flash = require './biz/flash'
 
 receiveData = (req, res, next)->
   _api.receiveData req, res, (err, result)-> _http.responseJSON err, result, res
@@ -29,6 +30,9 @@ getPages = (req, res, next)->
 
 getMRecords = (req, res, next)->
   _mrecords.getMRecords req, res, (err, result)-> _http.responseJSON err, result, res
+
+getFlashRecords = (req, res, next)->
+  _flash.getFlashRecords req, res, (err, result)-> _http.responseJSON err, result, res
 
 ##########################
 
@@ -61,6 +65,8 @@ exports.init = (app)->
 
   #M站
   app.get '/api/mpage', getMRecords
+  #flash统计
+  app.get '/api/flash', getFlashRecords
 
   ################################
 

@@ -91,9 +91,9 @@ define [
     template: _utils.extractTemplate '#tmpl-main-top-info', _template
     link: (scope, element, attrs)->
       
-      $rootScope.$on 'main:chart:loaded', (event, data)->
+      scope.$on 'main:chart:loaded', (event, data)->
         scope.records = data
-      $rootScope.$on 'main:data:loaded', (event, data)->
+      scope.$on 'main:data:loaded', (event, data)->
         scope.records = data
 
   ])
@@ -107,13 +107,13 @@ define [
       loadTable = (data)->
         scope.data = data.records
 
-      $rootScope.$on 'main:chart:loaded',(event, data)->
+      scope.$on 'main:chart:loaded',(event, data)->
         loadTable data
 
-      $rootScope.$on 'main:data:loaded', (event, data)->
+      scope.$on 'main:data:loaded', (event, data)->
         loadTable data
 
-      $rootScope.$on 'table:show', (event)->
+      scope.$on 'table:show', (event)->
         scope.show = !scope.show
 
       scope.hideTable = ()->
@@ -184,6 +184,14 @@ define [
 
   ])
 
+  .directive('playerChartsContainer', ['$rootScope', 'API', ($rootScope, API)->
+    restrict: 'E'
+    replace: true
+    template: _utils.extractTemplate '#tmpl-player-charts-container', _template
+    link: (scope, element, attrs)->
+
+  ])
+
   .directive('mainChart', ['$rootScope', 'API', ($rootScope, API)->
     restrict: 'A'
     replace: true
@@ -195,14 +203,12 @@ define [
           API.pages(page_name).retrieve({isSpeed:$rootScope.isSpeed,type:$rootScope.type}).then (result)->
           # API.pages('动漫').retrieve({page_like:'/v/3',time_end:1448236800000,time_start:1444867200000}).then (result)->
             scope.loading = false
-            $rootScope.$emit 'main:chart:loaded', result, page
+            scope.$broadcast 'main:chart:loaded', result, page
             chart.reload result.records
       scope.$on 'pages:menu:loaded',(event, page_name, page)->
-        return if page not in ['index']
         loadChart page_name, page
 
-      $rootScope.$on 'main:data:loaded', (event, data, page)->
-        return if page not in ['index']
+      scope.$on 'main:data:loaded', (event, data, page)->
         if data.records
           if chart.reload
             chart.reload data.records, scope.title, scope.cntitle 
@@ -226,12 +232,10 @@ define [
 
           chart.reload data.records, scope.title, scope.cntitle
 
-      $rootScope.$on 'main:chart:loaded',(event, data, page)->
-        return if page not in ['index','mobile']
+      scope.$on 'main:chart:loaded',(event, data, page)->
         loadChart data
 
-      $rootScope.$on 'main:data:loaded', (event, data, page)->
-        return if page not in ['index','mobile']
+      scope.$on 'main:data:loaded', (event, data, page)->
         if data.records
           if chart.reload
             chart.reload data.records, scope.title, scope.cntitle 
@@ -253,12 +257,10 @@ define [
 
           chart.reload data.browser, scope.title
 
-      $rootScope.$on 'main:chart:loaded',(event, data, page)->
-        return if page not in ['index']
+      scope.$on 'main:chart:loaded',(event, data, page)->
         loadChart data
 
-      $rootScope.$on 'main:data:loaded', (event, data, page)->
-        return if page not in ['index']
+      scope.$on 'main:data:loaded', (event, data, page)->
         if data.browser
           if chart.reload
             chart.reload data.browser, scope.title 
@@ -279,12 +281,10 @@ define [
 
           chart.reload data[scope.field], scope.title
 
-      $rootScope.$on 'main:chart:loaded',(event, data, page)->
-        return if page not in ['index','mobile']
+      scope.$on 'main:chart:loaded',(event, data, page)->
         loadChart data
 
-      $rootScope.$on 'main:data:loaded', (event, data, page)->
-        return if page not in ['index','mobile']
+      scope.$on 'main:data:loaded', (event, data, page)->
         if data[scope.field]
           if chart.reload
             chart.reload data[scope.field], scope.title 
@@ -305,12 +305,10 @@ define [
 
           chart.reload data, scope.title
 
-      $rootScope.$on 'main:chart:loaded',(event, data, page)->
-        return if page not in ['index']
+      scope.$on 'main:chart:loaded',(event, data, page)->
         loadChart data
 
-      $rootScope.$on 'main:data:loaded', (event, data, page)->
-        return if page not in ['index']
+      scope.$on 'main:data:loaded', (event, data, page)->
         if chart.reload
           chart.reload data, scope.title
         else
@@ -330,12 +328,53 @@ define [
 
           chart.reload data, scope.title
 
-      $rootScope.$on 'main:chart:loaded',(event, data, page)->
-        return if page not in ['index']
+      scope.$on 'main:chart:loaded',(event, data, page)->
         loadChart data
 
-      $rootScope.$on 'main:data:loaded', (event, data, page)->
-        return if page not in ['index']
+      scope.$on 'main:data:loaded', (event, data, page)->
+        if chart.reload
+          chart.reload data, scope.title
+        else
+          loadChart data
+
+  ])
+
+  .directive('funnelChart', ['$rootScope', ($rootScope)->
+    restrict: 'A'
+    replace: true
+    scope: title: "@"
+    link: (scope, element, attrs)->
+      chart = {}
+      loadChart = (data)->
+        require ['chart/funnel-chart'], (_chart)->
+          chart = new _chart(element[0])
+          chart.reload data, scope.title
+
+      scope.$on 'main:chart:loaded',(event, data, page)->
+        loadChart data
+
+      scope.$on 'main:data:loaded', (event, data, page)->
+        if chart.reload
+          chart.reload data, scope.title
+        else
+          loadChart data
+
+  ])
+  .directive('playerLineChart', ['$rootScope', ($rootScope)->
+    restrict: 'A'
+    replace: true
+    scope: title: "@"
+    link: (scope, element, attrs)->
+      chart = {}
+      loadChart = (data)->
+        require ['chart/player-line-chart'], (_chart)->
+          chart = new _chart(element[0])
+          chart.reload data.records, scope.title
+
+      scope.$on 'main:chart:loaded',(event, data, page)->
+        loadChart data
+
+      scope.$on 'main:data:loaded', (event, data, page)->
         if chart.reload
           chart.reload data, scope.title
         else
@@ -358,114 +397,16 @@ define [
           IE6: 1,
           IE11: 934,
           IE10: 485
-        },
-        {
-          time_start:1448208000000,
-          IE9: 792,
-          IE8: 2731,
-          IE7: 432,
-          IE6: 3,
-          IE11: 860,
-          IE10: 481
-        },
-        {
-          time_start:1448294400000,
-          IE9: 1059,
-          IE8: 3294,
-          IE7: 466,
-          IE6: 1,
-          IE11: 1142,
-          IE10: 567
-        },
-        {
-          time_start:1448380800000,
-          IE9: 791,
-          IE8: 2525,
-          IE7: 403,
-          IE6: 2,
-          IE11: 853,
-          IE10: 445
-        },
-        {
-          time_start:1448467200000,
-          IE9: 559,
-          IE8: 2073,
-          IE7: 338,
-          IE6: 1,
-          IE11: 712,
-          IE10: 363
-        },
-        {
-          time_start:1448553600000,
-          IE9: 675,
-          IE8: 2242,
-          IE7: 382,
-          IE11: 764,
-          IE10: 452
-        },
-        {
-          time_start:1448640000000,
-          IE9: 824,
-          IE8: 2772,
-          IE7: 459,
-          IE6: 4,
-          IE11: 981,
-          IE10: 516
-        },
-        {
-          time_start:1448726400000,
-          IE9: 768,
-          IE8: 2426,
-          IE7: 374,
-          IE6: 1,
-          IE11: 918,
-          IE10: 457
-        },
-        {
-          time_start:1448812800000,
-          IE9: 687,
-          IE8: 2008,
-          IE7: 419,
-          IE6: 3,
-          IE11: 744,
-          IE10: 332
-        },
-        {
-          time_start:1448899200000,
-          IE9: 654,
-          IE8: 1953,
-          IE7: 1164,
-          IE6: 3,
-          IE11: 775,
-          IE10: 370
-        },
-        {
-          time_start:1448985600000,
-          IE9: 746,
-          IE8: 2045,
-          IE7: 1939,
-          IE6: 3,
-          IE11: 737,
-          IE10: 361
-        },
-        {
-          time_start:1449072000000,
-          IE9: 606,
-          IE8: 1713,
-          IE7: 1827,
-          IE6: 1,
-          IE11: 689,
-          IE10: 304
         }]
         require ['chart/ie-chart'], (_chart)->
           chart = new _chart(element[0])
 
           chart.reload data, scope.title
 
-      $rootScope.$on 'main:chart:loaded',(event, data, page)->
+      scope.$on 'main:chart:loaded',(event, data, page)->
         loadChart data
 
-      $rootScope.$on 'main:data:loaded', (event, data, page)->
+      scope.$on 'main:data:loaded', (event, data, page)->
         if chart.reload
           chart.reload data, scope.title
         else
