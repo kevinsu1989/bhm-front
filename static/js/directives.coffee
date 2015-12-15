@@ -79,7 +79,7 @@ define [
         $rootScope.ie7 = scope.ie7
 
       scope.showTable = ()->
-        $rootScope.$emit 'table:show'
+        scope.$broadcast 'table:show'
 
   ])
 
@@ -111,6 +111,7 @@ define [
         loadTable data
 
       scope.$on 'main:data:loaded', (event, data)->
+        console.log 1
         loadTable data
 
       scope.$on 'table:show', (event)->
