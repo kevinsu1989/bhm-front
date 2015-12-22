@@ -43,10 +43,7 @@ class RecordsCalculated extends _BaseEntity
     sql += " and type='#{data.type}' "
     sql += " order by a.time_start) m"
 
-    console.log sql
     @execute sql, cb
-
-
 
 
 

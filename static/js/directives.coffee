@@ -111,7 +111,6 @@ define [
         loadTable data
 
       scope.$on 'main:data:loaded', (event, data)->
-        console.log 1
         loadTable data
 
       scope.$on 'table:show', (event)->
@@ -377,7 +376,7 @@ define [
 
       scope.$on 'main:data:loaded', (event, data, page)->
         if chart.reload
-          chart.reload data, scope.title
+          chart.reload data.records, scope.title
         else
           loadChart data
 
@@ -392,7 +391,6 @@ define [
         data = [{
           time_start:1448121600000,
           IE9: 830,
-          IE8: 1,
           IE8: 2789,
           IE7: 529,
           IE6: 1,

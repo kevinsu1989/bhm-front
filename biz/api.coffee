@@ -202,12 +202,6 @@ exports.getRecordsSplit = (req, res, cb)->
 
         done err, result.records, data
     )
-    # queue.push((records, data, done)->
-    #   _entity.browser_calculated.findRecords data, (err, result)->
-    #     for record in records
-          
-    #     done null, records, data
-    # )
     queue.push((records, data, done)->
       _entity.browser_calculated.findSumRecords data, (err, result)->
         console.log result

@@ -27,7 +27,7 @@ class RecordsCalculated extends _BaseEntity
   findSumRecords: (data, cb)->
     sql = "select sum(pv) as pv, sum(detail) as detail, sum(source) as source, sum(vv) as vv, sum(app) as app, 
     (sum(vv)+sum(app))/sum(pv) as pv2vv , sum(app)/sum(pv) as pv2app , sum(detail)/sum(pv) as pv2detail , sum(source)/sum(pv) as pv2source 
-    from m_records_calculated where time_start>#{data.time_start} and time_start<#{data.time_end} "
+    from m_records_calculated where time_start>=#{data.time_start} and time_start<#{data.time_end} "
 
     sql += " and time_type='#{data.type}' "
     sql += " order by time_start"
