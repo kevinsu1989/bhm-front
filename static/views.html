@@ -257,7 +257,7 @@
                 </table>
                 <table class="records-table" ng-show='active_menu=="player"'>
                     <tr>
-                        <th>时间</th><th>播放器加载</th><th>CMS</th><th>分发</th><th>广告播放</th><th>正片加载</th><th>PV-VV</th>
+                        <th>时间</th><th>播放器加载</th><th>CMS</th><th>分发</th><th>广告播放</th><th>广告结束</th><th>PV-VV</th>
                     </tr>
                     <tr ng-repeat="item in data">
                         <td ng-if="item.type=='day'">{{item.time_start|date: 'MM月dd日'}}</td>
@@ -266,7 +266,7 @@
                         <td>{{item.per_cms|perFilter}}</td>
                         <td>{{item.per_dispatch|perFilter}}</td>
                         <td>{{item.per_ad|perFilter}}</td>
-                        <td>{{item.per_video|perFilter}}</td>
+                        <td>{{item.per_ad_end|perFilter}}</td>
                         <td>{{item.per_play|perFilter}}</td>
                     </tr>
                 </table>
