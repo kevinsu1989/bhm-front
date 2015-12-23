@@ -8,7 +8,7 @@ option = {
         formatter: "{a} <br/>{b} : {c}%"
     },
     legend: {
-        data : ['PV','播放器加载','CMS','分发','广告播放','正片加载','VV']
+        data : ['PV','播放器加载','CMS','分发','广告播放','VV']
     },
     calculable : true,
     series : [
@@ -17,11 +17,7 @@ option = {
             type:'funnel',
             width: '40%',
             data:[
-                {value:60, name:'访问'},
-                {value:40, name:'咨询'},
-                {value:20, name:'订单'},
-                {value:80, name:'点击'},
-                {value:100, name:'展现'}
+
             ]
         }
     ]
@@ -44,22 +40,22 @@ define [
             fontSize: 15
         tooltip: 
           trigger: 'item',
-          formatter: "{a} <br/>{b} : {c}%"
+          formatter: "{a} <br/>{b} : {c}%:{d}"
         calculable: true
         legend: 
-          data : ['PV','CMS','分发','广告播放','正片加载','VV']
+          data : ['PV','播放器加载','CMS','分发','广告播放','VV']
         series : [
-          name:'漏斗图',
+          name:'PV-VV漏斗图',
           type:'funnel',
           width: '40%',
           data:[
               {value:60, name:'PV'},
-              # {value:40, name:'播放器加载'},
+              {value:40, name:'播放器加载'},
               {value:20, name:'CMS'},
               {value:80, name:'分发'},
               {value:100, name:'广告播放'},
               {value:100, name:'广告结束'},
-              {value:100, name:'正片加载'},
+              # {value:100, name:'正片加载'},
               {value:100, name:'VV'}
           ]
         ]
@@ -73,13 +69,12 @@ define [
       @option.title.text = ''
       @option.series[0].data = [
         {value:100, name:'PV'},
-        # {value:Math.round(data.per_flash*10000)/100, name:'播放器加载'},
-        {value:Math.round(data.per_cms*10000)/100, name:'CMS',tooltip:{formatter: "{a} <br/>{b} : {c}%"}},
-        {value:Math.round(data.per_dispatch*10000)/100, name:'分发'},
-        {value:Math.round(data.per_ad*10000)/100, name:'广告播放'},
-        {value:Math.round(data.per_ad_end*10000)/100, name:'广告结束'},
-        {value:Math.round(data.per_video*10000)/100, name:'正片加载'},
-        {value:Math.round(data.per_play*10000)/100, name:'VV'}
+        {value:Math.round(data.per_flash*10000)/100, name:'播放器加载',tooltip: {formatter: "{a} <br/>{b} : {c}%  (#{Math.round((data.per_cms-1)*10000)/100}%)"}},
+        {value:Math.round(data.per_cms*10000)/100, name:'CMS',tooltip: {formatter: "{a} <br/>{b} : {c}%  (#{Math.round((data.per_cms-data.per_flash)*10000)/100}%)"}},
+        {value:Math.round(data.per_dispatch*10000)/100, name:'分发',tooltip: {formatter: "{a} <br/>{b} : {c}%  (#{Math.round((data.per_dispatch-data.per_cms)*10000)/100}%)"}},
+        {value:Math.round(data.per_ad*10000)/100, name:'广告播放',tooltip: {formatter: "{a} <br/>{b} : {c}%  (#{Math.round((data.per_ad-data.per_dispatch)*10000)/100}%)"}},
+        {value:Math.round(data.per_ad_end*10000)/100, name:'广告结束',tooltip: {formatter: "{a} <br/>{b} : {c}%  (#{Math.round((data.per_ad_end-data.per_ad)*10000)/100}%)"}},
+        {value:Math.round(data.per_play*10000)/100, name:'VV',tooltip: {formatter: "{a} <br/>{b} : {c}%  (#{Math.round((data.per_play-data.per_ad_end)*10000)/100}%)"}}
       ]
       @chart.setOption @option , true
 
