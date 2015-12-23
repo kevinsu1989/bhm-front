@@ -46,9 +46,9 @@ define [
         {name: "CMS", type: "line", data: []},
         {name: "分发", type: "line", data: []},
         {name: "广告播放", type: "line", data: []},
-        # {name: "广告结束", type: "line", data: []},
         {name: "正片加载", type: "line", data: []},
-        {name: "VV", type: "line", data: []}
+        {name: "VV", type: "line", data: []},
+        {name: "广告结束", type: "line", data: []}
       ]
 
       _.map data, (item)->
@@ -56,9 +56,9 @@ define [
         result[1].data.push(Math.round item.per_cms*100)
         result[2].data.push(Math.round item.per_dispatch*100)
         result[3].data.push(Math.round item.per_ad*100)
-        # result[3].data.push(Math.round item.per_ad_end*100)
         result[4].data.push(Math.round item.per_video*100)
         result[5].data.push(Math.round item.per_play*100)
+        result[6].data.push(Math.round item.per_ad_end*100)
         
       # @cutTopN result
 
@@ -74,10 +74,6 @@ define [
       itemStyle:
         normal:
           color: color
-          lineStyle: color
-          areaStyle:
-            color: color
-            type: "default"
       data: data.data
 
     reload: (origin)->

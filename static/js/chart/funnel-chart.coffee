@@ -58,7 +58,7 @@ define [
               {value:20, name:'CMS'},
               {value:80, name:'分发'},
               {value:100, name:'广告播放'},
-              # {value:100, name:'广告结束'},
+              {value:100, name:'广告结束'},
               {value:100, name:'正片加载'},
               {value:100, name:'VV'}
           ]
@@ -74,10 +74,10 @@ define [
       @option.series[0].data = [
         {value:100, name:'PV'},
         # {value:Math.round(data.per_flash*10000)/100, name:'播放器加载'},
-        {value:Math.round(data.per_cms*10000)/100, name:'CMS'},
+        {value:Math.round(data.per_cms*10000)/100, name:'CMS',tooltip:{formatter: "{a} <br/>{b} : {c}%"}},
         {value:Math.round(data.per_dispatch*10000)/100, name:'分发'},
         {value:Math.round(data.per_ad*10000)/100, name:'广告播放'},
-        # {value:Math.round(data.per_ad_end*10000)/100, name:'广告结束'},
+        {value:Math.round(data.per_ad_end*10000)/100, name:'广告结束'},
         {value:Math.round(data.per_video*10000)/100, name:'正片加载'},
         {value:Math.round(data.per_play*10000)/100, name:'VV'}
       ]
