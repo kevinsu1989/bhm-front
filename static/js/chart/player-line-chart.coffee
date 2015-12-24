@@ -7,8 +7,14 @@ define [
 
   class playerLineChart
     constructor: (@container)->
-      @option =
-        legend: x: 'right', padding: [8, 20, 5, 5]
+      @option =        
+        title:
+          x: 'center'
+          text: 'PV-VV分时图'
+          textStyle:
+            fontSize: 15
+          padding: [20]
+        legend: x: 'left'
         grid: x: 50, y: 60, x2: 20, y2: 20, borderWidth: 0, borderColor: 'transparent'
         tooltip:
           trigger: "axis"
@@ -97,11 +103,12 @@ define [
         type: 'value'
         splitLine: show: true
         name: '%'
+        max: 100
       ]
       option =
         xAxis: xAxis
         yAxis: yAxis
-        legend: data: _.pluck(data, 'name'), x: 'right', padding: [8, 20, 5, 5]
+        legend: data: _.pluck(data, 'name'), x: 'right', padding: [40, 20, 5, 5]
         series: series
 
       @chart.setOption _.extend(@option, option), true

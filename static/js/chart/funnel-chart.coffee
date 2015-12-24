@@ -1,28 +1,3 @@
-option = {
-    title : {
-        text: '漏斗图',
-        subtext: '纯属虚构'
-    },
-    tooltip : {
-        trigger: 'item',
-        formatter: "{a} <br/>{b} : {c}%"
-    },
-    legend: {
-        data : ['PV','播放器加载','CMS','分发','广告播放','VV']
-    },
-    calculable : true,
-    series : [
-        {
-            name:'漏斗图',
-            type:'funnel',
-            width: '40%',
-            data:[
-
-            ]
-        }
-    ]
-};
-                    
 define [
   'v/echarts'
   'utils'
@@ -40,10 +15,10 @@ define [
             fontSize: 15
         tooltip: 
           trigger: 'item',
-          formatter: "{a} <br/>{b} : {c}%:{d}"
+          formatter: "{a} <br/>{b} : {c}%"
         calculable: true
         legend: 
-          data : ['PV','播放器加载','CMS','分发','广告播放','VV']
+          data : ['PV','播放器加载','CMS','分发','广告播放','广告结束','VV']
         series : [
           name:'PV-VV漏斗图',
           type:'funnel',

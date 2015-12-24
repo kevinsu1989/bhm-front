@@ -104,7 +104,7 @@ define [
       option =
         xAxis: xAxis
         yAxis: yAxis
-        legend: data: _.pluck(data, 'name'), x: 'right', padding: [8, 20, 5, 5]
+        legend: data: _.pluck(data, 'name'), x: 'right', padding: [40, 20, 5, 5]
         series: series
 
       @chart.setOption _.extend(@option, option), true

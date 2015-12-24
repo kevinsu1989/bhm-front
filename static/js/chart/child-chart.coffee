@@ -86,10 +86,11 @@ define [
       yAxis[0].name = '百次' if title is 'pv'
       if title in ['flash_percent','js_load','pv2vv','pv2source','r800']
         yAxis[0].name = '%' 
+        yAxis[0].max = 100
       option =
         xAxis: xAxis
         yAxis: yAxis
-        legend: data: _.pluck(data, 'name'), x: 'right', padding: [8, 20, 5, 5]
+        legend: data: _.pluck(data, 'name'), x: 'right', padding: [40, 20, 5, 5]
         series: series
       @chart.setOption _.extend(@option, option), true
         

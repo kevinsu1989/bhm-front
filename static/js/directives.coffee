@@ -360,6 +360,30 @@ define [
           loadChart data
 
   ])
+
+
+  .directive('playerBarChart', ['$rootScope', ($rootScope)->
+    restrict: 'A'
+    replace: true
+    scope: title: "@"
+    link: (scope, element, attrs)->
+      chart = {}
+      loadChart = (data)->
+        require ['chart/player-bar-chart'], (_chart)->
+          chart = new _chart(element[0])
+          chart.reload data, scope.title
+
+      scope.$on 'main:chart:loaded',(event, data, page)->
+        loadChart data
+
+      scope.$on 'main:data:loaded', (event, data, page)->
+        if chart.reload
+          chart.reload data, scope.title
+        else
+          loadChart data
+
+  ])
+
   .directive('playerLineChart', ['$rootScope', ($rootScope)->
     restrict: 'A'
     replace: true
