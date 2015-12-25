@@ -36,7 +36,9 @@ module.exports = (app)->
   console.log "启动中..."
   require('./router').init(app)
   initBijou app
-
+  # _records.calculateRecordsByTime 1450846800000, 1450857600000, 'hour', (err, result)->
+  _flash.calculateRecordsByTime 1450407600000, 1451008800000, 'hour', (err, result)->
+  # _browser.calculateBrowserRecords 1450850400000, 1450857600000, 'hour', (err, result)->
 
 
 
