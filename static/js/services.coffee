@@ -1,12 +1,12 @@
 "use strict"
 define [
-  'ng'
+  'ng-module'
   'v/charm'
   'apis'
   'notify'
-], (_ng, _charm, _api, _notify) ->
+], (_module, _charm, _api, _notify) ->
   BASEAPI = '/api/'
-  _ng.module('app.services', [])
+  _module.serviceModule
   .factory 'NOTIFY', ()-> _notify
 
   .factory('API', ['$http', '$location', '$q', 'NOTIFY', '$sce', '$rootScope',

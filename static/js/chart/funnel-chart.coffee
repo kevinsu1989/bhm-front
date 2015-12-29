@@ -44,7 +44,7 @@ define [
       @option.title.text = ''
       @option.series[0].data = [
         {value:100, name:'PV'},
-        {value:Math.round(data.per_flash*10000)/100, name:'播放器加载',tooltip: {formatter: "{a} <br/>{b} : {c}%  (#{Math.round((data.per_cms-1)*10000)/100}%)"}},
+        {value:Math.round(data.per_flash*10000)/100, name:'播放器加载',tooltip: {formatter: "{a} <br/>{b} : {c}%  (#{Math.round((data.per_flash-1)*10000)/100}%)"}},
         {value:Math.round(data.per_cms*10000)/100, name:'CMS',tooltip: {formatter: "{a} <br/>{b} : {c}%  (#{Math.round((data.per_cms-data.per_flash)*10000)/100}%)"}},
         {value:Math.round(data.per_dispatch*10000)/100, name:'分发',tooltip: {formatter: "{a} <br/>{b} : {c}%  (#{Math.round((data.per_dispatch-data.per_cms)*10000)/100}%)"}},
         {value:Math.round(data.per_ad*10000)/100, name:'广告播放',tooltip: {formatter: "{a} <br/>{b} : {c}%  (#{Math.round((data.per_ad-data.per_dispatch)*10000)/100}%)"}},

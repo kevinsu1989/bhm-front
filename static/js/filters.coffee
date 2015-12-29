@@ -5,12 +5,12 @@
 
 "use strict"
 define [
-  'ng'
+  'ng-module'
   'utils'
   'moment'
-], (_ng, _utils, _moment) ->
+], (_module, _utils, _moment) ->
 
-  _ng.module('app.filters', [])
+  _module.filterModule
   .filter('unsafe', ['$sce', ($sce)->
     (text)->
       $sce.trustAsHtml(text)

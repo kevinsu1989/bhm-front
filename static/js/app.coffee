@@ -10,8 +10,8 @@ define [
   'bootstrap'
   './services'
   './filters'
-  './directives'
-  './controllers'
+  './directives/index'
+  './controllers/index'
 ], (_ng) ->
   _ng.module 'app', [
     'app.filters'
