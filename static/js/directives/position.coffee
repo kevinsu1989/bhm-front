@@ -27,14 +27,14 @@ define [
           value: 1,
           selected:true
         },{
-          title: '首屏时间',
-          name: 'first_view',
-          value: 4,
-          selected:false
-        },{
           title: '页面解析',
           name: 'dom_ready',
           value: 3,
+          selected:false
+        },{
+          title: '首屏时间',
+          name: 'first_view',
+          value: 4,
           selected:false
         },{
           title: '完全加载',
