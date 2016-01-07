@@ -29,7 +29,7 @@ define [
         },{
           title: '首屏时间',
           name: 'first_view',
-          value: 2,
+          value: 4,
           selected:false
         },{
           title: '页面解析',
@@ -39,7 +39,7 @@ define [
         },{
           title: '完全加载',
           name: 'load_time',
-          value: 4,
+          value: 5,
           selected:false
         }]
       scope.barClick = (item, index)->

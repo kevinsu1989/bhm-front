@@ -23,8 +23,8 @@ define [
         page.show_items = show
 
 
-      scope.pageChange = (page, show_id)->
-        scope.$emit "pages:menu:click", page, show_id
+      scope.pageChange = (page, parent)->
+        scope.$emit "pages:menu:click", page, parent
 
   ])
   .directive('mainTopMenu', ['$rootScope', '$interval', ($rootScope, $interval)->

@@ -20,9 +20,10 @@ define [
           $scope.loading = false
           $rootScope.$broadcast 'main:data:loaded', result, $state.current.name
 
-      $scope.$on 'pages:menu:click', (event, page)->
+      $scope.$on 'pages:menu:click', (event, page, parent)->
         return if $state.current.name isnt "position"
         $rootScope.page_name = page.page_name
+        $rootScope.parent_name = parent?.page_name or null
         $rootScope.query.page_like = page.page_like
         $rootScope.query.isSpeed = $rootScope.isSpeed
         $rootScope.query.ie7 = $rootScope.ie7

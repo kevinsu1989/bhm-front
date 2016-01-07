@@ -118,7 +118,7 @@
                     {{page.page_name}}
                     <div class="menu" ng-class="page.show_items==true?'show':'hide'" >
                         <a class="item" ng-click="pageChange(page)">全部</a>
-                        <a ng-repeat="child in page.children" class="item" ng-click="pageChange(child)">{{child.page_name}}</a>
+                        <a ng-repeat="child in page.children" class="item" ng-click="pageChange(child,page)">{{child.page_name}}</a>
                     </div>
                 </div>
 
@@ -226,6 +226,8 @@
     <textarea id="tmpl-position-charts-container">
 
         <div>
+            <div class="position-title"><span ng-if='parent_name'>{{parent_name}}-></span>{{page_name}}</div>
+
             <position-select-bar></position-select-bar>
 
             <div class="chart position-bar-chart" position-bar-chart data-title="白屏时间"></div>

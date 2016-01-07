@@ -247,7 +247,6 @@ define [
           loadChart data
 
       scope.$on 'position:data:reload', (event, item)->
-        console.log item
         chart.reload _data.records_level[item.name], 200 * item.value, item.title
 
 
