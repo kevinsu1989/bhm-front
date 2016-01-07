@@ -14,7 +14,7 @@ define [
           textStyle:
             fontSize: 15
           padding: [10,0,0,30]
-        backgroundColor: '#ddd'
+        backgroundColor: '#efefef'
         grid: x: 50, x2:60, y: 40, y2: 40, borderWidth: 0
         tooltip : 
           axisPointer: {
@@ -29,6 +29,7 @@ define [
         xAxis: [
           {
             type : 'value'
+            max: 100
           }
         ]
         yAxis: [

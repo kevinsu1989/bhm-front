@@ -27,7 +27,7 @@ define [
           value: 1,
           selected:true
         },{
-          title: '页面解析',
+          title: 'DomReady',
           name: 'dom_ready',
           value: 3,
           selected:false

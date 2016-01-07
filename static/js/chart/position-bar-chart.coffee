@@ -17,13 +17,13 @@ define [
         tooltip: 
             trigger: 'item'
         calculable: true
-        backgroundColor: '#ddd'
+        backgroundColor: '#efefef'
         grid: x: 50, x2:60, y: 40, y2: 40, borderWidth: 0
         xAxis: [
           type: 'category'
           show: false
           splitLine: show: false
-          data: ['白屏时间', '首屏时间', '页面解析', '完全加载']
+          data: ['白屏时间', '首屏时间', 'DomReady', '完全加载']
           axisLabel:
             margin: 0
             show: false
