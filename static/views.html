@@ -70,6 +70,26 @@
         </div>
     </textarea>
 
+    <textarea id="tmpl-position">
+        <div>
+            <div class="ui grid">
+                <div class="three wide column">
+                    <main-left-menu></main-left-menu>
+                </div>
+                <div class="thirteen wide column">
+                    <main-top-menu></main-top-menu>
+                    <position-charts-container></position-charts-container>
+                </div>
+                <div class="loading sixteen wide column" ng-show="loading">
+                    
+                </div>
+                <div class="loading-gif" ng-show="loading">
+                    <img src="/img/loading.gif">
+                </div>
+            </div>
+        </div>
+    </textarea>
+
     <textarea id="tmpl-player">
         <div>
             <div class="ui grid">
@@ -109,6 +129,16 @@
             <div class="parent">
                 <a class="teal item" ng-if="page.children.length==0" ng-class="page.page_name==page_name?'active':''" ng-click="pageChangeM()">M站</a>
             </div>
+        </div>
+    </textarea>
+
+    <textarea id="tmpl-position-select-bar">
+        <div class="position-select-bar">
+            <ul>
+                <li ng-repeat="item in list" ng-class="{selected: item.selected == true}" ng-click="barClick(item, $index)" >
+                    {{item.title}}
+                </li>
+            </ul>
         </div>
     </textarea>
 
@@ -188,14 +218,22 @@
             <div class="chart child-chart" child-chart data-cntitle="播放器加载成功率" data-title="flash_percent"></div>
             <div class="chart child-chart long" line-piled-chart data-title="浏览器占比"></div>
             <div class="chart child-chart" child-chart data-cntitle="JS加载成功率" data-title="js_load"></div>
-            <!-- <div class="chart child-chart" child-chart data-cntitle="800*600" data-title="r800"></div> -->
             <records-table></records-table>
 
-           <!--  <div class="chart main-chart" ie-chart data-title="IE"></div> -->
-<!--        <div class="chart child-chart" child-chart data-cntitle="完全加载" data-title="load_time"></div>
-            <div class="chart child-chart" child-chart data-cntitle="首屏时间" data-title="first_view"></div>
-            <div class="chart child-chart" child-chart data-cntitle="白屏时间" data-title="first_paint"></div>
-            <div class="chart child-chart" child-chart data-cntitle="页面解析" data-title="dom_ready"></div> -->
+        </div>
+
+    </textarea>
+    <textarea id="tmpl-position-charts-container">
+
+        <div>
+            <position-select-bar></position-select-bar>
+
+            <div class="chart position-bar-chart" position-bar-chart data-title="白屏时间"></div>
+
+            <div class="chart position-bar-chart" position-stack-bar-chart data-title="性能区间"></div>
+    
+            <records-table></records-table>
+
         </div>
 
     </textarea>

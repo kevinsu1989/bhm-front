@@ -53,7 +53,6 @@ define [
 
     reload: (data, title)->
       @option.title.text = title
-      console.log data
       @option.series[0].data = [ 
         Math.round((data.per_ad_end-data.per_play)*10000)/100,
         Math.round((data.per_ad-data.per_ad_end)*10000)/100, 
@@ -62,7 +61,6 @@ define [
         Math.round((data.per_flash-data.per_cms)*10000)/100, 
         Math.round((1-data.per_flash)*10000)/100
       ]
-      console.log @option.series[0].data
       @chart.setOption @option , true
 
 

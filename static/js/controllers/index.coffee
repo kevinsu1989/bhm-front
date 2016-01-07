@@ -3,4 +3,5 @@ define [
   './main'
   './mobile'
   './player'
+  './position'
 ], ->

@@ -222,6 +222,63 @@ define [
 
   ])
 
+
+  .directive('positionBarChart', ['$rootScope', 'API', ($rootScope, API)->
+    restrict: 'A'
+    replace: true
+    scope: title: "@"
+    link: (scope, element, attrs)->
+      chart = {}
+      _data = {}
+      loadChart = (data)->
+        require ['chart/position-bar-chart'], (_chart)->
+          chart = new _chart(element[0])
+          chart.reload data.records_level.first_paint, 200, scope.title
+
+      scope.$on 'main:chart:loaded',(event, data, page)->
+        _data = data
+        loadChart data
+
+      scope.$on 'main:data:loaded', (event, data, page)->
+        _data = data
+        if chart.reload
+          chart.reload data.records_level.first_paint, 200, scope.title
+        else
+          loadChart data
+
+      scope.$on 'position:data:reload', (event, item)->
+        console.log item
+        chart.reload _data.records_level[item.name], 200 * item.value, item.title
+
+
+  ])
+
+
+  .directive('positionStackBarChart', ['$rootScope', 'API', ($rootScope, API)->
+    restrict: 'A'
+    replace: true
+    scope: title: "@"
+    link: (scope, element, attrs)->
+      chart = {}
+      loadChart = (data)->
+        require ['chart/position-stack-bar-chart'], (_chart)->
+          chart = new _chart(element[0])
+          chart.reload data, scope.title
+
+      scope.$on 'main:chart:loaded',(event, data, page)->
+        loadChart data
+
+      scope.$on 'main:data:loaded', (event, data, page)->
+        if chart.reload
+          chart.reload data, scope.title
+        else
+          loadChart data
+
+  ])
+
+
+
+
   .directive('ieChart', ['$rootScope', 'API', ($rootScope, API)->
     restrict: 'A'
     replace: true

@@ -41,5 +41,11 @@ define [
         template: _utils.extractTemplate('#tmpl-player', _template)
         controller: 'playerController'
       )
+
+      .state('position',
+        url: '/position'
+        template: _utils.extractTemplate('#tmpl-position', _template)
+        controller: 'positionController'
+      )
       
   ])

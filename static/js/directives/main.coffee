@@ -8,7 +8,7 @@ define [
   't!/views.html'
 ], (_module, _utils, _template)->
   _module.directiveModule
-  .directive('mainLeftMenu', ['$rootScope', 'API', ($rootScope, API)->
+  .directive('mainLeftMenu', ['$rootScope', '$state', 'API', ($rootScope, $state, API)->
     restrict: 'E'
     replace: true
     template: _utils.extractTemplate '#tmpl-main-left-menu', _template
@@ -17,7 +17,7 @@ define [
       API.pages().retrieve().then (result)->
         $rootScope.page_name = result[0].page_name
         scope.pages = result
-        scope.$emit 'pages:menu:loaded', result[0].page_name, 'index'
+        scope.$emit 'pages:menu:loaded', result[0].page_name, $state.current.name
 
       scope.showItems = (page,show)->
         page.show_items = show

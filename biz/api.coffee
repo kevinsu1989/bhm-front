@@ -126,8 +126,48 @@ makeCalculatedRecords = (result)->
     js_load: js_load
   }
 
+objSum = (parent, child)->
+  for key of parent
+    parent[key] = 0 if typeof parent[key] isnt 'number'
+    parent[key] += child[key] if typeof child[key] is 'number'
+  parent
+
+recordsLevelSum = (records)->
+  records_level =
+    first_paint: 0
+    first_view: 0
+    dom_ready: 0
+    load_time: 0
+
+  for record in records
+
+    if record.result.first_paint_levels isnt null
+      if typeof records_level.first_paint is 'number' 
+        records_level.first_paint = JSON.parse(record.result.first_paint_levels) 
+      else
+        records_level.first_paint = objSum records_level.first_paint, JSON.parse(record.result.first_paint_levels)
+    if record.result.first_view_levels isnt null
+      if typeof records_level.first_view is 'number' 
+        records_level.first_view = JSON.parse(record.result.first_view_levels) 
+      else
+        records_level.first_view = objSum records_level.first_view, JSON.parse(record.result.first_view_levels)
+    if record.result.dom_ready_levels isnt null
+      if typeof records_level.dom_ready is 'number' 
+        records_level.dom_ready = JSON.parse(record.result.dom_ready_levels) 
+      else
+        records_level.dom_ready = objSum records_level.dom_ready, JSON.parse(record.result.dom_ready_levels)
+    if record.result.load_time_levels isnt null
+      if typeof records_level.load_time is 'number' 
+        records_level.load_time = JSON.parse(record.result.load_time_levels) 
+      else
+        records_level.load_time = objSum records_level.load_time, JSON.parse(record.result.load_time_levels)
+
+  records_level
+
+
+
 # 最终返回结果拼接
-getReturns = (records, browser, pv_count, pv_cal, flash_load, flash_count, js_load, js_count)->
+getReturns = (records, browser, pv_count, pv_cal, flash_load, flash_count, js_load, js_count, records_level)->
 
   result = {
     first_paint: 0
@@ -139,6 +179,7 @@ getReturns = (records, browser, pv_count, pv_cal, flash_load, flash_count, js_lo
     pv: pv_count
     records: records
     browser: browser
+
   }
 
   # 计算所有数据的平局值
@@ -149,6 +190,9 @@ getReturns = (records, browser, pv_count, pv_cal, flash_load, flash_count, js_lo
       result.dom_ready += record.result.dom_ready * record.result.pv_cal / pv_cal
       result.load_time += record.result.load_time * record.result.pv_cal / pv_cal
       result.flash_load += record.result.flash_load
+       
+
+  result.records_level = recordsLevelSum(records)
   result.flash_load_1 = result.flash_load / pv_count
   result.flash_load = flash_load
   result.flash_count = flash_count
@@ -179,12 +223,8 @@ exports.getRecordsSplit = (req, res, cb)->
   data.timeStep = 60 * 1000 if data.timeStep < 60 * 1000
 
   queue = [] 
-  pv_count = 0
-  pv_cal = 0
-  flash_load = 0
-  flash_count = 0
-  js_load = 0
-  js_count = 0
+  records_level = {}
+  pv_count = pv_cal = flash_load = flash_count = js_load = js_count = 0
   # 用户要求快速查询时，进行快速查询
   if data.isSpeed is 'true'    
     queue.push((done)->
@@ -199,6 +239,12 @@ exports.getRecordsSplit = (req, res, cb)->
 
         js_count = result.js_count
         js_load = result.js_load
+
+        records_level = 
+          first_paint: result.first_paint_levels
+          first_view: result.first_view_levels
+          dom_ready: result.dom_ready_levels
+          load_time: result.load_time_levels
 
         done err, result.records, data
     )
@@ -254,7 +300,7 @@ exports.getRecordsSplit = (req, res, cb)->
 
 
   _async.waterfall queue,(err, records, browser)->
-    cb err, getReturns(records, browser, pv_count, pv_cal, flash_load, flash_count, js_load, js_count)
+    cb err, getReturns(records, browser, pv_count, pv_cal, flash_load, flash_count, js_load, js_count, records_level)
 
 
 
