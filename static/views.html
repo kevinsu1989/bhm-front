@@ -36,11 +36,11 @@
     <textarea id="tmpl-main">
         <div>
             <div class="ui grid">
-                <div class="three wide column">
+                <div class="menu_page">
                     <main-left-menu></main-left-menu>
                 </div>
-                <div class="thirteen wide column">
-                    <main-top-menu></main-top-menu>
+                <div class="view_main with_menu">
+                    <main-top-menu-c></main-top-menu-c>
                     <main-charts-container></main-charts-container>
                 </div>
                 <div class="loading sixteen wide column" ng-show="loading">
@@ -56,8 +56,8 @@
     <textarea id="tmpl-mobile">
         <div>
             <div class="ui grid">
-                <div class="sixteen wide column">
-                    <main-top-menu></main-top-menu>
+                <div class="view_main">
+                    <main-top-menu-c></main-top-menu-c>
                     <mobile-charts-container></mobile-charts-container>
                 </div>
                 <div class="loading sixteen wide column" ng-show="loading">
@@ -73,11 +73,11 @@
     <textarea id="tmpl-position">
         <div>
             <div class="ui grid">
-                <div class="three wide column">
+                <div class="menu_page">
                     <main-left-menu></main-left-menu>
                 </div>
-                <div class="thirteen wide column">
-                    <main-top-menu></main-top-menu>
+                <div class="view_main with_menu">
+                    <main-top-menu-c></main-top-menu-c>
                     <position-charts-container></position-charts-container>
                 </div>
                 <div class="loading sixteen wide column" ng-show="loading">
@@ -93,8 +93,8 @@
     <textarea id="tmpl-player">
         <div>
             <div class="ui grid">
-                <div class="sixteen wide column">
-                    <main-top-menu></main-top-menu>
+                <div class="view_main">
+                    <main-top-menu-c></main-top-menu-c>
                     <player-charts-container></player-charts-container>
                 </div>
                 <div class="loading sixteen wide column" ng-show="loading">
@@ -108,26 +108,19 @@
     </textarea>
 
     <textarea id="tmpl-main-left-menu">
-        <div class="ui vertical menu">
+        <div class="menu">
             <div class="parent" ng-repeat="page in pages">
-                <a class="teal item" ng-if="page.children.length==0" ng-class="page.page_name==page_name?'active':''" ng-click="pageChange(page)">{{page.page_name}}</a>
+                <a class="item" ng-if="page.children.length==0" ng-class="page.page_name==page_name?'active':''" ng-click="pageChange(page)">{{page.page_name}}</a>
 
 
-                <div class="ui dropdown item" ng-if="page.children.length>0" ng-mouseover="showItems(page,true)" ng-mouseout="showItems(page,false)">
-                    <i class="dropdown icon"></i>
+                <div class="item" ng-if="page.children.length>0" ng-click="showItems(page,true)" ng-mouseout="showItems(page,false)">
                     {{page.page_name}}
-                    <div class="menu" ng-class="page.show_items==true?'show':'hide'" >
-                        <a class="item" ng-click="pageChange(page)">全部</a>
-                        <a ng-repeat="child in page.children" class="item" ng-click="pageChange(child,page)">{{child.page_name}}</a>
+                    <div class="child" ng-class="page.show_items==true?'show':'hide'" >
+                        <a ng-class="page.page_name==page_name?'active':''"  class="item" ng-click="pageChange(page)" >全部</a>
+                        <a ng-class="child.page_name==page_name?'active':''"  ng-repeat="child in page.children" class="item" ng-click="pageChange(child,page)">{{child.page_name}}</a>
                     </div>
                 </div>
-
-        
-                <!-- <a ng-repeat="child in page.children" class="teal item child" ng-class="child.page_name==page_name?'active':''" ng-click="pageChange(child)">{{child.page_name}}</a> -->
                 
-            </div>
-            <div class="parent">
-                <a class="teal item" ng-if="page.children.length==0" ng-class="page.page_name==page_name?'active':''" ng-click="pageChangeM()">M站</a>
             </div>
         </div>
     </textarea>
@@ -188,7 +181,7 @@
 
             <div class="five fields">
                 <div class="fild">
-                    <div class="ui toggle checkbox"  ng-show='active_menu=="index"'>
+                    <div class="ui toggle checkbox"  ng-show='false'>
                       <input ng-model="ie7" ng-change="WITHOUTIE7()" type="checkbox" name="public">
                       <label>除IE7</label>
                     </div>
@@ -207,11 +200,57 @@
 
     </textarea>
 
+    <textarea id="tmpl-main-top-menu-container">
+        <div class='top'>
+     
+            <button class="ui primary button" ng-click="showMenu()">选项</button>
+            <button class="ui primary button" ng-click="showTable()">表格</button>
+            <div class='top-menu' ng-show="menu_show">
+                <ul class='picker'>
+                    <i>时间颗粒：</i>
+                    <li ng-class="time_type=='hour'?'active':''" ng-click="setTimeType('hour')">小时</li>
+                    <li ng-class="time_type=='day'?'active':''" ng-click="setTimeType('day')">天</li>
+                </ul>
+
+                <ul class='picker'>
+                    <i>浏览器：</i>
+                    <li ng-class="browser_name==''?'active':''" ng-click="setBrowserName('')">全部</li>
+                    <li ng-class="browser_name=='ie'?'active':''" ng-click="setBrowserName('ie')">IE</li>
+                    <li ng-class="browser_name=='chrome'?'active':''" ng-click="setBrowserName('chrome')">Chrome</li>
+                </ul>
+
+                <ul class='picker'>
+                    <i>时间段：</i>
+                    <li ng-class="time_range=='today'?'active':''" ng-click="setTimeRange('today')">今天</li>
+                    <li ng-class="time_range=='yestoday'?'active':''" ng-click="setTimeRange('yestoday')">昨天</li>
+                    <li ng-class="time_range=='week'?'active':''" ng-click="setTimeRange('week')">本周</li>
+                    <li ng-class="time_range=='lastweek'?'active':''" ng-click="setTimeRange('lastweek')">上周</li>
+                    <li ng-class="time_range=='month'?'active':''" ng-click="setTimeRange('month')">本月</li>
+                    <li ng-class="time_range=='lastmonth'?'active':''" ng-click="setTimeRange('lastmonth')">上月</li>
+                    <li ng-class="time_range==''?'active':''" ng-click="setTimeRange('')">自定义</li>
+                </ul>
+
+                <div class="time-field" ng-show="time_range==''">
+                    <input type="text" ng-model="time_start" placeholder="开始时间" datetype="datetime" datetype="date" datetime-picker format="yyyy/mm/dd hh:ii"/>
+                    <input type="text" ng-model="time_end" placeholder="结束时间" datetype="datetime" datetype="date" datetime-picker format="yyyy/mm/dd hh:ii">
+                </div>
+
+                <div class='button-container'>
+                    <button class="ui red button" ng-click="showMenu()">取消</button>
+                    <button class="ui positive button" ng-click="reload()">确定</button>
+                </div>
+
+            </div>
+
+           
+        </div>
+    </textarea>
+
     <textarea id="tmpl-main-charts-container">
 
         <div>
             <div class="chart bar-chart" bar-chart data-title="【{{page_name}}】的平均性能指标"></div>
-            <div class="chart child-chart" gauge-chart data-title="播放器加载成功率" data-field='flash_load'></div>
+            <div class="chart child-chart" gauge-chart data-title="播放器加载成功率" data-field='flash_load' style="width:25%;"></div>
             <div class="chart child-chart" pie-chart data-title="浏览器占比"></div>
             <div class="chart main-chart" main-chart></div>
             <div class="chart child-chart" child-chart data-cntitle="PV" data-title="pv"></div>
@@ -226,7 +265,7 @@
     <textarea id="tmpl-position-charts-container">
 
         <div>
-            <div class="position-title"><span ng-if='parent_name'>{{parent_name}}-></span>{{page_name}}</div>
+            <div class="position-title" ng-show='false'><span ng-if='parent_name'>{{parent_name}}-></span>{{page_name}}</div>
 
             <position-select-bar></position-select-bar>
 

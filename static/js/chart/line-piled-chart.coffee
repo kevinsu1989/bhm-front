@@ -8,15 +8,16 @@ define [
   class pieChart
     constructor: (@container)->
       @option =
-    		tooltip: 
-        	trigger: 'axis'
+        backgroundColor: 'rgba(51,51,51,.4)'
+        tooltip: 
+          trigger: 'axis'
         grid: x: 50,x2: 20, y: 25
         legend:
-        	data:['IE','chrome']
-        	x: 'right'
-        	padding: [8, 20, 5, 5]
-    		calculable : true
-		    yAxis: [{
+          data:['IE','chrome']
+          x: 'right'
+          padding: [8, 20, 5, 5]
+        calculable : true
+        yAxis: [{
           type : 'value'
         }]
 

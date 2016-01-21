@@ -8,8 +8,8 @@ define [
   class pieChart
     constructor: (@container)->
       @option =
+        backgroundColor: 'rgba(51,51,51,.4)'
         legend: x: 'left', orient : 'vertical'
-
         tooltip:
           trigger: 'item'
           formatter: "{a} <br/>{b} : {c} ({d}%)"

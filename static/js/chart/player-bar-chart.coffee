@@ -8,6 +8,7 @@ define [
   class barChart
     constructor: (@container)->
       @option =
+        backgroundColor: 'rgba(51,51,51,.4)'
         title:
           x: 'center'
           text: 'ECharts例子个数统计'

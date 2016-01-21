@@ -8,6 +8,7 @@ define [
   class positionBarChart
     constructor: (@container)->
       @option =
+        backgroundColor: 'rgba(51,51,51,.4)'
         title:
           x: 'left'
           text: 'ECharts例子个数统计'
@@ -17,7 +18,6 @@ define [
         tooltip: 
             trigger: 'item'
         calculable: true
-        backgroundColor: '#efefef'
         grid: x: 50, x2:60, y: 40, y2: 40, borderWidth: 0
         xAxis: [
           type: 'category'

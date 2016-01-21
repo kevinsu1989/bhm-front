@@ -24,6 +24,9 @@ define [
 
 
       scope.pageChange = (page, parent)->
+        scope.show_id = page.id
+        console.log scope.show_id
+        console.log page
         scope.$emit "pages:menu:click", page, parent
 
   ])
@@ -170,6 +173,64 @@ define [
     replace: true
     template: _utils.extractTemplate '#tmpl-main-charts-container', _template
     link: (scope, element, attrs)->
+
+  ])
+
+
+
+
+  .directive('mainTopMenuC', ['$rootScope', '$interval', ($rootScope, $interval)->
+    restrict: 'E'
+    replace: true
+    template: _utils.extractTemplate '#tmpl-main-top-menu-container', _template
+    link: (scope, element, attrs)->
+      timer = null
+      query = {}
+      $rootScope.isSpeed = true
+      $rootScope.type = 'hour'
+
+      scope.time_range = 'today'
+      scope.time_type = 'hour'
+      scope.browser_name = ''
+      scope.timeObj = _utils.getQueryTime('today')
+
+      scope.reload = loadBySelect = ()->
+        scope.menu_show = false
+
+        $rootScope.type = scope.time_type
+        timestamp = new Date().valueOf()
+
+        if scope.time_range isnt ''
+          scope.time_start = scope.time_end = null 
+          query.time_start = scope.timeObj.time_start
+          query.time_end = scope.timeObj.time_end
+          query.timeStep = scope.timeObj.timeStep
+        else if scope.time_start && scope.time_end
+          scope.timeSelect = null
+          query.time_start = new Date(scope.time_start).valueOf()
+          query.time_end = new Date(scope.time_end).valueOf()
+          query.timeStep = (new Date(scope.time_end).valueOf() - new Date(scope.time_start).valueOf()) / 100
+        query.type = scope.type
+        query.browser_name = scope.browser_name
+        query.page_like = $rootScope.query.page_like if $rootScope.query.page_like
+        scope.$emit 'top:menu:select', query
+
+      scope.setTimeRange = (time_range)->
+        scope.time_range = time_range
+        scope.timeObj = _utils.getQueryTime(time_range)
+
+      scope.setTimeType = (time_type)->
+        scope.time_type = time_type
+
+      scope.setBrowserName = (browser_name)->
+        scope.browser_name = browser_name
+
+      scope.showMenu = ()->
+        scope.menu_show = !scope.menu_show
+        
+      scope.showTable = ()->
+        scope.$broadcast 'table:show'
+
 
   ])
 

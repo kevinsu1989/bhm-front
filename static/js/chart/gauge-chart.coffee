@@ -8,6 +8,7 @@ define [
   class gaugeChart
     constructor: (@container)->
       @option =
+        backgroundColor: 'rgba(51,51,51,.4)'
         tooltip :
           formatter : "{a} <br/>{b} : {c}%"
         toolbox : show: false

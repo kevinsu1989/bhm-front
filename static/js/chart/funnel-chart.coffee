@@ -8,6 +8,7 @@ define [
   class funnelChart
     constructor: (@container)->
       @option =
+        backgroundColor: 'rgba(51,51,51,.4)'
         title:
           x: 'center'
           text: 'PV-VV漏斗图'

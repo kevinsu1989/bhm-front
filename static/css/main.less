@@ -125,6 +125,7 @@
     width: 75%;
     height: 400px;
     float: left;
+    background: rgba(51,51,51,.4);
     &.player{
       width: 100%;
       height: 300px;
@@ -134,6 +135,7 @@
     width: 25%;
     height: 200px;
     float: left;
+    background: rgba(51,51,51,.4);
     &.long{
       width: 75%;
     }
@@ -146,12 +148,13 @@
     width: 50%;
     height: 200px;
     float: left;
+    background: rgba(51,51,51,.4);
   }
   &.position-bar-chart{
     width: 100%;
     height: 300px;
     float: left;
-    background: #efefef;
+    background: rgba(51,51,51,.4);
     &.thin{
       height: 200px;
     }
@@ -177,9 +180,9 @@
   left: 50%;
   margin: auto;
 }
-// body{
-//   background-image:radial-gradient(farthest-side ellipse at 10% 0,rgba(119,157,207,.8) 30%,rgba(174,180,186,.8) 76%,rgba(199,175,156,.8));
-// }
+body{
+  background-image:radial-gradient(farthest-side ellipse at 10% 0,rgba(119,157,207,.8) 30%,rgba(174,180,186,.8) 76%,rgba(199,175,156,.8));
+}
 
 // input, select{
 //   background-image: radial-gradient(farthest-side ellipse at 10% 0, rgba(119,157,207,0.8) 30%, rgba(174,180,186,0.8) 150%, rgba(199,175,156,0.8)) !important;
@@ -289,20 +292,20 @@
       height: 30px;
       width: 100px;
       line-height: 30px;
-      background: #efefef;
+      background: rgba(51,51,51,.4);
       margin-right: 1px;
       margin-bottom: 1px;
-      color: #888;
+      color: #fff;
       cursor: pointer;
       &.selected{
         margin-bottom: 0px;
         height: 31px;
         &:hover{
-          background: #efefef;
+          background: rgba(51,51,51,.4);
         }
       }
       &:hover{
-        background: #ddd;
+        background: rgba(41,41,41,.4);
       }
     }
   }
@@ -314,5 +317,170 @@
   line-height: 30px;
 }
 
+.menu_main,{
+  margin: 25px 0px 0px 25px;
+  width: 180px;
+  float: left;  
+  ul{
+    margin: 0;
+    padding: 0;
+    li{
+      color: #fff;
+      width: 140px;
+      height: 25px;
+      line-height: 25px;
+      float: left;
+      list-style: none;
+      border-radius: 5px;
+      text-align: center;
+      cursor: pointer;
+      margin-bottom: 3px;
+      a{
+        color: #fff;
+        width: 100%;
+        display: block;
+      }
+      &.active,&:hover{
+        background: #666;
+        transition: background-color .2s
+      }
+    }
+  }
+}
+.menu_page{
+  margin-top: 25px;
+  width: 12%;
+  float: left;  
+  .menu{  
+    .parent{
+      cursor: pointer;
+      .item{
+        width: 100%;
+        color: #fff;
+        .child{
+          &.hide{
+            display: block;
+            height: 0px;
+            transition: height .8s
+          }
+          &.show{
+            display: block;
+            height: auto;
+            transition: height .8s
+          }
+          a{
+            cursor: pointer;
+            display: block;
+            float: left;
+            width: 140px;
+            height: 25px;
+            line-height: 25px;
+            padding-left: 5px;
+            border-radius: 5px;
+            margin:0px 0px 3px 20px;
+            color: #fff;
+            &.active,&:hover{
+              color: #fff !important;
+              background: #666;
+              transition: background-color .2s
+            }
+          }
+        }
+      }
+    }
 
+  }
 
+}
+
+.view_main{
+  margin-top: 25px;
+  width: 100%;
+  &.with_menu{
+    width: 88%;
+  }
+  .top{
+    position: relative;
+    height: 45px;
+    width: 100%;
+    .button{
+      float: right;
+    }
+    .top-menu{
+      position: absolute;
+      top: 45px;
+      right: 5px;
+      background: #fff;
+      border-radius: 5px;
+      z-index: 999;
+      padding-top: 10px;
+      ul.picker{
+        width: 100%;
+        height: 45px;
+        margin: 0;
+        padding: 0;
+        padding: 0px 50px 0px 10px;
+        i{
+          display: block;
+          line-height: 40px;
+          height: 40px;
+          width: 70px;
+          float: left;
+          font-style: normal;
+        }
+        li{
+          list-style: none;
+          display: block;
+          line-height: 40px;
+          height: 40px;
+          width: 50px;
+          float: left;
+          background: #efefef;
+          text-align: center;
+          cursor: pointer;
+          margin-right: 5px;
+          border-radius: 3px;
+          &:hover,&.active{
+            background: #08c;
+            color: #fff;
+          }
+        }
+      }
+      .time-field{
+        padding-left: 70px;
+        margin-bottom: 5px;
+        input{
+          font-family: 'Lato', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+          margin: 0em;
+          outline: none;
+          -webkit-appearance: none;
+          tap-highlight-color: rgba(255, 255, 255, 0);
+          line-height: 1.2142em;
+          padding: 0.67861429em 1em;
+          font-size: 1em;
+          background: #FFFFFF;
+          border: 1px solid rgba(34, 36, 38, 0.15);
+          color: rgba(0, 0, 0, 0.87);
+          border-radius: 0.28571429rem;
+          box-shadow: 0em 0em 0em 0em transparent inset;
+          -webkit-transition: color 0.1s ease, border-color 0.1s ease;
+          transition: color 0.1s ease, border-color 0.1s ease;
+        }
+      }
+      .button-container{
+        width: 100%;
+        height: 50px;
+        background: #f6f6f6;
+        border-top: 1px solid #ccc;
+        padding: 5px;
+        margin-top: 5px;
+        border-radius: 0px 0px 5px 5px;
+      }
+    }
+
+  }
+}
+.body{
+  margin:10px 10px 10px 210px;
+  border-radius: 5px;
+}

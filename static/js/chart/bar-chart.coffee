@@ -16,6 +16,7 @@ define [
         tooltip: 
             trigger: 'item'
         calculable: true
+        backgroundColor: 'rgba(51,51,51,.4)'
         grid: x: 50, borderWidth: 0, y: 40, y2: 20   
         xAxis: [
           type: 'category'

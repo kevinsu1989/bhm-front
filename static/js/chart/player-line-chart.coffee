@@ -7,7 +7,8 @@ define [
 
   class playerLineChart
     constructor: (@container)->
-      @option =        
+      @option =   
+        backgroundColor: 'rgba(51,51,51,.4)' 
         title:
           x: 'center'
           text: 'PV-VV分时图'
