@@ -4,4 +4,8 @@ define [
   './mobile'
   './player'
   './position'
+  './firstPaint'
+  './firstView'
+  './domReady'
+  './pageLoad'
 ], ->

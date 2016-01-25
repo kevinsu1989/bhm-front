@@ -1,0 +1,189 @@
+<div>
+    <textarea id="tmpl-login">
+        <div class="ui middle aligned center aligned grid">
+            <div class="column" style="width:450px;">
+                <h2 class="ui teal image header">
+                  <div class="content">
+                    Log-in to your account
+                  </div>
+                </h2>
+                <form class="ui large form">
+                    <div class="ui stacked segment">
+                        <div class="field">
+                            <div class="ui left icon input">
+                                <i class="user icon"></i>
+                                <input type="text" name="loginname" ng-model='name' placeholder="LoginName">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui left icon input">
+                                <i class="lock icon"></i>
+                                <input type="password" name="password" ng-model='pwd' placeholder="Password">
+                            </div>
+                        </div>
+                        <div class="ui fluid large teal submit button" ng-click='login()'>Login</div>
+                    </div>
+
+                    <div class="ui error message"></div>
+
+                </form>
+            </div>
+        </div>
+
+    </textarea>
+
+    <textarea id="tmpl-main">
+        <div>
+            <div class="ui grid">
+                <div class="menu_page">
+                    <main-left-menu></main-left-menu>
+                </div>
+                <div class="view_main with_menu">
+                    <main-top-menu-c></main-top-menu-c>
+                    <main-charts-container></main-charts-container>
+                </div>
+                <div class="loading sixteen wide column" ng-show="loading">
+                    
+                </div>
+                <div class="loading-gif" ng-show="loading">
+                    <img src="/img/loading.gif">
+                </div>
+            </div>
+        </div>
+    </textarea>
+
+    <textarea id="tmpl-mobile">
+        <div>
+            <div class="ui grid">
+                <div class="view_main">
+                    <main-top-menu-c></main-top-menu-c>
+                    <mobile-charts-container></mobile-charts-container>
+                </div>
+                <div class="loading sixteen wide column" ng-show="loading">
+                    
+                </div>
+                <div class="loading-gif" ng-show="loading">
+                    <img src="/img/loading.gif">
+                </div>
+            </div>
+        </div>
+    </textarea>
+
+    <textarea id="tmpl-position">
+        <div>
+            <div class="ui grid">
+                <div class="menu_page">
+                    <main-left-menu></main-left-menu>
+                </div>
+                <div class="view_main with_menu">
+                    <main-top-menu-c></main-top-menu-c>
+                    <position-charts-container></position-charts-container>
+                </div>
+                <div class="loading sixteen wide column" ng-show="loading">
+                    
+                </div>
+                <div class="loading-gif" ng-show="loading">
+                    <img src="/img/loading.gif">
+                </div>
+            </div>
+        </div>
+    </textarea>
+
+    <textarea id="tmpl-player">
+        <div>
+            <div class="ui grid">
+                <div class="view_main">
+                    <main-top-menu-c></main-top-menu-c>
+                    <player-charts-container></player-charts-container>
+                </div>
+                <div class="loading sixteen wide column" ng-show="loading">
+                    
+                </div>
+                <div class="loading-gif" ng-show="loading">
+                    <img src="/img/loading.gif">
+                </div>
+            </div>
+        </div>
+    </textarea>
+
+    <textarea id="tmpl-firstPaint">
+        <div>
+            <div class="ui grid">
+                <div class="menu_page">
+                    <main-left-menu></main-left-menu>
+                </div>
+                <div class="view_main with_menu">
+                    <main-top-menu-c></main-top-menu-c>
+                    <firstpaint-charts-container></firstpaint-charts-container>
+                </div>
+                <div class="loading sixteen wide column" ng-show="loading">
+                    
+                </div>
+                <div class="loading-gif" ng-show="loading">
+                    <img src="/img/loading.gif">
+                </div>
+            </div>
+        </div>
+    </textarea>
+
+        <textarea id="tmpl-firstView">
+        <div>
+            <div class="ui grid">
+                <div class="menu_page">
+                    <main-left-menu></main-left-menu>
+                </div>
+                <div class="view_main with_menu">
+                    <main-top-menu-c></main-top-menu-c>
+                    <firstview-charts-container></firstview-charts-container>
+                </div>
+                <div class="loading sixteen wide column" ng-show="loading">
+                    
+                </div>
+                <div class="loading-gif" ng-show="loading">
+                    <img src="/img/loading.gif">
+                </div>
+            </div>
+        </div>
+    </textarea>
+
+        <textarea id="tmpl-domReady">
+        <div>
+            <div class="ui grid">
+                <div class="menu_page">
+                    <main-left-menu></main-left-menu>
+                </div>
+                <div class="view_main with_menu">
+                    <main-top-menu-c></main-top-menu-c>
+                    <domready-charts-container></domready-charts-container>
+                </div>
+                <div class="loading sixteen wide column" ng-show="loading">
+                    
+                </div>
+                <div class="loading-gif" ng-show="loading">
+                    <img src="/img/loading.gif">
+                </div>
+            </div>
+        </div>
+    </textarea>
+
+        <textarea id="tmpl-pageLoad">
+        <div>
+            <div class="ui grid">
+                <div class="menu_page">
+                    <main-left-menu></main-left-menu>
+                </div>
+                <div class="view_main with_menu">
+                    <main-top-menu-c></main-top-menu-c>
+                    <pageload-charts-container></pageload-charts-container>
+                </div>
+                <div class="loading sixteen wide column" ng-show="loading">
+                    
+                </div>
+                <div class="loading-gif" ng-show="loading">
+                    <img src="/img/loading.gif">
+                </div>
+            </div>
+        </div>
+    </textarea>
+
+</div>

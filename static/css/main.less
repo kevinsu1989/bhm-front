@@ -130,6 +130,10 @@
       width: 100%;
       height: 300px;
     }
+    &.second-page{
+      width: 100%;
+      height: 300px;
+    }
   }
   &.child-chart{
     width: 25%;
@@ -159,7 +163,11 @@
       height: 200px;
     }
   }
-
+  &.second-page{
+    width: 100%;
+    height: 200px;
+    float: left;
+  }
 }
 
 .loading{
@@ -326,15 +334,22 @@ body{
     padding: 0;
     li{
       color: #fff;
-      width: 140px;
+      padding-left: 10px;
+      width: 130px;
       height: 25px;
       line-height: 25px;
       float: left;
       list-style: none;
       border-radius: 5px;
-      text-align: center;
+      text-align: left;
       cursor: pointer;
       margin-bottom: 3px;
+
+      &.child{
+        text-align: left;
+        margin-left: 20px;
+        widows: 110px;
+      }
       a{
         color: #fff;
         width: 100%;
@@ -403,8 +418,21 @@ body{
     position: relative;
     height: 45px;
     width: 100%;
+    border-bottom: 1px dashed #ccc;
+    margin-bottom: 10px;
     .button{
       float: right;
+    }
+    .navi{
+      float: left;
+      font-size: 22px;
+      line-height: 45px;
+      color: #fff;
+      i{
+        font-style: normal;
+        font-size: 18px;
+        line-height: 50px;
+      }
     }
     .top-menu{
       position: absolute;

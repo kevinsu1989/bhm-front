@@ -16,7 +16,8 @@ define [
       loadChart = (page_name, page)->
         require ['chart/main-chart'], (_mainChart)->
           chart = new _mainChart(element[0])
-          API.pages(page_name).retrieve({isSpeed:$rootScope.isSpeed,type:$rootScope.type}).then (result)->
+
+          API.pages(page_name).retrieve({isSpeed:$rootScope.isSpeed,type:$rootScope.type,browser_percent:$rootScope.browser_percent}).then (result)->
           # API.pages('动漫').retrieve({page_like:'/v/3',time_end:1448236800000,time_start:1444867200000}).then (result)->
             scope.loading = false
             scope.$broadcast 'main:chart:loaded', result, page
@@ -226,14 +227,19 @@ define [
   .directive('positionBarChart', ['$rootScope', 'API', ($rootScope, API)->
     restrict: 'A'
     replace: true
-    scope: title: "@"
+    scope: title: "@", background: "@", key: '@'
     link: (scope, element, attrs)->
       chart = {}
       _data = {}
+      value = 
+        first_paint: 1
+        first_view: 4
+        dom_ready: 3
+        load_time: 5
       loadChart = (data)->
         require ['chart/position-bar-chart'], (_chart)->
           chart = new _chart(element[0])
-          chart.reload data.records_level.first_paint, 200, scope.title
+          chart.reload data.records_level[scope.key], 200 * value[scope.key], scope.title, scope.background
 
       scope.$on 'main:chart:loaded',(event, data, page)->
         _data = data
@@ -242,13 +248,12 @@ define [
       scope.$on 'main:data:loaded', (event, data, page)->
         _data = data
         if chart.reload
-          chart.reload data.records_level.first_paint, 200, scope.title
+          chart.reload data.records_level[scope.key], 200 * value[scope.key], scope.title, scope.background
         else
           loadChart data
 
       scope.$on 'position:data:reload', (event, item)->
-        chart.reload _data.records_level[item.name], 200 * item.value, item.title
-
+        chart.reload _data.records_level[item.name], 200 * item.value, item.title, scope.background
 
   ])
 

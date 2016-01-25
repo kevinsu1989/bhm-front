@@ -30,7 +30,7 @@ define [
         ]
         yAxis: [
             type: 'value'
-            show: false
+            # show: false
         ]    
         series: [
           name: ''
@@ -82,9 +82,11 @@ define [
 
       arr
 
-    reload: (data, value, title)->
+    reload: (data, value, title, background)->
+      console.log arguments
       _colorList = @getColorList '0,255,0,1', '255,0,0,1', 10
       # console.log _colorList
+      @option.backgroundColor = background if background
       @option.title.text = title
       @option.series[0].name = title
       @option.series[0].data = @prepareData data

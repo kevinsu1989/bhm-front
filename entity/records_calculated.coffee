@@ -32,17 +32,19 @@ class RecordsCalculated extends _BaseEntity
     #统计各浏览器PV
     isnew = ""
     isnew = "_new" if data.ie7 is 'true'
-    sql = "select m.*,time_start as ts,
-    (select pv from browser_calculated where browser_name='ie' and time_start=ts and page_name='#{data.page_name}' and type='#{data.type}' limit 0,1) as iepv,
-    (select pv from browser_calculated where browser_name='chrome' and time_start=ts and page_name='#{data.page_name}' and type='#{data.type}' limit 0,1) as chromepv
-    from (select * from records_calculated#{isnew} a where 
-    a.time_start >= #{data.time_start} and a.time_start < #{data.time_end} and a.page_name = '#{data.page_name}'"
+    sql = "select m.*,time_start as ts "
+    if !data.browser_percent || data.browser_percent is 'true'
+      sql += ",(select pv from browser_calculated where browser_name='ie' and time_start=ts and page_name='#{data.page_name}' and type='#{data.type}' limit 0,1) as iepv,
+      (select pv from browser_calculated where browser_name='chrome' and time_start=ts and page_name='#{data.page_name}' and type='#{data.type}' limit 0,1) as chromepv"
+
+    sql += " from (select * from records_calculated#{isnew} a where 
+        a.time_start >= #{data.time_start} and a.time_start < #{data.time_end} and a.page_name = '#{data.page_name}'"
 
     sql += " and browser_name='#{data.browser_name}'" if data.browser_name
     sql += " and browser_name is null" if !data.browser_name
     sql += " and type='#{data.type}' "
     sql += " order by a.time_start) m"
-
+    console.log sql
     @execute sql, cb
 
 

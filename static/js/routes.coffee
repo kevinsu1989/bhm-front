@@ -8,7 +8,7 @@ define [
   "ng"
   "app"
   'utils'
-  't!/views.html'
+  't!/views-controller.html'
 ], (_ng, _app, _utils, _template) ->
 
   _app.config(['$locationProvider', '$stateProvider', '$urlRouterProvider',
@@ -46,6 +46,30 @@ define [
         url: '/position'
         template: _utils.extractTemplate('#tmpl-position', _template)
         controller: 'positionController'
+      )
+
+      .state('firstPaint',
+        url: '/firstPaint'
+        template: _utils.extractTemplate('#tmpl-firstPaint', _template)
+        controller: 'firstPaintController'
+      )
+
+      .state('firstView',
+        url: '/firstView'
+        template: _utils.extractTemplate('#tmpl-firstView', _template)
+        controller: 'firstViewController'
+      )
+
+      .state('domReady',
+        url: '/domReady'
+        template: _utils.extractTemplate('#tmpl-domReady', _template)
+        controller: 'domReadyController'
+      )
+
+      .state('pageLoad',
+        url: '/pageLoad'
+        template: _utils.extractTemplate('#tmpl-pageLoad', _template)
+        controller: 'pageLoadController'
       )
       
   ])

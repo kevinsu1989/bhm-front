@@ -177,11 +177,22 @@ define [
 
 
 
-  .directive('mainTopMenuC', ['$rootScope', '$interval', ($rootScope, $interval)->
+  .directive('mainTopMenuC', ['$rootScope', '$interval', '$state', ($rootScope, $interval, $state)->
     restrict: 'E'
     replace: true
     template: _utils.extractTemplate '#tmpl-main-top-menu-container', _template
     link: (scope, element, attrs)->
+      state_name = 
+        firstPaint: '白屏时间'
+        firstView: '首屏时间'
+        domReady: 'DomReady'
+        pageLoad: '页面加载'
+        mobile: 'M站'
+        player: '流失率'
+        position: '定位分析'
+
+      scope.page = state_name[$state.current.name] || '总览'
+
       timer = null
       query = {}
       $rootScope.isSpeed = true

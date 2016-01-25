@@ -8,13 +8,13 @@ define [
   'v/cookies'
 ], (_module,_cookies)->
   _module.controllerModule
-  .controller('mainController', ['$rootScope', '$scope', '$state', 'API',
+  .controller('firstPaintController', ['$rootScope', '$scope', '$state', 'API',
     ($rootScope, $scope, $state, API)->
       $rootScope.active_menu = 'index'
-      $rootScope.active_menu_child = null
+      $rootScope.active_menu_child = 'firstPaint'
       $state.go('login') if _cookies.get('SNDIWUNX') isnt 'MOISDJWOJO'
       $rootScope.page_name = ""
-      $rootScope.browser_percent = true
+      $rootScope.browser_percent = false
       $rootScope.query = {}
       loadData = ()->
         $scope.loading = true
@@ -23,21 +23,21 @@ define [
           $rootScope.$broadcast 'main:data:loaded', result, $state.current.name
 
       $scope.$on 'pages:menu:click', (event, page)->
-        return if $state.current.name isnt "index"
+        return if $state.current.name isnt "firstPaint"
         $rootScope.page_name = page.page_name
         $rootScope.query.page_like = page.page_like
         $rootScope.query.isSpeed = $rootScope.isSpeed
         $rootScope.query.ie7 = $rootScope.ie7
+        $rootScope.query.browser_percent = false
         $rootScope.query.type = $rootScope.type
-        $rootScope.query.browser_percent = true
         loadData()
 
       $scope.$on 'top:menu:select', (event, query)->
-        return if $state.current.name isnt "index"
+        return if $state.current.name isnt "firstPaint"
         $rootScope.query = query
         $rootScope.query.isSpeed = $rootScope.isSpeed
         $rootScope.query.ie7 = $rootScope.ie7
+        $rootScope.query.browser_percent = false
         $rootScope.query.type = $rootScope.type
-        $rootScope.query.browser_percent = true
         loadData()
   ])

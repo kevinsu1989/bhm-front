@@ -14,6 +14,7 @@ define [
       $state.go('login') if _cookies.get('SNDIWUNX') isnt 'MOISDJWOJO'
       $rootScope.page_name = ""
       $rootScope.query = {}
+      $rootScope.browser_percent = false
       loadData = ()->
         $scope.loading = true
         API.pages($rootScope.page_name).retrieve($rootScope.query).then (result)->
@@ -28,6 +29,7 @@ define [
         $rootScope.query.isSpeed = $rootScope.isSpeed
         $rootScope.query.ie7 = $rootScope.ie7
         $rootScope.query.type = $rootScope.type
+        $rootScope.query.browser_percent = false
         loadData()
 
       $scope.$on 'top:menu:select', (event, query)->
@@ -36,6 +38,7 @@ define [
         $rootScope.query.isSpeed = $rootScope.isSpeed
         $rootScope.query.ie7 = $rootScope.ie7
         $rootScope.query.type = $rootScope.type
+        $rootScope.query.browser_percent = false
         loadData()
 
 
@@ -45,5 +48,6 @@ define [
         $rootScope.query = 
           isSpeed: 'true'
           type: 'hour'
+          browser_percent: false
         loadData()
   ])

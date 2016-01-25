@@ -4,5 +4,6 @@ define [
   './mobile'
   './player'
   './position'
+  './chart-container'
 ], ->
 	
