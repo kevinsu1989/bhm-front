@@ -14,7 +14,10 @@ define [
     template: _utils.extractTemplate '#tmpl-main-left-menu', _template
     link: (scope, element, attrs)->
       scope.loading = true
-      API.pages().retrieve().then (result)->
+      query = {}
+      query = parent: 3  if $state.current.name is 'playerLoad'
+      
+      API.pages().retrieve(query).then (result)->
         $rootScope.page_name = result[0].page_name
         scope.pages = result
         scope.$emit 'pages:menu:loaded', result[0].page_name, $state.current.name
@@ -187,6 +190,7 @@ define [
         firstView: '首屏时间'
         domReady: 'DomReady'
         pageLoad: '页面加载'
+        playerLoad: '播放器加载成功率'
         mobile: 'M站'
         player: '流失率'
         position: '定位分析'

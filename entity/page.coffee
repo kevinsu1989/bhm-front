@@ -12,9 +12,12 @@ class Page extends _BaseEntity
     super require('../schema/page').schema
 
 
-  findPages: (cb)->
+  findPages: (req, cb)->
     sql = "select * from page where is_show = 1"
+    sql += " and parent=#{req.query.parent}" if req.query.parent
+    sql += " or id=#{req.query.parent}" if req.query.parent
 
+    console.log sql
     @execute sql, cb
 
 

@@ -8,4 +8,5 @@ define [
   './firstView'
   './domReady'
   './pageLoad'
+  './playerLoad'
 ], ->

@@ -304,7 +304,7 @@ exports.getRecordsSplit = (req, res, cb)->
 
 
 exports.getPages = (req, res, cb)->
-  _entity.page.findPages (err, result)->
+  _entity.page.findPages req, (err, result)->
     pages = [];
     for item in result 
       if item.parent is 0

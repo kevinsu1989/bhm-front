@@ -36,3 +36,10 @@ define [
     link: (scope, element, attrs)->
 
   ])
+  .directive('playerloadChartsContainer', ['$rootScope', 'API', ($rootScope, API)->
+    restrict: 'E'
+    replace: true
+    template: _utils.extractTemplate '#tmpl-playerLoad-charts-container', _template
+    link: (scope, element, attrs)->
+
+  ])

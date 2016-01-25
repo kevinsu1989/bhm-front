@@ -71,5 +71,11 @@ define [
         template: _utils.extractTemplate('#tmpl-pageLoad', _template)
         controller: 'pageLoadController'
       )
+
+      .state('playerLoad',
+        url: '/playerLoad'
+        template: _utils.extractTemplate('#tmpl-playerLoad', _template)
+        controller: 'playerLoadController'
+      )
       
   ])
