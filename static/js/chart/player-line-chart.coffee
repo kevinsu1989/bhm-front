@@ -8,7 +8,7 @@ define [
   class playerLineChart
     constructor: (@container)->
       @option =   
-        backgroundColor: 'rgba(51,51,51,.4)' 
+        # backgroundColor: 'rgba(51,51,51,.4)' 
         title:
           x: 'center'
           text: 'PV-VV分时图'
@@ -28,8 +28,8 @@ define [
           boundaryGap: false
         ]
 
-      @chart = echarts.init @container
-      @chart.setOption @option
+      @chart = _echarts.init @container
+      # @chart.setOption @option
 
 
     #获取所有的时间点
@@ -73,22 +73,21 @@ define [
 
     getStyles: (data, color)->
       rgba = _utils.hex2rgba color
-      color = _utils.formatString 'rgba({0}, {1}, {2}, {3})', rgba.r, rgba.g, rgba.b, 0.6
+      color = _utils.formatString 'rgba({0}, {1}, {2}, {3})', rgba.r, rgba.g, rgba.b, 0.9
       name: data.name
       type: data.type
       smooth: true
       symbol: 'none'
-      # itemStyle:
-      #   normal:
-      #     color: color
+      itemStyle:
+        normal:
+          color: color
       data: data.data
 
     reload: (origin)->
       return if !origin || origin.length is 0
       originTimes = @getAllTimes origin
       data = @prepareSeries origin
-      colors = ['#2f91da', '#00ff00', '#ff00ff', '#ff0000', '#0ff0f0', '#0000ff', '#00f0ff']
-
+      colors = ['#c23531', '#314656', '#61a0a8', '#dd8668', '#91c7ae', '#bda29a', '#44525d', '#c4ccd3']
       series = (@getStyles(item, colors[index]) for item, index in data)
       xAxis = [
         type: 'category'

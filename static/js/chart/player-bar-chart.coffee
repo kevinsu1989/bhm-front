@@ -8,7 +8,7 @@ define [
   class barChart
     constructor: (@container)->
       @option =
-        backgroundColor: 'rgba(51,51,51,.4)'
+        # backgroundColor: 'rgba(51,51,51,.4)'
         title:
           x: 'center'
           text: 'ECharts例子个数统计'
@@ -38,8 +38,8 @@ define [
           itemStyle: 
             normal: 
               color: (params, index)->
-                colorList = [ '#FE69B3','#6495ED','#32CC32', '#DA70D6', '#87CEFA', '#FF7F50']
-                colorList[index]
+                colorList = ['#c23531', '#314656', '#61a0a8', '#dd8668', '#91c7ae', '#bda29a', '#44525d', '#c4ccd3']
+                colorList[params.dataIndex]
               label: 
                 show: true
                 position: 'right'
@@ -49,8 +49,8 @@ define [
     
 
 
-      @chart = echarts.init @container
-      @chart.setOption @option
+      @chart = _echarts.init @container
+      # @chart.setOption @option
 
     reload: (data, title)->
       @option.title.text = title

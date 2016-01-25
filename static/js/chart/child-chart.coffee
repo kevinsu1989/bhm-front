@@ -8,9 +8,9 @@ define [
   class mainChart
     constructor: (@container)->
       @option =
-        backgroundColor: 'rgba(51,51,51,.4)'
+        # backgroundColor: 'rgba(51,51,51,.4)'
         legend: x: 'right', padding: [8, 20, 5, 5]
-        grid: x: 50, y: 60, x2: 20, y2: 20, borderWidth: 0, borderColor: 'transparent'
+        grid: x: 50, y: 60, x2: 40, y2: 30, borderWidth: 0, borderColor: 'transparent'
         tooltip:
           trigger: "axis"
 
@@ -21,8 +21,8 @@ define [
           boundaryGap: false
         ]
 
-      @chart = echarts.init @container
-      @chart.setOption @option
+      @chart = _echarts.init @container
+      # @chart.setOption @option
 
 
     #获取所有的时间点
@@ -62,6 +62,8 @@ define [
       itemStyle:
         normal:
           color: color
+          areaStyle: 
+            type: 'default'
       data: data.data
 
     reload: (origin, title, cntitle)->

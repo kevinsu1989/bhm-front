@@ -39,7 +39,7 @@ define [
             normal: 
               color: (params, index)->
                 colorList = ['rgba(255, 0, 0, 1)','rgba(0, 255, 0, 1)']
-                colorList[index]
+                colorList[params.dataIndex]
               label: 
                 show: true
                 position: 'bottom'
@@ -49,8 +49,8 @@ define [
     
 
 
-      @chart = echarts.init @container
-      @chart.setOption @option
+      @chart = _echarts.init @container
+      # @chart.setOption @option
     prepareData: (data)->
       arr = []
       sum = 0
@@ -91,7 +91,7 @@ define [
       @option.xAxis[0].data = @prepareXAxis data, value
       @option.series[0].itemStyle.normal.color = (params, index)->
         colorList = _colorList
-        colorList[index]
+        colorList[params.dataIndex]
       @chart.setOption @option , true
 
 

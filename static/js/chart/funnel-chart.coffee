@@ -8,7 +8,7 @@ define [
   class funnelChart
     constructor: (@container)->
       @option =
-        backgroundColor: 'rgba(51,51,51,.4)'
+        # backgroundColor: 'rgba(51,51,51,.4)'
         title:
           x: 'center'
           text: 'PV-VV漏斗图'
@@ -20,6 +20,7 @@ define [
         calculable: true
         legend: 
           data : ['PV','播放器加载','CMS','分发','广告播放','广告结束','VV']
+        color: ['#c23531', '#314656', '#61a0a8', '#dd8668', '#91c7ae', '#bda29a', '#44525d', '#c4ccd3']
         series : [
           name:'PV-VV漏斗图',
           type:'funnel',
@@ -38,8 +39,8 @@ define [
     
 
 
-      @chart = echarts.init @container
-      @chart.setOption @option
+      @chart = _echarts.init @container
+      # @chart.setOption @option
 
     reload: (data, title)->
       @option.title.text = ''

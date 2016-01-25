@@ -21,8 +21,8 @@ define [
           boundaryGap: false
         ]
 
-      @chart = echarts.init @container
-      @chart.setOption @option
+      @chart = _echarts.init @container
+      # @chart.setOption @option
 
 
     #获取所有的时间点

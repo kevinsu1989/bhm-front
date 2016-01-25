@@ -25,8 +25,6 @@ define [
 
       scope.pageChange = (page, parent)->
         scope.show_id = page.id
-        console.log scope.show_id
-        console.log page
         scope.$emit "pages:menu:click", page, parent
 
   ])

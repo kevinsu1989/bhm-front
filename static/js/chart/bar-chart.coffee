@@ -16,7 +16,7 @@ define [
         tooltip: 
             trigger: 'item'
         calculable: true
-        backgroundColor: 'rgba(51,51,51,.4)'
+        # backgroundColor: 'rgba(51,51,51,.4)'
         grid: x: 50, borderWidth: 0, y: 40, y2: 20   
         xAxis: [
           type: 'category'
@@ -30,15 +30,16 @@ define [
         yAxis: [
             type: 'value'
             show: false
-        ]    
+        ]         
+
         series: [
-          name: '性能数据'
+          name: ''
           type: 'bar'
           itemStyle: 
             normal: 
-              color: (params, index)->
-                colorList = ['#2f91da', '#ff00ff', '#00ff00', '#ff0000']
-                colorList[index]
+              color: (params)->
+                colorList = ['#c23531', '#314656', '#61a0a8', '#dd8668', '#91c7ae', '#bda29a', '#44525d', '#c4ccd3']
+                colorList[params.dataIndex]
               label: 
                 show: true
                 position: 'top'
@@ -48,8 +49,8 @@ define [
     
 
 
-      @chart = echarts.init @container
-      @chart.setOption @option
+      @chart = _echarts.init @container
+      # @chart.setOption @option
 
     reload: (data, title)->
       @option.title.text = title

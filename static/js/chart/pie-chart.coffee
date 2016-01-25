@@ -8,7 +8,7 @@ define [
   class pieChart
     constructor: (@container)->
       @option =
-        backgroundColor: 'rgba(51,51,51,.4)'
+        # backgroundColor: 'rgba(51,51,51,.4)'
         legend: x: 'left', orient : 'vertical'
         tooltip:
           trigger: 'item'
@@ -20,8 +20,8 @@ define [
         calculable: true
 
 
-      @chart = echarts.init @container
-      @chart.setOption @option
+      @chart = _echarts.init @container
+      # @chart.setOption @option
 
 
 

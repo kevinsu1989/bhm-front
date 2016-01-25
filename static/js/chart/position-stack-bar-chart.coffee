@@ -63,8 +63,7 @@ define [
             data:[{value:20,tooltip: {formatter: "{a}{b} : {c}%"}}]
           }
         ]
-      @chart = echarts.init @container
-      @chart.setOption @option
+      @chart = _echarts.init @container
 
     reload: (data, title)->
       @option.title.text = title
