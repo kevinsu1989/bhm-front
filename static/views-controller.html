@@ -1,33 +1,15 @@
 <div>
     <textarea id="tmpl-login">
-        <div class="ui middle aligned center aligned grid">
-            <div class="column" style="width:450px;">
-                <h2 class="ui teal image header">
-                  <div class="content">
-                    Log-in to your account
-                  </div>
-                </h2>
-                <form class="ui large form">
-                    <div class="ui stacked segment">
-                        <div class="field">
-                            <div class="ui left icon input">
-                                <i class="user icon"></i>
-                                <input type="text" name="loginname" ng-model='name' placeholder="LoginName">
-                            </div>
-                        </div>
-                        <div class="field">
-                            <div class="ui left icon input">
-                                <i class="lock icon"></i>
-                                <input type="password" name="password" ng-model='pwd' placeholder="Password">
-                            </div>
-                        </div>
-                        <div class="ui fluid large teal submit button" ng-click='login()'>Login</div>
-                    </div>
-
-                    <div class="ui error message"></div>
-
-                </form>
+        <div class="login">
+            <h2>
+                登录BHM
+            </h2>
+            <div class="form">
+                <div class="input"><input type="text" id="loginname" ng-model='name' placeholder="登录名"></div>
+                <div class="input"><input type="password" id="password" ng-model='pwd' placeholder="密码"></div>
             </div>
+
+            <div class="ui fluid large teal primary button" ng-click='login()'>登录</div>
         </div>
 
     </textarea>

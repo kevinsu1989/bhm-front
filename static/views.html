@@ -98,6 +98,7 @@
     <textarea id="tmpl-main-top-menu-container">
         <div class='top'>
             <div class="navi">{{page}}<!-- <i ng-if='page_name'>--{{page_name}}</i> --></div>
+            <button class="ui positive button" ng-click="reload()">刷新</button>
             <button class="ui primary button" ng-click="showMenu()">选项</button>
             <button class="ui primary button" ng-click="showTable()">表格</button>
             <div class='top-menu' ng-show="menu_show">
@@ -107,7 +108,7 @@
                     <li ng-class="time_type=='day'?'active':''" ng-click="setTimeType('day')">天</li>
                 </ul>
 
-                <ul class='picker'>
+                <ul class='picker' ng-show='active_menu=="index"'>
                     <i>浏览器：</i>
                     <li ng-class="browser_name==''?'active':''" ng-click="setBrowserName('')">全部</li>
                     <li ng-class="browser_name=='ie'?'active':''" ng-click="setBrowserName('ie')">IE</li>

@@ -15,6 +15,12 @@ _mrecords = require './biz/m_records'
 _browser = require './biz/browser'
 _flash = require './biz/flash'
 
+
+
+
+_cheerio = require 'cheerio'
+_request = require 'request'
+
 receiveData = (req, res, next)->
   _api.receiveData req, res, (err, result)-> _http.responseJSON err, result, res
 
@@ -51,6 +57,17 @@ getIp = (req, res, next)->
 
 getUA = (req, res, next)->
   _api.getUA req, res, (err, result)-> _http.responseJSON err, result, res
+
+
+
+
+
+getImg = (req, res, next)->
+  _request 'http://172.31.13.160/document/2016/',(err, content)->
+    url = []
+    $a = _cheerio.load(content.body)('a')
+    url.push("http://172.31.13.160/document/2016/#{$a.eq(index).attr('href')}") for index in [1...$a.length]
+    _http.responseJSON err, url, res
 #初始化路由
 exports.init = (app)->
 
@@ -80,6 +97,14 @@ exports.init = (app)->
   app.get '/api/ua', getUA
 
 
+
+  app.get '/api/img', getImg
+
+
   app.get /(\/\w+)?$/, (req, res, next)-> res.sendfile 'static/index.html'
+
+
+
+
 
 
