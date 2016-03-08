@@ -7,7 +7,7 @@ _moment = require 'moment'
 
 
 
-exports.getFlashRecords = (req, res, cb)->
+exports.retrieve = (req, res, cb)->
   query = req.query
   query.time_start = _common.getDayStart().valueOf() if !query.time_start
   query.time_end = _common.getDayStart().valueOf() + 24 * 60 * 60 * 1000 - 1  if !query.time_end

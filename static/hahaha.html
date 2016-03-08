@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+  <title>FBI Warning</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+	<script type="text/javascript" src="/js/vendor/jquery.js"></script>
+</head>
+<body>
+    
+
+
+</body>
+</html>
+
+<script type="text/javascript">
+  $.ajax({
+      url: '/api/img',
+      method: 'get',
+      success: function(res) {
+        for(var i = 0,len = res.length;i < len;i++){
+          var img = new Image();  
+          img.src = res[i];
+          (function(img){
+            img.onload=function(){
+              $('body').append(img);
+            }; 
+          })(img); 
+        }
+      }
+  });
+</script>

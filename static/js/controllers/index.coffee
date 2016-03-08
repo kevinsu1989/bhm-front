@@ -9,4 +9,5 @@ define [
   './domReady'
   './pageLoad'
   './playerLoad'
+  './email'
 ], ->

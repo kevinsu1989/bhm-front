@@ -77,5 +77,11 @@ define [
         template: _utils.extractTemplate('#tmpl-playerLoad', _template)
         controller: 'playerLoadController'
       )
+
+      .state('email',
+        url: '/email'
+        template: _utils.extractTemplate('#tmpl-email', _template)
+        controller: 'emailController'
+      )
       
   ])

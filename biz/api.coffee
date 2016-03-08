@@ -213,7 +213,7 @@ exports.getRecords = (req, res, cb)->
 
 
 
-exports.getRecordsSplit = (req, res, cb)->
+exports.retrieve = (req, res, cb)->
   data = req.query
   data.page_name = req.params.page_name
   data.time_start = _common.getDayStart().valueOf() if !data.time_start

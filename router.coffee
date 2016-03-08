@@ -14,6 +14,7 @@ _records = require './biz/records'
 _mrecords = require './biz/m_records'
 _browser = require './biz/browser'
 _flash = require './biz/flash'
+_email = require './biz/email'
 
 
 
@@ -25,7 +26,7 @@ receiveData = (req, res, next)->
   _api.receiveData req, res, (err, result)-> _http.responseJSON err, result, res
 
 getRecordsSplit = (req, res, next)->
-  _api.getRecordsSplit req, res, (err, result)-> _http.responseJSON err, result, res
+  _api.retrieve req, res, (err, result)-> _http.responseJSON err, result, res
 
 getRecords = (req, res, next)->
   _api.getRecords req, res, (err, result)-> _http.responseJSON err, result, res
@@ -35,10 +36,10 @@ getPages = (req, res, next)->
 
 
 getMRecords = (req, res, next)->
-  _mrecords.getMRecords req, res, (err, result)-> _http.responseJSON err, result, res
+  _mrecords.retrieve req, res, (err, result)-> _http.responseJSON err, result, res
 
 getFlashRecords = (req, res, next)->
-  _flash.getFlashRecords req, res, (err, result)-> _http.responseJSON err, result, res
+  _flash.retrieve req, res, (err, result)-> _http.responseJSON err, result, res
 
 ##########################
 
@@ -59,8 +60,8 @@ getUA = (req, res, next)->
   _api.getUA req, res, (err, result)-> _http.responseJSON err, result, res
 
 
-
-
+getEmail = (req, res, next)->
+  _email.retrieve req, res, (err, result)-> _http.responseJSON err, result, res
 
 getImg = (req, res, next)->
   _request 'http://172.31.13.160/document/2016/',(err, content)->
@@ -96,6 +97,9 @@ exports.init = (app)->
   #计算ua
   app.get '/api/ua', getUA
 
+
+
+  app.get '/api/email', getEmail
 
 
   app.get '/api/img', getImg

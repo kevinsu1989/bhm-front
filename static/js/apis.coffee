@@ -19,4 +19,8 @@ define [], ->
     {
       "url": "flash",
       "methods": {}
+    },
+    {
+      "url": "email",
+      "methods": {}
     }]
