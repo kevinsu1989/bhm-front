@@ -1,6 +1,6 @@
 
 
-_express = require 'express.io'
+_express = require 'express'
 _http = require 'http'
 _app = _express()
 _cpus = require('os').cpus()

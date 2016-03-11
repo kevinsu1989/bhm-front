@@ -64,10 +64,10 @@ getEmail = (req, res, next)->
   _email.retrieve req, res, (err, result)-> _http.responseJSON err, result, res
 
 getImg = (req, res, next)->
-  _request 'http://172.31.13.160/document/2016/',(err, content)->
+  _request 'http://172.31.13.173/document/2016/',(err, content)->
     url = []
     $a = _cheerio.load(content.body)('a')
-    url.push("http://172.31.13.160/document/2016/#{$a.eq(index).attr('href')}") for index in [1...$a.length]
+    url.push("http://172.31.13.173/document/2016/#{$a.eq(index).attr('href')}") for index in [1...$a.length]
     _http.responseJSON err, url, res
 #初始化路由
 exports.init = (app)->
