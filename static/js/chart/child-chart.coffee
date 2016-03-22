@@ -57,8 +57,8 @@ define [
       color = _utils.formatString 'rgba({0}, {1}, {2}, {3})', rgba.r, rgba.g, rgba.b, 0.6
       name: data.name
       type: data.type
-      smooth: true
-      symbol: 'none'
+      # smooth: true
+      # symbol: 'none'
       itemStyle:
         normal:
           color: color
@@ -90,6 +90,9 @@ define [
       if title in ['flash_percent','js_load','pv2vv','pv2source','r800']
         yAxis[0].name = '%' 
         yAxis[0].max = 100
+      
+      yAxis[0].min = 80 if title is 'flash_percent'
+      yAxis[0].min = 95 if title is 'js_load'
       option =
         xAxis: xAxis
         yAxis: yAxis

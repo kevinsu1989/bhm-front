@@ -227,7 +227,7 @@
 
     <textarea id="tmpl-main-charts-container">
 
-        <div>
+        <div class="charts-container">
             <div class="chart bar-chart" bar-chart data-title="【{{page_name}}】的平均性能指标"></div>
             <div class="chart child-chart" gauge-chart data-title="播放器加载成功率" data-field='flash_load' style="width:25%;"></div>
             <div class="chart child-chart" pie-chart data-title="浏览器占比"></div>
@@ -243,7 +243,7 @@
     </textarea>
     <textarea id="tmpl-position-charts-container">
 
-        <div>
+        <div class="charts-container">
             <div class="position-title" ng-show='false'><span ng-if='parent_name'>{{parent_name}}-></span>{{page_name}}</div>
 
             <position-select-bar></position-select-bar>
@@ -260,11 +260,11 @@
 
     <textarea id="tmpl-mobile-charts-container">
 
-        <div>
+        <div class="charts-container">
             <div class="chart child-chart mobile" gauge-chart data-title="PV-VV转化率" data-field='pv2vv'></div>
-            <div class="chart child-chart mobile" child-chart data-cntitle="PV" data-title="pv"></div>
-            <div class="chart child-chart mobile" child-chart data-cntitle="资源加载成功率" data-title="pv2source"></div>
             <div class="chart child-chart mobile" child-chart data-cntitle="PV-VV转化率" data-title="pv2vv"></div>
+            <div class="chart child-chart mobile" child-chart data-cntitle="PV" data-title="pv"></div>
+            <div class="chart child-chart mobile" child-chart data-cntitle="VV" data-title="vv"></div>
             <records-table></records-table>
         </div>
 
@@ -272,7 +272,7 @@
 
     <textarea id="tmpl-player-charts-container">
 
-        <div>
+        <div class="charts-container">
             <div class="chart child-chart mobile" funnel-chart data-title="PV-VV漏斗图"></div>
             <div class="chart child-chart mobile" player-bar-chart data-title="PV-VV流失率"></div>
             <div class="chart main-chart player" player-line-chart data-cntitle="PV-VV分时折线图"></div>
@@ -283,7 +283,7 @@
 
     <textarea id="tmpl-firstPaint-charts-container">
 
-        <div>
+        <div class="charts-container">
             <div class="chart second-page" position-bar-chart data-title="性能区间" data-background="rgba(51,51,51,0)" data-key="first_paint"></div>
             <div class="chart second-page" child-chart data-cntitle="白屏时间" data-title="first_paint"></div>
             <div class="chart second-page" main-chart></div>
@@ -293,7 +293,7 @@
     </textarea>
     <textarea id="tmpl-firstView-charts-container">
 
-        <div>
+        <div class="charts-container">
             <div class="chart second-page" position-bar-chart data-title="性能区间" data-background="rgba(51,51,51,0)" data-key="first_view"></div>
             <div class="chart second-page" child-chart data-cntitle="首屏时间" data-title="first_view"></div>
             <div class="chart second-page" main-chart></div>
@@ -303,7 +303,7 @@
     </textarea>
     <textarea id="tmpl-domReady-charts-container">
 
-        <div>
+        <div class="charts-container">
             <div class="chart second-page" position-bar-chart data-title="性能区间" data-background="rgba(51,51,51,0)" data-key="dom_ready"></div>
             <div class="chart second-page" child-chart data-cntitle="DomReady" data-title="dom_ready"></div>
             <div class="chart second-page" main-chart></div>
@@ -313,7 +313,7 @@
     </textarea>
     <textarea id="tmpl-pageLoad-charts-container">
 
-        <div>
+        <div class="charts-container">
             <div class="chart second-page" position-bar-chart data-title="性能区间" data-background="rgba(51,51,51,0)" data-key="load_time"></div>
             <div class="chart second-page" child-chart data-cntitle="页面加载时间" data-title="load_time"></div>
             <div class="chart second-page" main-chart></div>
@@ -324,7 +324,7 @@
 
     <textarea id="tmpl-playerLoad-charts-container">
 
-        <div>
+        <div class="charts-container">
             <div class="chart child-chart" gauge-chart data-title="播放器加载成功率" data-field='flash_load' style="width:25%;"></div>
             <div class="chart second-page" child-chart data-cntitle="播放器加载成功率" data-title="flash_percent" style="width:75%;"></div>
             <div class="chart second-page" child-chart data-cntitle="吞吐量" data-title="pv"></div>

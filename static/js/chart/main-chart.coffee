@@ -19,12 +19,12 @@ define [
           #   text += "#{params[2].seriesName}：#{params[0].value+params[1].value+params[2].value}ms <br/>"
           #   text += "#{params[3].seriesName}：#{params[0].value+params[1].value+params[2].value+params[3].value}ms <br/>"
         toolbox: show: false
-        calculable: true
-        boundaryGap: true
-        xAxis: [
-          type: "category"
-          boundaryGap: false
-        ]
+        # calculable: true
+        # boundaryGap: true
+        # xAxis: [
+        #   type: "category"
+        #   boundaryGap: false
+        # ]
 
       @chart = _echarts.init @container
       # @chart.setOption @option
@@ -71,14 +71,14 @@ define [
       color = _utils.formatString 'rgba({0}, {1}, {2}, {3})', rgba.r, rgba.g, rgba.b, 0.8
       name: item.name
       type: item.type
-      smooth: true
-      symbol: 'none'
+      # smooth: true
+      # symbol: 'none'
       # stack: 'sum'
-      itemStyle:
-        normal:
-          color: color
-          areaStyle: 
-            type: 'default'
+      # itemStyle:
+      #   normal:
+      #     color: color
+          # areaStyle: 
+          #   type: 'default'
       data: item.value
 
     reload: (origin)->
@@ -91,8 +91,8 @@ define [
       xAxis = [
         type: 'category'
         data: _.keys originTimes
-        splitLine: show: true
-        boundaryGap: false
+        # splitLine: show: true
+        # boundaryGap: false
         axisLabel:
           formatter: (text)->
             text

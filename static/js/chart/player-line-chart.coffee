@@ -76,8 +76,8 @@ define [
       color = _utils.formatString 'rgba({0}, {1}, {2}, {3})', rgba.r, rgba.g, rgba.b, 0.9
       name: data.name
       type: data.type
-      smooth: true
-      symbol: 'none'
+      # smooth: true
+      # symbol: 'none'
       itemStyle:
         normal:
           color: color

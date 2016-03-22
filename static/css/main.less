@@ -190,8 +190,8 @@
 }
 body{
   background-attachment:fixed,fixed;
-  background-color:rgba(45,101,203,.89);
-  background-image:radial-gradient(farthest-side ellipse at 10% 0,rgba(119,157,207,.8) 30%,rgba(174,180,186,.8) 76%,rgba(199,175,156,.8));
+  // background-color:rgba(45,101,203,.89);
+  // background-image:radial-gradient(farthest-side ellipse at 10% 0,rgba(119,157,207,.8) 30%,rgba(174,180,186,.8) 76%,rgba(199,175,156,.8));
 }
 
 // input, select{
@@ -348,18 +348,22 @@ body{
       margin-bottom: 3px;
 
       &.child{
+        color: #666;
         text-align: left;
         margin-left: 20px;
         widows: 110px;
       }
       a{
-        color: #fff;
+        color: #666;
         width: 100%;
         display: block;
       }
       &.active,&:hover{
+        transition: background-color .2s;
         background: #666;
-        transition: background-color .2s
+        a{
+          color: #fff;
+        }
       }
     }
   }
@@ -396,7 +400,7 @@ body{
             padding-left: 5px;
             border-radius: 5px;
             margin:0px 0px 3px 20px;
-            color: #fff;
+            color: #666;
             &.active,&:hover{
               color: #fff !important;
               background: #666;
@@ -417,6 +421,13 @@ body{
   &.with_menu{
     width: 88%;
   }
+
+  // .charts-container{
+  //   display: inline-block;
+  //   border-left: 1px dashed #ccc;
+  //   border-bottom: 1px dashed #ccc;
+  //   padding: 10px;
+  // }
   .top{
     position: relative;
     height: 45px;
