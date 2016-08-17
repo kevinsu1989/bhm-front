@@ -69,6 +69,9 @@ getImg = (req, res, next)->
     $a = _cheerio.load(content.body)('a')
     url.push("http://172.31.13.173/document/2016/#{$a.eq(index).attr('href')}") for index in [1...$a.length]
     _http.responseJSON err, url, res
+
+
+
 #初始化路由
 exports.init = (app)->
 
@@ -104,11 +107,43 @@ exports.init = (app)->
 
   app.get '/api/img', getImg
 
+  app.get '/api/movie', getMovie
+
 
   app.get /(\/\w+)?$/, (req, res, next)-> res.sendfile 'static/index.html'
 
 
 
+
+     
+
+getMovie = (req, res, next)->
+  webpage = require('webpage')
+  page = webpage.create()
+  url = 'http://phantomjs.org/'
+  page.open(url, (status)->
+    console.log arguments
+    # phantom.exit();
+  )
+
+  _request 'http://www.dytt8.net/html/gndy/jddy/index.html',(err, content)->
+    url = []
+    $a = _cheerio.load(content.body)('a.ulink')
+    _len = 0
+    for index in [1...$a.length]
+      page = "http://www.dytt8.net#{$a.eq(index).attr('href')}"
+      _request page, (err, _content)->
+        # console.log page
+        reg=new RegExp("\"thunder:.*\"")
+        _url = reg.exec(_content.body)
+        console.log page if _len is 1
+        console.log _content.body if _len is 1
+        console.log _url if _len is 1
+        url.push _url
+
+        _len = _len + 1
+        if(_len is $a.length)
+          _http.responseJSON err, url, res
 
 
 

@@ -1,9 +1,6 @@
-
-
 _express = require 'express'
 _http = require 'http'
 _app = _express()
-_cpus = require('os').cpus().length
 _redisStore = new require('connect-redis')(_express)
 # _app.http().io()
 

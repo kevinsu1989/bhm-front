@@ -21,6 +21,7 @@
         for(var i = 0,len = res.length;i < len;i++){
           var img = new Image();  
           img.src = res[i];
+          img.src.title = decodeURI(res[i].split('/').pop());
           (function(img){
             img.onload=function(){
               $('body').append(img);

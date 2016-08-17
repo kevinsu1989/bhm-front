@@ -165,14 +165,14 @@
                 </table>
                 <table class="records-table" ng-show='active_menu=="mobile"'>
                     <tr>
-                        <th>时间</th><th>资源加载成功率</th><th>PV-VV转化率</th><th>PV</th>
+                        <th>时间</th><th>PV-VV转化率</th><th>PV</th><th>VV</th>
                     </tr>
                     <tr ng-repeat="item in data">
                         <td ng-if="item.type=='day'">{{item.time_start|date: 'MM月dd日'}}</td>
                         <td ng-if="item.type=='hour'">{{item.time_start|date: 'MM月dd日HH时'}}</td>
-                        <td>{{item.pv2source|perFilter}}</td>
                         <td>{{item.pv2vv|perFilter}}</td>
                         <td>{{item.pv}}00</td>
+                        <td>{{item.vv}}00</td>
                     </tr>
                 </table>
                 <table class="records-table" ng-show='active_menu=="player"'>

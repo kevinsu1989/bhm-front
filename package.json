@@ -26,6 +26,10 @@
     "moment": ""
   },
   "scripts": {
-    "start": "node-dev app.coffee"
-  }
+    "start": "pm2 start app.coffee -n bhm-front",
+    "stop": "pm2 delete bhm-front"
+  },
+  "command": "cnpm install && npm start",
+  "command_restart":  "cnpm install && npm stop && npm start",
+  "server": "http://192.168.8.156"
 }
